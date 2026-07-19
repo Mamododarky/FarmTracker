@@ -1,12 +1,10 @@
-Farm Tracker v8.2.1 Compact
+Farm Tracker v9.1 — Three Run Choices
 
-This build fixes the clutter bug where the pre-run screen remained visible underneath the active route.
+Startup choices:
+- All Farm/Tree Run
+- Farm Run
+- Tree Run — Fruit, Magic & Elder
 
-Copy ONLY these into the ROOT of your GitHub FarmTracker repository:
-- index.html
-- appconfig.json
-- assets folder
+The Tree Run intentionally includes only fruit trees, magic trees, and the elder tree. Manor Farm timers remain available in the Timers panel.
 
-Choose Replace when prompted. The index contains its own CSS and JavaScript, so old app.js/styles.css files cannot affect it.
-
-Commit, Push origin, wait for Pages, then fully close/reopen the Alt1 app. The menu must show Build 8.2.1 Compact.
+Replace index.html, appconfig.json, and assets/ in the GitHub repository root, then commit and push.
