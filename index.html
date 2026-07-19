@@ -1,348 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#101812" />
-  <meta name="description" content="Alt1 overlay for RS3 farming routes, plot alarms, and Manor Farm timers." />
-  <link rel="icon" type="image/png" href="assets/icon.png" />
-  <title>RS3 Farm Run Tracker</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="alt1-overlay.css" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1510">
+  <meta name="description" content="Compact Alt1 overlay for RuneScape 3 farm runs, plot alarms, and Manor Farm growth stages.">
+  <link rel="icon" href="assets/icon.png"><title>RS3 Farm Run Tracker</title>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="alt1-overlay.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <button id="menuButton" class="icon-button" aria-label="Open menu" title="Menu">☰</button>
-      <div class="brand">
-        <span class="brand-kicker">RuneScape 3</span>
-        <h1>Farm Run Tracker</h1>
+<div class="app-shell">
+<header class="topbar">
+  <button id="menuButton" class="icon-button" aria-label="Menu">☰</button>
+  <h1>Farm Run Tracker</h1>
+  <div class="top-actions"><span id="runTimer" class="run-clock">00:00</span><button id="topStartButton" class="button primary mini">Start</button></div>
+</header>
+<aside id="sideMenu" class="side-menu" aria-hidden="true">
+  <div class="menu-head"><h2>Tools</h2><button id="closeMenuButton" class="icon-button">×</button></div>
+  <section class="menu-section"><button id="openTimersButton" class="button">Timers</button><button id="openJumpButton" class="button">Jump to step</button><button id="openInventoryButton" class="button">Inventory</button><button id="openHistoryButton" class="button">History</button><button id="enableAlarmButton" class="button">Enable sound</button></section>
+  <section id="alt1StatusPanel" class="menu-section"><h3>Alt1</h3><p id="alt1StatusText" class="muted">Checking host…</p><button id="installAlt1Button" class="button primary" hidden>Install in Alt1</button></section>
+  <p class="menu-foot">Timers use saved timestamps. Closed apps catch up and alarm when reopened; sound may require one click.</p>
+</aside><div id="menuScrim" class="scrim" hidden></div>
+<main>
+  <section id="alarmControl" class="alarm-bar"><span class="alarm-bell">🔔</span><span><b id="activeAlarmCount">0</b><small id="alarmStatusText">No alarms</small></span><span class="next-ready"><small>Next</small><b id="nextReady">Everything ready / unset</b></span><button id="snoozeAllButton" class="button warning tiny" disabled>Snooze 1h</button></section>
+  <section id="emptyState" class="home-card">
+    <span class="eyebrow">CHOOSE A RUN</span><h2>Farm Run</h2>
+    <label class="route-picker"><span>Run type</span><select id="routePreset"><option value="full">Farm Run</option><option value="fruit">Fruit Trees</option><option value="regular">Magic Trees</option><option value="cactus">Golden Dragonfruit</option><option value="special">Special Trees</option><option value="pof">Manor Farm</option><option value="ready">Ready Only</option></select></label>
+    <div class="route-preview"><span><small>Route</small><b id="selectedRouteName">Farm Run</b></span><span><small>Steps</small><b id="routeProgress">0/25</b></span><span><small>Estimate</small><b id="routeXp">—</b></span></div>
+    <div class="home-actions"><button id="homeStartButton" class="button primary start-compact">Start Farm Run</button><button id="homeTimersButton" class="button">View timers</button></div>
+  </section>
+  <section id="runner" hidden>
+    <article class="step-card">
+      <div class="run-meta"><span><b id="activeRouteName">Farm Run</b></span><span id="stepTimer">00:00</span></div>
+      <div class="step-heading"><div><div class="badges"><span id="stepGroupBadge" class="badge">FRUIT TREE</span><span id="stepReadinessBadge" class="badge badge-ready">READY</span></div><span id="stepNumber" class="eyebrow">1 OF 25</span><h2 id="stepLocation">Brimhaven</h2><p id="stepSubtitle">Carambola fruit-tree patch</p></div></div>
+      <div class="info-list">
+        <section class="info-row accent"><span>✦</span><div><small>TELEPORT</small><b id="stepTeleport">Spirit tree → Brimhaven</b><p id="stepDirections">Run west.</p></div><button id="copyTeleportButton" class="text-button">Copy</button></section>
+        <section class="info-row"><span>🌳</span><div><small id="plantPanelTitle">PLANT</small><b id="stepPlant">Carambola sapling</b><p id="stepGrowth">Growth: 13h 20m</p></div></section>
+        <section class="info-row"><span>🧺</span><div><small id="paymentPanelTitle">PROTECT</small><b id="stepPayment">7 noted dragonfruit</b></div></section>
+        <section class="info-row"><span>⏱</span><div><small id="timerPanelTitle">TIMER</small><b id="stepReadyAt">No timer</b><p id="stepLastCompleted">Complete starts timer</p></div></section>
       </div>
-      <div class="topbar-actions">
-        <div class="timer-block" aria-label="Run timer">
-          <span class="timer-label">RUN</span>
-          <strong id="runTimer">00:00:00</strong>
-        </div>
-        <button id="startRunButton" class="button button-primary">Start Run</button>
-      </div>
-    </header>
-
-    <aside id="sideMenu" class="side-menu" aria-hidden="true">
-      <div class="side-menu-header">
-        <div>
-          <span class="brand-kicker">Settings</span>
-          <h2>Run Setup</h2>
-        </div>
-        <button id="closeMenuButton" class="icon-button" aria-label="Close menu">×</button>
-      </div>
-
-      <section class="menu-section">
-        <label for="routePreset">Route preset</label>
-        <select id="routePreset">
-          <option value="full">Full 200m XP Run</option>
-          <option value="fruit">Carambola Fruit Trees</option>
-          <option value="regular">Magic Trees</option>
-          <option value="cactus">Golden Dragonfruit</option>
-          <option value="special">Special Trees</option>
-          <option value="pof">Manor Farm Animals</option>
-          <option value="ready">Ready Patches Only</option>
-        </select>
-        <p class="muted">Ready-only uses the saved completion timers on this device.</p>
-      </section>
-
-      <section class="menu-section">
-        <h3>Run tools</h3>
-        <div class="menu-buttons">
-          <button id="openJumpButton" class="button button-secondary">Jump to Step</button>
-          <button id="openInventoryButton" class="button button-secondary">Inventory Preset</button>
-          <button id="openHistoryButton" class="button button-secondary">Run History</button>
-        </div>
-      </section>
-
-      <section class="menu-section">
-        <h3>Route data</h3>
-        <div class="menu-buttons">
-          <label class="button button-secondary file-button">
-            Import CSV
-            <input id="csvFileInput" type="file" accept=".csv,text/csv" hidden />
-          </label>
-          <button id="downloadTemplateButton" class="button button-secondary">Download CSV Template</button>
-          <button id="exportRouteButton" class="button button-secondary">Export Current Route</button>
-          <button id="restoreDefaultButton" class="button button-danger-ghost">Restore Default Route</button>
-        </div>
-      </section>
-
-      <section id="alt1StatusPanel" class="menu-section alt1-status-panel">
-        <h3>Alt1 overlay</h3>
-        <p id="alt1StatusText" class="muted">Checking Alt1 host…</p>
-        <button id="installAlt1Button" class="button button-primary" type="button" hidden>Install in Alt1</button>
-      </section>
-
-      <section class="menu-section">
-        <h3>Keyboard</h3>
-        <p class="muted"><kbd>←</kbd> Previous · <kbd>→</kbd> Complete + Next · <kbd>S</kbd> Skip · <kbd>J</kbd> Jump</p>
-      </section>
-    </aside>
-    <div id="menuScrim" class="scrim" hidden></div>
-
-    <main class="main-content">
-      <section class="status-strip compact-status-strip">
-        <div class="route-status-block">
-          <span class="status-label">Route</span>
-          <strong id="selectedRouteName">Full 200m XP Run</strong>
-          <span class="status-subline"><span id="routeProgress">0 / 25</span> · <span id="routeXp">—</span> XP</span>
-        </div>
-        <div>
-          <span class="status-label">Next ready</span>
-          <strong id="nextReady">—</strong>
-        </div>
-        <div id="alarmControl" class="alarm-summary" aria-live="assertive">
-          <div class="alarm-summary-copy">
-            <span class="alarm-icon" aria-hidden="true">🔔</span>
-            <div>
-              <strong id="activeAlarmCount">0 active alarms</strong>
-              <span id="alarmStatusText">Nothing is alarming.</span>
-            </div>
-          </div>
-          <div class="alarm-summary-actions">
-            <button id="openTimersButton" class="button button-secondary button-small" type="button">View timers</button>
-            <button id="enableAlarmButton" class="button button-secondary button-small" type="button">Enable sound</button>
-            <button id="snoozeAllButton" class="button button-warning button-small" type="button" disabled>Snooze 1h</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="emptyState" class="empty-state">
-        <div class="empty-icon">🌱</div>
-        <span class="eyebrow">Ready when you are</span>
-        <h2>Start a farm run</h2>
-        <p>The app will guide you one teleport and patch at a time, record every split, and restart each patch timer when you complete it.</p>
-        <button id="emptyStartButton" class="button button-primary button-large">Start Full Run</button>
-      </section>
-
-      <section id="runner" class="runner" hidden>
-        <article class="step-card">
-          <div class="step-card-header">
-            <div>
-              <div class="badge-row">
-                <span id="stepGroupBadge" class="badge">Fruit Tree</span>
-                <span id="stepReadinessBadge" class="badge badge-ready">READY</span>
-              </div>
-              <span id="stepNumber" class="eyebrow">Step 1 of 24</span>
-              <h2 id="stepLocation">Brimhaven</h2>
-              <p id="stepSubtitle" class="step-subtitle">Carambola fruit-tree patch</p>
-            </div>
-            <div class="step-split">
-              <span>STEP</span>
-              <strong id="stepTimer">00:00</strong>
-            </div>
-          </div>
-
-          <div class="instruction-grid">
-            <section class="instruction-panel instruction-primary">
-              <div class="panel-heading">
-                <span class="panel-icon">✦</span>
-                <h3>Teleport</h3>
-                <button id="copyTeleportButton" class="text-button">Copy</button>
-              </div>
-              <p id="stepTeleport" class="instruction-main">Spirit tree → Brimhaven</p>
-              <p id="stepDirections" class="muted">Run west to the fruit-tree patch.</p>
-            </section>
-
-            <section class="instruction-panel">
-              <div class="panel-heading">
-                <span class="panel-icon">🌳</span>
-                <h3 id="plantPanelTitle">Plant</h3>
-              </div>
-              <p id="stepPlant" class="instruction-main">Carambola sapling</p>
-              <p id="stepGrowth" class="muted">Growth: 13h 20m</p>
-            </section>
-
-            <section class="instruction-panel">
-              <div class="panel-heading">
-                <span class="panel-icon">🧺</span>
-                <h3 id="paymentPanelTitle">Protection</h3>
-              </div>
-              <p id="stepPayment" class="instruction-main">7 noted dragonfruit</p>
-              <p class="muted">Master farmer outfit quantity.</p>
-            </section>
-
-            <section class="instruction-panel">
-              <div class="panel-heading">
-                <span class="panel-icon">⏱</span>
-                <h3 id="timerPanelTitle">Patch timer</h3>
-              </div>
-              <p id="stepReadyAt" class="instruction-main">No saved timer</p>
-              <p id="stepLastCompleted" class="muted">Not completed on this device.</p>
-            </section>
-          </div>
-
-          <details id="standardActionChecklist" class="action-checklist compact-action-details">
-            <summary>Patch checklist</summary>
-            <div class="compact-action-body">
-              <label><input type="checkbox" data-action="harvest" /> Check health / harvest produce</label>
-              <label><input type="checkbox" data-action="remove" /> Pay gardener 200 coins to remove the old tree, when applicable</label>
-              <label><input type="checkbox" data-action="plant" /> Plant the listed sapling or seed</label>
-              <label><input type="checkbox" data-action="protect" /> Pay the listed protection, when applicable</label>
-            </div>
-          </details>
-
-          <section id="pofPenSelector" class="action-checklist pof-pen-selector" hidden>
-            <div class="pof-selector-heading">
-              <div>
-                <h3>Which Manor Farm pens did you replace?</h3>
-                <p class="muted">Only checked pens receive a new elder timer when you press Complete + Next.</p>
-              </div>
-              <button id="selectAllPofButton" type="button" class="text-button">Select all</button>
-            </div>
-            <div id="pofPenChecks" class="pof-pen-checks"></div>
-          </section>
-
-          <div id="stepNote" class="step-note" hidden></div>
-
-          <div class="runner-controls">
-            <button id="previousButton" class="button button-secondary">Previous</button>
-            <button id="skipButton" class="button button-warning">Skip</button>
-            <button id="completeButton" class="button button-primary button-complete">Complete + Next</button>
-          </div>
-        </article>
-
-        <aside class="run-sidebar">
-          <details class="sidebar-card compact-checklist">
-            <summary>
-              <span>Run checklist</span>
-              <span class="summary-hint">open</span>
-            </summary>
-            <div class="compact-checklist-body">
-              <div class="sidebar-heading checklist-heading">
-                <span class="muted">Optional equipment check</span>
-                <button id="clearChecklistButton" class="text-button">Clear</button>
-              </div>
-              <label><input type="checkbox" class="gear-check" /> Master farmer outfit</label>
-              <label><input type="checkbox" class="gear-check" /> Farming cape perk</label>
-              <label><input type="checkbox" class="gear-check" /> Urn enhancer + farming urn</label>
-              <label><input type="checkbox" class="gear-check" /> Tirannwn quiver 4</label>
-              <label><input type="checkbox" class="gear-check" /> Seren Teleport Stone: 4 / 8 / 9</label>
-              <label><input type="checkbox" class="gear-check" /> Brimhaven spirit tree + Abyss totem</label>
-            </div>
-          </details>
-
-          <section class="sidebar-card">
-            <div class="sidebar-heading">
-              <h3>Upcoming</h3>
-              <button id="openJumpInlineButton" class="text-button">Jump</button>
-            </div>
-            <div id="upcomingSteps" class="upcoming-list"></div>
-          </section>
-
-          <section class="sidebar-card compact-card">
-            <div class="sidebar-heading">
-              <h3>Current run</h3>
-            </div>
-            <div class="mini-stat"><span>Completed</span><strong id="completedCount">0</strong></div>
-            <div class="mini-stat"><span>Skipped</span><strong id="skippedCount">0</strong></div>
-            <div class="mini-stat"><span>Started</span><strong id="runStartedAt">—</strong></div>
-          </section>
-        </aside>
-      </section>
-    </main>
-  </div>
-
-  <dialog id="timersDialog" class="modal modal-wide timers-modal">
-    <form method="dialog" class="modal-card">
-      <div class="modal-header timer-modal-header">
-        <div>
-          <span class="eyebrow">Saved locally</span>
-          <h2>Farming timers</h2>
-        </div>
-        <button class="icon-button" value="cancel" aria-label="Close">×</button>
-      </div>
-
-      <div class="timer-tabs" role="tablist" aria-label="Timer type">
-        <button id="timerTabPlots" class="timer-tab active" type="button" role="tab" aria-selected="true">Plots</button>
-        <button id="timerTabPof" class="timer-tab" type="button" role="tab" aria-selected="false">Manor Farm</button>
-      </div>
-
-      <section id="patchDashboard" class="timer-panel" role="tabpanel">
-        <div class="timer-panel-heading">
-          <div>
-            <h3>Plot status</h3>
-            <p>Click a plot to jump to it when it is part of the active route.</p>
-          </div>
-          <div class="patch-counts" aria-label="Timer status counts">
-            <div><span class="status-dot status-dot-alarm"></span><strong id="alarmPatchCount">0</strong><span>Alarm</span></div>
-            <div><span class="status-dot status-dot-ready"></span><strong id="readyPatchCount">0</strong><span>Ready</span></div>
-            <div><span class="status-dot status-dot-growing"></span><strong id="growingPatchCount">0</strong><span>Growing</span></div>
-          </div>
-        </div>
-        <div id="patchStatusGrid" class="patch-status-grid"></div>
-      </section>
-
-      <section id="pofDashboard" class="timer-panel" role="tabpanel" hidden>
-        <div class="timer-panel-heading">
-          <div>
-            <h3>Manor Farm pens</h3>
-            <p>Regular Player-Owned Farm only. Ranch Out of Time is excluded.</p>
-          </div>
-          <strong id="pofNextReady" class="pof-next-ready">No pen timers started</strong>
-        </div>
-        <div id="pofStatusGrid" class="pof-status-grid"></div>
-      </section>
-
-      <p class="background-note"><strong>File closed:</strong> timestamps keep counting. Overdue timers alarm when this app is opened again. Browsers require one click before sound can play.</p>
-    </form>
-  </dialog>
-
-  <dialog id="jumpDialog" class="modal">
-    <form method="dialog" class="modal-card">
-      <div class="modal-header">
-        <div>
-          <span class="eyebrow">Navigation</span>
-          <h2>Jump to Step</h2>
-        </div>
-        <button class="icon-button" value="cancel" aria-label="Close">×</button>
-      </div>
-      <div id="jumpList" class="jump-list"></div>
-    </form>
-  </dialog>
-
-  <dialog id="inventoryDialog" class="modal modal-wide">
-    <form method="dialog" class="modal-card">
-      <div class="modal-header">
-        <div>
-          <span class="eyebrow">28-space preset</span>
-          <h2>Inventory</h2>
-        </div>
-        <button class="icon-button" value="cancel" aria-label="Close">×</button>
-      </div>
-      <div class="inventory-layout">
-        <div id="inventoryGrid" class="rs3-inventory" aria-label="RuneScape 28-slot inventory preset"></div>
-        <div id="inventoryLegend" class="inventory-legend"></div>
-      </div>
-      <div id="inventoryNotes" class="modal-note"></div>
-    </form>
-  </dialog>
-
-  <dialog id="historyDialog" class="modal modal-wide">
-    <form method="dialog" class="modal-card">
-      <div class="modal-header">
-        <div>
-          <span class="eyebrow">Saved locally</span>
-          <h2>Run History</h2>
-        </div>
-        <button class="icon-button" value="cancel" aria-label="Close">×</button>
-      </div>
-      <div class="history-toolbar">
-        <button id="exportHistoryButton" type="button" class="button button-secondary">Export History CSV</button>
-        <button id="clearHistoryButton" type="button" class="button button-danger-ghost">Clear History</button>
-      </div>
-      <div id="historyList" class="history-list"></div>
-    </form>
-  </dialog>
-
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <script src="alt1-bridge.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+      <section id="pofPenSelector" class="pof-selector" hidden><div class="pof-head"><span><b>Replaced pens</b><small>Choose the animals' starting stage.</small></span><button id="selectAllPofButton" class="text-button">All</button></div><div id="pofPenChecks"></div></section>
+      <div id="stepNote" class="step-note" hidden></div>
+      <div class="controls"><button id="previousButton" class="button">‹ Prev</button><button id="skipButton" class="button warning">Skip</button><button id="completeButton" class="button primary">Complete + Next</button></div>
+    </article>
+  </section>
+</main>
+</div>
+<dialog id="timersDialog" class="modal"><div class="modal-card"><header><h2>Timers</h2><button class="icon-button" onclick="this.closest('dialog').close()">×</button></header><div class="tabs"><button id="timerTabPlots" class="tab active">Plots</button><button id="timerTabPof" class="tab">Manor Farm</button></div><section id="patchDashboard"><div class="timer-counts"><span>Alarm <b id="alarmPatchCount">0</b></span><span>Ready <b id="readyPatchCount">0</b></span><span>Growing <b id="growingPatchCount">0</b></span></div><div id="patchStatusGrid" class="timer-grid"></div></section><section id="pofDashboard" hidden><p id="pofNextReady" class="pof-next">No pen timers</p><div id="pofStatusGrid" class="timer-grid"></div><p class="source-note">XP mode: check through Elder. Stage timing uses the RS3 POF table updated in 2024: chinchompas 42h, zygomites 84h, dragons 168h from their earliest stage.</p></section></div></dialog>
+<dialog id="jumpDialog" class="modal"><div class="modal-card"><header><h2>Jump</h2><button class="icon-button" onclick="this.closest('dialog').close()">×</button></header><div id="jumpList" class="jump-list"></div></div></dialog>
+<dialog id="inventoryDialog" class="modal"><div class="modal-card"><header><h2>Inventory</h2><button class="icon-button" onclick="this.closest('dialog').close()">×</button></header><div class="inventory-layout"><div id="inventoryGrid" class="rs3-inventory"></div><div id="inventoryLegend" class="inventory-legend"></div></div><p id="inventoryNotes" class="source-note"></p></div></dialog>
+<dialog id="historyDialog" class="modal"><div class="modal-card"><header><h2>History</h2><button class="icon-button" onclick="this.closest('dialog').close()">×</button></header><div class="history-actions"><button id="exportHistoryButton" class="button">Export CSV</button><button id="clearHistoryButton" class="button danger">Clear</button></div><div id="historyList" class="history-list"></div></div></dialog>
+<div id="toast" class="toast"></div>
+<script src="alt1-bridge.js"></script><script src="app.js"></script>
+</body></html>

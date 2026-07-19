@@ -1,9 +1,14 @@
-RS3 Farm Run Tracker v7 — Compact layout
+RS3 Farm Run Tracker v8 Compact Test
 
-- Moved all plot and Manor Farm status cards into one View Timers window.
-- Added separate Plots and Manor Farm tabs.
-- Kept the active alarm count, sound control, and Snooze 1h in one compact bar.
-- Combined route, progress, XP, and next-ready details into a smaller status strip.
-- Collapsed the equipment checklist by default.
-- Preserved all patch timers, Manor Farm timers, persistent alarms, and local data.
-- Fixed the dynamic Plant / Feed / Timer panel headings in the runner.
+- Smaller 390 x 620 Alt1 window.
+- Renamed Full 200m XP Run to Farm Run.
+- Run type is selected before starting.
+- Removed route import/export tools.
+- Simplified active-run view to current instructions and controls.
+- Skip never starts or changes a timer.
+- New blank inventory background with recalibrated 5-column slot positions.
+- Manor Farm growth-stage alarms added.
+- Corrected current POF totals: chinchompas 42h, zygomites 84h, dragons 168h.
+- Starting stage can be chosen separately for every pen.
+- Timers remain timestamp-based while closed and catch up when reopened.
+- Current 2025/2026 notes reflected: unchecked-animal reputation benefit, Havenhythe route, no Greenfingers aura, Seren Teleport Stone routing.

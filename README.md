@@ -1,7 +1,5 @@
-# RS3 Farm Run Tracker — Alt1 Edition
+# RS3 Farm Run Tracker — Alt1
 
-Open `README_ALT1.md` for deployment and installation instructions.
+Compact RuneScape 3 farm-run overlay with patch timers, alarms, inventory setup, and regular Manor Farm growth-stage tracking. Ranch Out of Time is intentionally excluded.
 
-The app is static HTML/CSS/JavaScript and is ready for GitHub Pages or another HTTPS static host. Alt1 loads `appconfig.json`, which opens the dedicated compact overlay layout at `index.html?alt1=1`.
-
-RS3 FARM RUN TRACKER
+Replace the files in your GitHub Pages repository, commit, and push. The existing Alt1 installation will load the new version after GitHub Pages deploys; reopen or refresh the app.

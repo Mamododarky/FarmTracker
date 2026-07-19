@@ -1,6 +1,7 @@
-After uploading this folder to a permanent HTTPS host, replace the address below:
+Current GitHub Pages app:
+https://mamododarky.github.io/FarmTracker/
 
-alt1://addapp/https://YOUR-HOST/PATH/appconfig.json
+Alt1 install URL:
+alt1://addapp/https://mamododarky.github.io/FarmTracker/appconfig.json
 
-GitHub Pages example:
-alt1://addapp/https://YOUR-GITHUB-NAME.github.io/REPOSITORY-NAME/appconfig.json
+For this update, replace the files in the existing FarmTracker repository, commit, and Push origin. You do not need to reinstall the Alt1 app.
