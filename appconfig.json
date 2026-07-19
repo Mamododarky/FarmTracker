@@ -1,0 +1,16 @@
+{
+  "appName": "RS3 Farm Run Tracker",
+  "description": "Manual RS3 farming route overlay with plot alarms and regular Manor Farm pen timers.",
+  "appUrl": "./index.html?alt1=1",
+  "configUrl": "./appconfig.json",
+  "iconUrl": "./assets/icon.png",
+  "defaultWidth": 470,
+  "defaultHeight": 760,
+  "minWidth": 390,
+  "minHeight": 500,
+  "maxWidth": 1050,
+  "maxHeight": 1200,
+  "requestHandlers": [],
+  "activators": [],
+  "permissions": ""
+}

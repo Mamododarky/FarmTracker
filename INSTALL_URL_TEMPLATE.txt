@@ -1,0 +1,6 @@
+After uploading this folder to a permanent HTTPS host, replace the address below:
+
+alt1://addapp/https://YOUR-HOST/PATH/appconfig.json
+
+GitHub Pages example:
+alt1://addapp/https://YOUR-GITHUB-NAME.github.io/REPOSITORY-NAME/appconfig.json

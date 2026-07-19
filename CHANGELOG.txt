@@ -1,0 +1,9 @@
+RS3 Farm Run Tracker v7 — Compact layout
+
+- Moved all plot and Manor Farm status cards into one View Timers window.
+- Added separate Plots and Manor Farm tabs.
+- Kept the active alarm count, sound control, and Snooze 1h in one compact bar.
+- Combined route, progress, XP, and next-ready details into a smaller status strip.
+- Collapsed the equipment checklist by default.
+- Preserved all patch timers, Manor Farm timers, persistent alarms, and local data.
+- Fixed the dynamic Plant / Feed / Timer panel headings in the runner.
