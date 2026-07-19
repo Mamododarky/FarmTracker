@@ -1,13 +1,13 @@
-Farm Tracker v10.1 — Compact Sections
+Farm Tracker v10.2 — RuneScape Theme
+
+Changes:
+- Removed the 200m XP tracker and all XP-entry screens.
+- Removed the inventory feature and inventory assets.
+- Restyled the header, background, panels, buttons, and dialogs to match the dark brown/bronze RuneScape interface.
+- Runs now save their completed/skipped count automatically without asking for XP.
 
 GitHub upload:
-1. Copy index.html, appconfig.json, and assets/ into the repository root.
-2. Replace existing files.
+1. Replace index.html and appconfig.json in the repository root.
+2. Replace the assets folder with the included assets folder.
 3. Commit and push.
-4. Reopen Alt1 after GitHub Pages deploys.
-
-Home screen changes:
-- Three compact run buttons.
-- Farm crops, tree types, and 200m progress are collapsed sections.
-- Start Run and Timers remain immediately accessible.
-- All v10 timer, alarm, Manor Farm, ready-route, override, inventory, backup, and diagnostics features remain.
+4. Fully close and reopen the Alt1 app after GitHub Pages deploys.

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d1510">
+<meta name="theme-color" content="#211e1a">
 <title>RS3 Farm Tracker</title>
 <link rel="icon" href="assets/icon.png">
 <style>
@@ -39,7 +39,6 @@ main{padding:10px}.screen{display:grid;gap:10px}
 .crop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.crop-grid .field select{font-size:13px;padding:8px 5px}.crop-grid .field>span{font-size:10px}
 .tree-filter{display:flex;flex-wrap:wrap;gap:9px}.tree-filter label{display:flex;gap:6px;align-items:center;font-weight:750}.tree-filter input{accent-color:var(--gold)}
 .home-actions{display:grid;grid-template-columns:1fr auto;gap:7px}.home-actions .primary{min-height:44px}.ready-button{width:100%;margin-top:7px}
-.progress-summary{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.progressbar{height:11px;border:1px solid var(--line);border-radius:99px;background:#0c140f;overflow:hidden}.progressbar span{display:block;height:100%;background:linear-gradient(90deg,#77bd68,#e6ca68)}
 .alarm-strip{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.alarm-strip.alarm{border-color:var(--red)}.alarm-strip.snoozed{border-color:var(--orange)}.alarm-strip b,.alarm-strip small{display:block}.alarm-strip small{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alarm-actions{display:flex;gap:5px}
 .runner-head{display:flex;justify-content:space-between;gap:10px}.runner-head h2{font-size:26px;line-height:1.05;margin:4px 0}.badge{display:inline-block;padding:3px 7px;border:1px solid var(--line);border-radius:99px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.stepcount{font-weight:900;color:var(--gold);font-size:12px;text-align:right}
 .detail-list{display:grid;gap:7px}.detail{padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#101a13}.detail.accent{border-color:#756329;background:#1d2114}.detail small{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.detail b{display:block;margin-top:2px;font-size:15px}.detail p{margin:3px 0 0;color:var(--muted);font-size:12px}.detail .inline-actions{display:flex;gap:5px;margin-top:6px}
@@ -47,15 +46,14 @@ main{padding:10px}.screen{display:grid;gap:10px}
 .mini .runner-extra{display:none}.mini .runner-head h2{font-size:22px}.mini .detail{padding:7px 9px}.mini .detail p{display:none}.mini .detail-list{gap:5px}
 .side-menu{position:fixed;left:0;top:0;bottom:0;z-index:50;width:min(310px,92vw);padding:14px;background:#0f1912;border-right:1px solid var(--line);transform:translateX(-103%);transition:.15s;overflow:auto}.side-menu.open{transform:none}.menu-head{display:flex;justify-content:space-between;align-items:center}.menu-head h2{margin:0;font-size:19px}.menu-section{display:grid;gap:7px;padding:13px 0;border-bottom:1px solid var(--line)}.menu-section h3{margin:0;font-size:14px}.scrim{position:fixed;inset:0;z-index:40;background:#000a}
 .modal{width:min(450px,calc(100vw - 12px));border:0;padding:0;background:transparent;color:var(--text)}.modal::backdrop{background:#000b}.modal-card{max-height:calc(100vh - 12px);overflow:auto;padding:11px;border:1px solid var(--line);border-radius:12px;background:#0e1811}.modal-head{position:sticky;top:-11px;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:9px 0;background:#0e1811;border-bottom:1px solid var(--line)}.modal-head h2{margin:0;font-size:20px}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}.tab{padding:8px 3px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:11px;font-weight:850}.tab.active{color:var(--gold);border-color:#7f6d2d}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:8px 0}.tab{padding:8px 3px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:11px;font-weight:850}.tab.active{color:var(--gold);border-color:#7f6d2d}
 .tab-panel{display:grid;gap:9px}.timer-list,.alarm-list,.pof-list,.history-list,.override-list{display:grid;gap:6px}.timer-row,.alarm-row,.pof-row,.history-row,.override-row{padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.timer-row.alarm,.alarm-row{border-color:var(--red)}.timer-row.growing{border-color:#4b7457}.timer-row.paused{border-color:var(--orange)}.timer-summary{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}.timer-summary small,.alarm-row small,.pof-row small,.history-row small{display:block;color:var(--muted);font-size:11px}.timer-time{text-align:right;font-weight:900}.timer-actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.timer-actions .button{padding:6px 7px;font-size:11px}
 details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.metric{padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.metric small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;font-weight:900}.metric strong{display:block;font-size:18px;margin-top:2px}.override-row{display:grid;gap:7px}.override-head{display:flex;justify-content:space-between;gap:8px}.override-selects{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.override-selects select{width:100%;min-width:0;padding:7px 4px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:11px}
 .pof-row{display:grid;gap:7px}.pof-top{display:grid;grid-template-columns:1fr auto;gap:8px}.pof-config{display:grid;grid-template-columns:22px 1fr 1fr;gap:6px;align-items:center}.pof-config input{accent-color:var(--gold)}.pof-config select{width:100%;padding:7px 4px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:12px}
 .diagnostic{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}.diagnostic:last-child{border:0}.ok{color:var(--green)}
-.rs3-inventory{position:relative;width:257px;height:281px;margin:auto;background:url("assets/rs3-inventory-frame.png") center/257px 281px no-repeat}.slot{position:absolute;width:36px;height:36px}.slot img{position:absolute;left:50%;top:50%;max-width:32px;max-height:32px;transform:translate(-50%,-50%);filter:drop-shadow(1px 2px 1px #000)}.qty{position:absolute;right:1px;bottom:0;color:#ff0;font:700 11px Arial;text-shadow:-1px -1px #000,1px -1px #000,-1px 1px #000,1px 1px #000}.inventory-note{color:var(--muted);font-size:12px;text-align:center;margin-top:8px}
 .toast{position:fixed;left:50%;bottom:12px;z-index:100;transform:translate(-50%,14px);opacity:0;padding:8px 11px;border-radius:99px;background:#eef3ea;color:#142017;font-weight:850;transition:.15s}.toast.show{opacity:1;transform:translate(-50%,0)}
 
-/* Build 10.1 compact launcher */
+/* Build 10.2 compact launcher */
 .compact-home{gap:7px}
 .launcher-card{padding:10px}
 .compact-title h2{font-size:20px}
@@ -73,7 +71,6 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 .config-body{padding:0 10px 10px;border-top:1px solid var(--line)}
 .compact-subhead{height:28px;margin-bottom:3px}
 .compact-fields{margin-top:7px}
-.progress-section .config-body{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding-top:9px}
 .full-width{white-space:nowrap}
 .compact-actions{position:sticky;bottom:0;z-index:5;padding-top:3px;background:linear-gradient(transparent,#09100b 36%)}
 .compact-home .ready-button{margin-top:0;padding:8px 10px}
@@ -81,23 +78,183 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 .compact-home .crop-grid{gap:5px}
 .compact-home .tree-filter{padding-top:9px}
 .compact-home .tree-filter label{font-size:13px}
-.compact-home .progressbar{height:9px}
 .alarm-strip{min-height:42px;padding:6px 8px}
 @media(max-width:390px){html,body{font-size:14px}.crop-grid{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(3,1fr)}.tabs .tab:nth-child(n+4){margin-top:1px}.alarm-actions .long{display:none}}
+
+/* Build 10.2 — RuneScape interface theme */
+:root{
+  --bg:#171411;
+  --panel:#211e1a;
+  --panel2:#2a2620;
+  --line:#665437;
+  --line-strong:#8a7149;
+  --text:#f3efe7;
+  --muted:#beb5a8;
+  --gold:#d5aa58;
+  --green:#9dbb69;
+  --orange:#c8954d;
+  --red:#c66557;
+  --blue:#89a8ba;
+}
+html,body{
+  background:#11100e;
+  color:var(--text);
+  font:15px/1.36 "Segoe UI",Arial,sans-serif;
+}
+body{min-width:340px}
+.app{
+  width:min(430px,100%);
+  background:
+    radial-gradient(circle at 40% 20%,rgba(255,255,255,.018),transparent 38%),
+    linear-gradient(#24211d,#1d1a17);
+  border-left:1px solid #0a0908;
+  border-right:1px solid #0a0908;
+  box-shadow:inset 1px 0 #5c4b31,inset -1px 0 #5c4b31;
+}
+.topbar{
+  height:43px;
+  grid-template-columns:32px 1fr auto;
+  gap:7px;
+  padding:5px 7px;
+  background:linear-gradient(#2b2722,#1c1916);
+  border-top:1px solid #6d5838;
+  border-bottom:1px solid #0b0908;
+  box-shadow:inset 0 -1px #6a5638,inset 0 1px rgba(255,255,255,.04);
+}
+.topbar h1{font-size:16px;font-weight:700;text-shadow:1px 1px #000}
+.topbar small{font-size:9px;color:#cbbf9d}
+.icon-button{
+  width:30px;height:30px;
+  border:1px solid #0b0908;
+  border-radius:2px;
+  background:linear-gradient(#312c26,#1c1916);
+  box-shadow:inset 0 0 0 1px #625238;
+  color:#e9dfca;
+}
+.status-pill{
+  padding:5px 8px;
+  border:1px solid #0b0908;
+  border-radius:2px;
+  background:linear-gradient(#312c26,#1e1a17);
+  box-shadow:inset 0 0 0 1px #665437;
+  color:#eadfcb;
+}
+main{padding:6px}
+.screen{gap:6px}
+.card,.config-section,.alarm-strip,.timer-row,.alarm-row,.pof-row,.history-row,.override-row,.metric{
+  border-color:#0b0908;
+  border-radius:2px;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.014),transparent 35%),
+    #221f1b;
+  box-shadow:inset 0 0 0 1px #655438;
+}
+.card{padding:9px}
+.launcher-card{padding:8px}
+.compact-title h2{font-size:18px}
+.compact-home{gap:6px}
+.compact-run-options{gap:4px}
+.run-option,.detail{
+  border-color:#0b0908;
+  border-radius:2px;
+  background:#24211d;
+  box-shadow:inset 0 0 0 1px #56482f;
+}
+.run-option:has(input:checked){
+  border-color:#0b0908;
+  background:#31291c;
+  box-shadow:inset 0 0 0 1px #a17f3d;
+}
+.compact-run-options .run-option{padding:7px 3px}
+.config-section>summary{min-height:41px;padding:7px 9px}
+.config-section>summary b{font-size:14px}
+.config-section>summary small{color:#bdb4a6}
+.config-body{border-top-color:#0b0908;box-shadow:inset 0 1px #5e4d33}
+.button{
+  border:1px solid #0b0908;
+  border-radius:2px;
+  background:linear-gradient(#373129,#211d19);
+  box-shadow:inset 0 0 0 1px #67553a;
+  color:#f1eadf;
+  padding:8px 10px;
+}
+.button:hover{background:linear-gradient(#41392f,#28231e)}
+.button.primary{
+  color:#231806;
+  background:linear-gradient(#e2bd69,#b88736);
+  border-color:#0b0908;
+  box-shadow:inset 0 0 0 1px #f0d38c;
+}
+.button.warning{
+  background:linear-gradient(#5a4327,#342718);
+  border-color:#0b0908;
+  box-shadow:inset 0 0 0 1px #896a38;
+}
+.field select,.field input,.override-selects select,.pof-config select{
+  border:1px solid #0b0908;
+  border-radius:2px;
+  background:#29251f;
+  box-shadow:inset 0 0 0 1px #5d4d34;
+}
+.alarm-strip{min-height:38px;padding:5px 7px}
+.alarm-strip.alarm,.timer-row.alarm,.alarm-row{
+  box-shadow:inset 0 0 0 1px #8f493f;
+}
+.detail.accent{
+  border-color:#0b0908;
+  background:#2c281e;
+  box-shadow:inset 0 0 0 1px #8a7040;
+}
+.runner-head h2{font-size:23px}
+.runner-controls{background:linear-gradient(transparent,#1d1a17 30%)}
+.side-menu{
+  background:#211e1a;
+  border-right:1px solid #0b0908;
+  box-shadow:inset -1px 0 #665437;
+}
+.modal-card{
+  border:1px solid #0b0908;
+  border-radius:2px;
+  background:#211e1a;
+  box-shadow:inset 0 0 0 1px #665437,0 8px 28px #000a;
+}
+.modal-head{
+  background:#211e1a;
+  border-bottom:1px solid #0b0908;
+  box-shadow:inset 0 -1px #5e4d33;
+}
+.tabs{grid-template-columns:repeat(4,1fr)}
+.tab{
+  border:1px solid #0b0908;
+  border-radius:2px;
+  background:#2b2721;
+  box-shadow:inset 0 0 0 1px #5b4b32;
+}
+.tab.active{color:#f0c86f;box-shadow:inset 0 0 0 1px #a47e3c}
+.toast{border-radius:2px;background:#2b2721;color:#f2ece2;border:1px solid #8a7149}
+.compact-actions{
+  background:linear-gradient(transparent,#1d1a17 38%);
+}
+@media(max-width:390px){
+  html,body{font-size:14px}
+  .crop-grid{grid-template-columns:1fr}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .alarm-actions .long{display:none}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="topbar">
   <button id="menuBtn" class="icon-button" aria-label="Open menu">☰</button>
-  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.1</small></div>
+  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.2</small></div>
   <button id="topStatus" class="status-pill">0 ready</button>
 </header>
 <aside id="sideMenu" class="side-menu" aria-hidden="true">
   <div class="menu-head"><h2>Farm Tracker</h2><button id="closeMenuBtn" class="icon-button">×</button></div>
   <section class="menu-section">
     <button id="menuDashboard" class="button">Dashboard</button>
-    <button id="menuInventory" class="button">Inventory</button>
     <button id="menuHome" class="button">Choose run</button>
   </section>
   <section class="menu-section">
@@ -107,7 +264,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
   <section class="menu-section">
     <button id="menuReset" class="button danger">Reset all timers</button>
   </section>
-  <small class="muted">Build 10.1 Compact Sections</small>
+  <small class="muted">Build 10.2 RuneScape Theme</small>
 </aside>
 <div id="scrim" class="scrim" hidden></div>
 <main>
@@ -152,14 +309,6 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
       </div>
     </details>
 
-    <details class="config-section progress-section">
-      <summary><span><b id="homeXpText">0 / 200m XP</b><small id="homeXpSub">Progress settings</small></span><span class="chevron">›</span></summary>
-      <div class="config-body">
-        <div class="progressbar"><span id="homeXpBar" style="width:0%"></span></div>
-        <button id="openProgressBtn" class="button small full-width">Open progress</button>
-      </div>
-    </details>
-
     <div class="home-actions compact-actions">
       <button id="startRunBtn" class="button primary">Start run</button>
       <button id="homeDashboardBtn" class="button">Timers</button>
@@ -195,7 +344,6 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
       <button class="tab active" data-tab="timers">Timers</button>
       <button class="tab" data-tab="alarms">Alarms</button>
       <button class="tab" data-tab="pof">Manor</button>
-      <button class="tab" data-tab="progress">Progress</button>
       <button class="tab" data-tab="settings">Settings</button>
     </div>
 
@@ -213,25 +361,6 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
       <div class="section-head"><h3>Manor Farm</h3><button id="selectAllPensBtn" class="button small">Select all</button></div>
       <div id="pofList" class="pof-list"></div>
       <button id="startPofBtn" class="button primary">Start selected pen timers</button>
-    </section>
-
-    <section id="tab-progress" class="tab-panel" hidden>
-      <div class="card">
-        <div class="grid2">
-          <label class="field"><span>Current Farming XP</span><input id="currentXpInput" type="number" min="0" max="200000000"></label>
-          <label class="field"><span>Manual XP / run</span><input id="manualAvgInput" type="number" min="1"></label>
-        </div>
-        <button id="saveProgressBtn" class="button primary" style="margin-top:8px">Save progress</button>
-      </div>
-      <div class="progressbar"><span id="progressBar" style="width:0%"></span></div>
-      <div class="metric-grid">
-        <div class="metric"><small>Remaining</small><strong id="remainingXpMetric">200m</strong></div>
-        <div class="metric"><small>Estimated runs</small><strong id="estimatedRunsMetric">—</strong></div>
-        <div class="metric"><small>Runs completed</small><strong id="runsCompletedMetric">0</strong></div>
-        <div class="metric"><small>Average time</small><strong id="averageTimeMetric">—</strong></div>
-      </div>
-      <div class="section-head"><h3>Recent runs</h3></div>
-      <div id="historyList" class="history-list"></div>
     </section>
 
     <section id="tab-settings" class="tab-panel" hidden>
@@ -258,7 +387,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
       <div class="card">
         <h3>Backup and diagnostics</h3>
         <div class="toolbar"><button id="exportBackupBtn" class="button small">Export backup</button><label class="button small">Import backup<input id="importBackupInput" type="file" accept="application/json" hidden></label></div>
-        <div class="diagnostic"><span>Build</span><b>10.0 Production</b></div>
+        <div class="diagnostic"><span>Build</span><b>10.2 RuneScape Theme</b></div>
         <div class="diagnostic"><span>Storage</span><b id="storageDiag" class="ok">Working</b></div>
         <div class="diagnostic"><span>Alt1</span><b id="alt1Diag">Browser mode</b></div>
       </div>
@@ -267,30 +396,12 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
   </div>
 </dialog>
 
-<dialog id="inventoryDialog" class="modal">
-  <div class="modal-card">
-    <div class="modal-head"><h2>Inventory</h2><button class="icon-button" data-close>×</button></div>
-    <div id="inventoryFrame" class="rs3-inventory"></div>
-    <p id="inventoryNote" class="inventory-note"></p>
-  </div>
-</dialog>
-
-<dialog id="runCompleteDialog" class="modal">
-  <div class="modal-card">
-    <div class="modal-head"><h2>Run complete</h2><button class="icon-button" data-close>×</button></div>
-    <p id="runCompleteText" class="muted"></p>
-    <label class="field"><span>Current Farming XP (optional)</span><input id="finishXpInput" type="number" min="0" max="200000000"></label>
-    <button id="saveCompletedRunBtn" class="button primary" style="margin-top:9px">Save run</button>
-  </div>
-</dialog>
-
 <div id="toast" class="toast"></div>
 
 <script>
 'use strict';
-const BUILD='10.1';
+const BUILD='10.2';
 const STATE_KEY='farmtracker-v10-state';
-const MAX_XP=200000000;
 const $=id=>document.getElementById(id);
 
 const ALLOTMENTS=[
@@ -353,18 +464,11 @@ const PENS=[
   {id:'breeding',name:'Breeding Pen',animal:'4 Dragons',food:'Raw tuna',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}}
 ];
 
-const ITEM_IDS={
-  'Magic sapling':5374,'Carambola sapling':48707,'Elder sapling':32294,
-  'Noted coconuts':5975,'Noted dragonfruit':48772,'Noted morchella mushrooms':21623,
-  'Grasping rune pouch':52215,'Urn enhancer':36837,'Exquisite farming urn':59146,
-  'Fellstalk seed':21621,'White lily seed':14589,'Starbloom flower seed':58976
-};
-
 const defaults={
   version:BUILD,
   crops:{allotment:'watermelon',herb:'fellstalk',flower:'starbloom-flower',plantPower:1},
   overrides:{},treeTypes:{fruit:true,magic:true,elder:true},timerMode:'safe',tickAnchor:0,
-  timers:{},pofTimers:{},activeRun:null,history:[],progress:{currentXp:0,manualAverage:0},
+  timers:{},pofTimers:{},activeRun:null,history:[],
   settings:{mini:true,sound:'chime',volume:65,repeatMinutes:10,notifications:false},
   snoozeAllUntil:0,lastAlarmAt:0,lastAlarmSignature:''
 };
@@ -542,23 +646,16 @@ function previousStep(){if(!state.activeRun||state.activeRun.index===0)return;st
 function finishRun(){
   const run=state.activeRun;
   state.activeRun=null;
-  save();showHome();
-  $('runCompleteText').textContent=`${runLabel(run.type)} finished: ${run.completed.length} completed, ${run.skipped.length} skipped, ${duration(Date.now()-run.startedAt)}.`;
-  $('finishXpInput').value=state.progress.currentXp||'';
-  $('runCompleteDialog').showModal();
-  $('runCompleteDialog').dataset.pending=JSON.stringify(run);
-  renderAll();
-}
-function saveCompletedRun(){
-  const dialog=$('runCompleteDialog');
-  let run;try{run=JSON.parse(dialog.dataset.pending||'{}')}catch{run={}}
-  const entered=Math.max(0,Math.min(MAX_XP,Number($('finishXpInput').value)||0));
-  const prior=Number(state.progress.currentXp)||0;
-  const gain=entered>=prior?entered-prior:0;
-  if(entered)state.progress.currentXp=entered;
-  state.history.unshift({date:Date.now(),type:run.type||'all',duration:Date.now()-(run.startedAt||Date.now()),completed:(run.completed||[]).length,skipped:(run.skipped||[]).length,xpGain:gain});
+  state.history.unshift({
+    date:Date.now(),
+    type:run.type||'all',
+    duration:Date.now()-(run.startedAt||Date.now()),
+    completed:(run.completed||[]).length,
+    skipped:(run.skipped||[]).length
+  });
   state.history=state.history.slice(0,100);
-  save();dialog.close();renderAll();toast('Run saved.');
+  save();showHome();renderAll();
+  toast(`${runLabel(run.type)} complete · ${run.completed.length} done · ${run.skipped.length} skipped`);
 }
 function showHome(){$('homeScreen').hidden=false;$('runScreen').hidden=true;$('resumeRunBtn').hidden=!state.activeRun;updateHomeVisibility();}
 function showRun(){$('homeScreen').hidden=true;$('runScreen').hidden=false;$('runnerCard').classList.toggle('mini',!!state.settings.mini);}
@@ -586,10 +683,6 @@ function renderRun(){
 }
 function renderHome(){
   $('resumeRunBtn').hidden=!state.activeRun;
-  const current=Math.max(0,Number(state.progress.currentXp)||0),remainingXp=Math.max(0,MAX_XP-current),average=averageXpPerRun();
-  $('homeXpText').textContent=`${compact(current)} / 200m XP`;
-  $('homeXpSub').textContent=average?`${Math.ceil(remainingXp/average).toLocaleString()} estimated runs remaining`:'Set current XP and XP per run in Progress.';
-  $('homeXpBar').style.width=`${Math.min(100,current/MAX_XP*100)}%`;
   const cropNames=['allotment','herb','flower'].map(kind=>cropFrom(kind,state.crops[kind]).label.replace(' seed','').replace('Empty — no timer','Empty'));
   if($('farmConfigSummary'))$('farmConfigSummary').textContent=cropNames.join(' · ');
   const treeNames=[];if(state.treeTypes.fruit)treeNames.push('Fruit');if(state.treeTypes.magic)treeNames.push('Magic');if(state.treeTypes.elder)treeNames.push('Elder');
@@ -597,20 +690,6 @@ function renderHome(){
   const ready=readyRoute();$('readyRunBtn').hidden=!ready.length;$('readyRunBtn').textContent=`Run ${ready.length} ready location${ready.length===1?'':'s'}`;
   updateHomeVisibility();
 }
-function averageXpPerRun(){const gains=state.history.map(item=>Number(item.xpGain)||0).filter(Boolean);return gains.length?gains.reduce((a,b)=>a+b,0)/gains.length:Number(state.progress.manualAverage)||0;}
-function renderProgress(){
-  const current=Math.max(0,Number(state.progress.currentXp)||0),remainingXp=Math.max(0,MAX_XP-current),average=averageXpPerRun();
-  $('currentXpInput').value=current||'';$('manualAvgInput').value=state.progress.manualAverage||'';
-  $('progressBar').style.width=`${Math.min(100,current/MAX_XP*100)}%`;
-  $('remainingXpMetric').textContent=compact(remainingXp);$('estimatedRunsMetric').textContent=average?Math.ceil(remainingXp/average).toLocaleString():'—';
-  $('runsCompletedMetric').textContent=state.history.length;
-  const avgTime=state.history.length?state.history.reduce((sum,item)=>sum+item.duration,0)/state.history.length:0;$('averageTimeMetric').textContent=avgTime?duration(avgTime):'—';
-  $('historyList').innerHTML=state.history.length?'':'<p class="muted tiny">No completed runs yet.</p>';
-  for(const item of state.history.slice(0,10)){
-    const row=document.createElement('div');row.className='history-row';row.innerHTML=`<b>${esc(runLabel(item.type))}</b><small>${new Date(item.date).toLocaleString()} · ${item.completed} completed · ${item.skipped} skipped · ${duration(item.duration)}${item.xpGain?` · +${compact(item.xpGain)} XP`:''}</small>`;$('historyList').appendChild(row);
-  }
-}
-function saveProgress(){state.progress.currentXp=Math.max(0,Math.min(MAX_XP,Number($('currentXpInput').value)||0));state.progress.manualAverage=Math.max(0,Number($('manualAvgInput').value)||0);save();renderAll();toast('Progress saved.');}
 function renderAlarmStrip(){
   const alarms=alarmItems(),now=Date.now(),snoozed=state.snoozeAllUntil>now;
   $('topStatus').textContent=`${alarms.length} ready`;$('topStatus').classList.toggle('alarm',alarms.length>0&&!snoozed);$('topStatus').classList.toggle('snoozed',alarms.length>0&&snoozed);
@@ -739,21 +818,8 @@ function populateSelectors(){
   $('fruitToggle').checked=state.treeTypes.fruit;$('magicToggle').checked=state.treeTypes.magic;$('elderToggle').checked=state.treeTypes.elder;
 }
 function saveHomeSettings(){state.crops.allotment=$('allotmentSelect').value;state.crops.herb=$('herbSelect').value;state.crops.flower=$('flowerSelect').value;state.crops.plantPower=Math.max(1,Math.min(10,Number($('plantPowerInput').value)||1));state.timerMode=$('timerModeSelect').value;state.treeTypes.fruit=$('fruitToggle').checked;state.treeTypes.magic=$('magicToggle').checked;state.treeTypes.elder=$('elderToggle').checked;save();renderAll();}
-function openInventory(){
-  const frame=$('inventoryFrame');frame.innerHTML='';const items=buildInventory();const x=[35,74,114,153,193];items.slice(0,28).forEach((item,index)=>{const row=index<25?Math.floor(index/5):5,col=index<25?index%5:index-25,slot=document.createElement('div');slot.className='slot';slot.style.left=`${x[col]}px`;slot.style.top=`${18+row*36}px`;const img=document.createElement('img');img.src=itemUrl(item.item);img.alt=item.item;slot.appendChild(img);if(item.qty>1){const qty=document.createElement('span');qty.className='qty';qty.textContent=item.qty;slot.appendChild(qty)}frame.appendChild(slot);});$('inventoryNote').textContent=`${items.length} used slot${items.length===1?'':'s'} for the current ${runLabel(selectedRunType()).toLowerCase()} setup.`;$('inventoryDialog').showModal();closeMenu();
-}
-function buildInventory(){
-  const route=normalRoute(selectedRunType()),counts=new Map(),add=(item,qty=1)=>{if(item)counts.set(item,(counts.get(item)||0)+qty)};
-  for(const step of route){
-    if(step.kind==='farm')for(const kind of step.kinds){const crop=effectiveCrop(step,kind);if(!crop.minutes)continue;add(crop.label,kind==='allotment'?6:kind==='herb'?state.crops.plantPower:1);}
-    else{add(step.plant,1);add(step.paymentItem,step.paymentQty);}
-  }
-  if(route.some(step=>step.kind==='tree')){add('Grasping rune pouch');add('Urn enhancer');add('Exquisite farming urn');}
-  const output=[];for(const [item,qty] of counts){if(['Magic sapling','Carambola sapling','Elder sapling'].includes(item))for(let i=0;i<qty;i++)output.push({item,qty:1});else output.push({item,qty});}return output;
-}
-function itemUrl(name){if(ITEM_IDS[name])return`https://secure.runescape.com/m=itemdb_rs/obj_sprite.gif?id=${ITEM_IDS[name]}`;return`https://runescape.wiki/w/Special:Redirect/file/${encodeURIComponent(name.replaceAll(' ','_'))}.png`;}
 function copyTeleport(){const step=currentStep();if(!step)return;const text=`${step.teleport} — ${step.directions}`;navigator.clipboard?.writeText(text).then(()=>toast('Teleport copied.')).catch(()=>toast(text));}
-function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='FarmTracker-v10.1-backup.json';link.click();URL.revokeObjectURL(link.href);}
+function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='FarmTracker-v10.2-backup.json';link.click();URL.revokeObjectURL(link.href);}
 function importBackup(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{state=merge(defaults,JSON.parse(reader.result));save();location.reload()}catch{toast('Backup could not be read.')}};reader.readAsText(file);}
 function resetAllTimers(){
   const now=Date.now();if(now>resetArmedUntil){resetArmedUntil=now+5000;document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Confirm reset');toast('Press reset again to confirm.');setTimeout(()=>{if(Date.now()>resetArmedUntil){document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Reset all timers');}},5200);return;}
@@ -762,19 +828,19 @@ function resetAllTimers(){
 function openMenu(){$('sideMenu').classList.add('open');$('sideMenu').setAttribute('aria-hidden','false');$('scrim').hidden=false;}
 function closeMenu(){$('sideMenu').classList.remove('open');$('sideMenu').setAttribute('aria-hidden','true');$('scrim').hidden=true;}
 function toast(text){clearTimeout(toast.timer);$('toast').textContent=text;$('toast').classList.add('show');toast.timer=setTimeout(()=>$('toast').classList.remove('show'),2000);}
-function renderAll(){renderHome();renderAlarmStrip();renderTimers();renderAlarms();renderPof();renderProgress();renderOverrides();renderSettings();if(state.activeRun)renderRun();}
+function renderAll(){renderHome();renderAlarmStrip();renderTimers();renderAlarms();renderPof();renderOverrides();renderSettings();if(state.activeRun)renderRun();}
 function tick(){
   const now=Date.now();
   for(const timer of allPlotTimers())if(timer.status==='growing'&&timer.readyAt<=now){timer.status='ready';timer.ack=false;}
   if(state.activeRun)$('runClock').textContent=duration(now-state.activeRun.startedAt);
-  renderAlarmStrip();if($('dashboardDialog').open){renderTimers();renderAlarms();renderPof();renderProgress();}
+  renderAlarmStrip();if($('dashboardDialog').open){renderTimers();renderAlarms();renderPof();}
   if(state.activeRun)renderRun();markAlarmPlayback();save();
 }
 function bind(){
   $('menuBtn').onclick=openMenu;$('closeMenuBtn').onclick=closeMenu;$('scrim').onclick=closeMenu;
-  $('menuDashboard').onclick=()=>openDashboard('timers');$('menuInventory').onclick=openInventory;$('menuHome').onclick=()=>{showHome();closeMenu();};$('menuMini').onclick=()=>{state.settings.mini=!state.settings.mini;save();renderAll();closeMenu();};$('menuSound').onclick=()=>{armAudio();playAlarm();closeMenu();};$('menuReset').onclick=resetAllTimers;
+  $('menuDashboard').onclick=()=>openDashboard('timers');$('menuHome').onclick=()=>{showHome();closeMenu();};$('menuMini').onclick=()=>{state.settings.mini=!state.settings.mini;save();renderAll();closeMenu();};$('menuSound').onclick=()=>{armAudio();playAlarm();closeMenu();};$('menuReset').onclick=resetAllTimers;
   $('topStatus').onclick=()=>openDashboard('alarms');$('alarmOpen').onclick=()=>openDashboard('alarms');$('alarmSnooze').onclick=()=>snoozeAll(60);
-  $('startRunBtn').onclick=()=>startRun(selectedRunType());$('readyRunBtn').onclick=()=>startRun('ready','ready');$('resumeRunBtn').onclick=()=>{showRun();renderRun();};$('homeDashboardBtn').onclick=()=>openDashboard('timers');$('openProgressBtn').onclick=()=>openDashboard('progress');$('openOverridesBtn').onclick=()=>openDashboard('settings');
+  $('startRunBtn').onclick=()=>startRun(selectedRunType());$('readyRunBtn').onclick=()=>startRun('ready','ready');$('resumeRunBtn').onclick=()=>{showRun();renderRun();};$('homeDashboardBtn').onclick=()=>openDashboard('timers');$('openOverridesBtn').onclick=()=>openDashboard('settings');
   document.querySelectorAll('input[name="runType"]').forEach(input=>input.onchange=updateHomeVisibility);
   document.querySelectorAll('.compact-home .config-section').forEach(section=>section.addEventListener('toggle',()=>{if(section.open)document.querySelectorAll('.compact-home .config-section').forEach(other=>{if(other!==section)other.open=false;});}));
   ['allotmentSelect','herbSelect','flowerSelect','plantPowerInput','timerModeSelect','fruitToggle','magicToggle','elderToggle'].forEach(id=>$(id).onchange=saveHomeSettings);
@@ -783,13 +849,12 @@ function bind(){
   $('runReadyFromTimersBtn').onclick=()=>{if(readyRoute().length){$('dashboardDialog').close();startRun('ready','ready')}else toast('No ready locations.');};
   $('snoozeAll15Btn').onclick=()=>snoozeAll(15);$('snoozeAll60Btn').onclick=()=>snoozeAll(60);
   $('selectAllPensBtn').onclick=selectAllPens;$('startPofBtn').onclick=startSelectedPens;
-  $('saveProgressBtn').onclick=saveProgress;$('saveCompletedRunBtn').onclick=saveCompletedRun;
-  $('calibrateTickBtn').onclick=calibrateTick;$('clearCalibrationBtn').onclick=clearCalibration;$('soundSelect').onchange=saveAlarmSettings;$('repeatSelect').onchange=saveAlarmSettings;$('volumeInput').oninput=saveAlarmSettings;$('notificationToggle').onchange=toggleNotifications;$('testAlarmBtn').onclick=()=>{armAudio();playAlarm();};$('clearOverridesBtn').onclick=clearOverrides;
-  $('exportBackupBtn').onclick=exportBackup;$('importBackupInput').onchange=importBackup;$('resetAllBtn').onclick=resetAllTimers;$('inventoryDialog').addEventListener('close',()=>{});
+    $('calibrateTickBtn').onclick=calibrateTick;$('clearCalibrationBtn').onclick=clearCalibration;$('soundSelect').onchange=saveAlarmSettings;$('repeatSelect').onchange=saveAlarmSettings;$('volumeInput').oninput=saveAlarmSettings;$('notificationToggle').onchange=toggleNotifications;$('testAlarmBtn').onclick=()=>{armAudio();playAlarm();};$('clearOverridesBtn').onclick=clearOverrides;
+  $('exportBackupBtn').onclick=exportBackup;$('importBackupInput').onchange=importBackup;$('resetAllBtn').onclick=resetAllTimers;
   document.addEventListener('pointerdown',()=>{armAudio();markAlarmPlayback();},{once:true});window.addEventListener('focus',tick);document.addEventListener('visibilitychange',tick);
 }
 function selfTest(){
-  const required=['startRunBtn','dashboardDialog','timerList','alarmList','pofList','currentXpInput','inventoryFrame'];
+  const required=['startRunBtn','dashboardDialog','timerList','alarmList','pofList'];
   const missing=required.filter(id=>!$(id));
   const valid=normalRoute('farm').length>0&&normalRoute('tree').length>0&&TREE_STEPS.some(step=>step.teleport.includes('8. Brimhaven'))&&TREE_STEPS.some(step=>step.teleport.includes('1. Lletya'));
   document.body.dataset.selftest=missing.length||!valid?'FAIL':'PASS';
