@@ -54,6 +54,35 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 .diagnostic{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}.diagnostic:last-child{border:0}.ok{color:var(--green)}
 .rs3-inventory{position:relative;width:257px;height:281px;margin:auto;background:url("assets/rs3-inventory-frame.png") center/257px 281px no-repeat}.slot{position:absolute;width:36px;height:36px}.slot img{position:absolute;left:50%;top:50%;max-width:32px;max-height:32px;transform:translate(-50%,-50%);filter:drop-shadow(1px 2px 1px #000)}.qty{position:absolute;right:1px;bottom:0;color:#ff0;font:700 11px Arial;text-shadow:-1px -1px #000,1px -1px #000,-1px 1px #000,1px 1px #000}.inventory-note{color:var(--muted);font-size:12px;text-align:center;margin-top:8px}
 .toast{position:fixed;left:50%;bottom:12px;z-index:100;transform:translate(-50%,14px);opacity:0;padding:8px 11px;border-radius:99px;background:#eef3ea;color:#142017;font-weight:850;transition:.15s}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Build 10.1 compact launcher */
+.compact-home{gap:7px}
+.launcher-card{padding:10px}
+.compact-title h2{font-size:20px}
+.compact-run-options{grid-template-columns:repeat(3,1fr);gap:5px}
+.compact-run-options .run-option{display:block;padding:8px 4px;text-align:center}
+.compact-run-options .run-option input{position:absolute;opacity:0;pointer-events:none}
+.compact-run-options .run-option b{font-size:13px}
+.config-section{border:1px solid var(--line);border-radius:10px;background:linear-gradient(#142218,#101a13);overflow:hidden}
+.config-section>summary{list-style:none;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:9px 11px;cursor:pointer;min-height:46px}
+.config-section>summary::-webkit-details-marker{display:none}
+.config-section>summary b{display:block;font-size:14px}
+.config-section>summary small{display:block;margin-top:1px;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.config-section .chevron{font-size:22px;line-height:1;color:var(--gold);transition:transform .15s}
+.config-section[open] .chevron{transform:rotate(90deg)}
+.config-body{padding:0 10px 10px;border-top:1px solid var(--line)}
+.compact-subhead{height:28px;margin-bottom:3px}
+.compact-fields{margin-top:7px}
+.progress-section .config-body{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding-top:9px}
+.full-width{white-space:nowrap}
+.compact-actions{position:sticky;bottom:0;z-index:5;padding-top:3px;background:linear-gradient(transparent,#09100b 36%)}
+.compact-home .ready-button{margin-top:0;padding:8px 10px}
+.compact-home .field select,.compact-home .field input{padding:7px 8px}
+.compact-home .crop-grid{gap:5px}
+.compact-home .tree-filter{padding-top:9px}
+.compact-home .tree-filter label{font-size:13px}
+.compact-home .progressbar{height:9px}
+.alarm-strip{min-height:42px;padding:6px 8px}
 @media(max-width:390px){html,body{font-size:14px}.crop-grid{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(3,1fr)}.tabs .tab:nth-child(n+4){margin-top:1px}.alarm-actions .long{display:none}}
 </style>
 </head>
@@ -61,7 +90,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 <div class="app">
 <header class="topbar">
   <button id="menuBtn" class="icon-button" aria-label="Open menu">☰</button>
-  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.0</small></div>
+  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.1</small></div>
   <button id="topStatus" class="status-pill">0 ready</button>
 </header>
 <aside id="sideMenu" class="side-menu" aria-hidden="true">
@@ -78,7 +107,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
   <section class="menu-section">
     <button id="menuReset" class="button danger">Reset all timers</button>
   </section>
-  <small class="muted">Build 10.0 Production</small>
+  <small class="muted">Build 10.1 Compact Sections</small>
 </aside>
 <div id="scrim" class="scrim" hidden></div>
 <main>
@@ -88,44 +117,50 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
     <span class="alarm-actions"><button id="alarmOpen" class="button small">Open</button><button id="alarmSnooze" class="button small warning long">1h</button></span>
   </div>
 
-  <section id="homeScreen" class="screen">
-    <div class="card">
-      <div class="section-head"><h2>Choose a run</h2><button id="resumeRunBtn" class="text-button" hidden>Resume</button></div>
-      <div class="run-options" id="runOptions">
-        <label class="run-option"><input type="radio" name="runType" value="all" checked><span><b>All Farm/Tree Run</b><small class="muted">Farm plots, fruit trees, magic trees, and elder tree.</small></span></label>
-        <label class="run-option"><input type="radio" name="runType" value="farm"><span><b>Farm Run</b><small class="muted">Allotment, flower, and herb patches only.</small></span></label>
-        <label class="run-option"><input type="radio" name="runType" value="tree"><span><b>Tree Run</b><small class="muted">Fruit, magic, and elder trees.</small></span></label>
+  <section id="homeScreen" class="screen compact-home">
+    <div class="card launcher-card">
+      <div class="section-head compact-title"><h2>Choose a run</h2><button id="resumeRunBtn" class="text-button" hidden>Resume</button></div>
+      <div class="run-options compact-run-options" id="runOptions">
+        <label class="run-option"><input type="radio" name="runType" value="all" checked><span><b>All</b></span></label>
+        <label class="run-option"><input type="radio" name="runType" value="farm"><span><b>Farm</b></span></label>
+        <label class="run-option"><input type="radio" name="runType" value="tree"><span><b>Trees</b></span></label>
       </div>
     </div>
 
-    <div id="farmConfigCard" class="card">
-      <div class="section-head"><h3>Farm crops</h3><button id="openOverridesBtn" class="text-button">Per-patch</button></div>
-      <div class="crop-grid">
-        <label class="field"><span>Allotment</span><select id="allotmentSelect"></select></label>
-        <label class="field"><span>Herb</span><select id="herbSelect"></select></label>
-        <label class="field"><span>Flower</span><select id="flowerSelect"></select></label>
+    <details id="farmConfigCard" class="config-section">
+      <summary><span><b>Farm crops</b><small id="farmConfigSummary">Configure allotment, herb and flower</small></span><span class="chevron">›</span></summary>
+      <div class="config-body">
+        <div class="section-head compact-subhead"><span></span><button id="openOverridesBtn" class="text-button">Per-patch</button></div>
+        <div class="crop-grid">
+          <label class="field"><span>Allotment</span><select id="allotmentSelect"></select></label>
+          <label class="field"><span>Herb</span><select id="herbSelect"></select></label>
+          <label class="field"><span>Flower</span><select id="flowerSelect"></select></label>
+        </div>
+        <div class="grid2 compact-fields">
+          <label class="field"><span>Herb seeds / patch</span><input id="plantPowerInput" type="number" min="1" max="10" value="1"></label>
+          <label class="field"><span>Timer mode</span><select id="timerModeSelect"><option value="safe">Safe full time</option><option value="aligned">Cycle-aligned</option></select></label>
+        </div>
       </div>
-      <div class="grid2" style="margin-top:8px">
-        <label class="field"><span>Herb seeds / patch</span><input id="plantPowerInput" type="number" min="1" max="10" value="1"></label>
-        <label class="field"><span>Timer mode</span><select id="timerModeSelect"><option value="safe">Safe full time</option><option value="aligned">Cycle-aligned</option></select></label>
-      </div>
-    </div>
+    </details>
 
-    <div id="treeConfigCard" class="card">
-      <div class="section-head"><h3>Tree types</h3></div>
-      <div class="tree-filter">
+    <details id="treeConfigCard" class="config-section">
+      <summary><span><b>Tree types</b><small id="treeConfigSummary">Fruit · Magic · Elder</small></span><span class="chevron">›</span></summary>
+      <div class="config-body tree-filter">
         <label><input id="fruitToggle" type="checkbox" checked> Fruit</label>
         <label><input id="magicToggle" type="checkbox" checked> Magic</label>
         <label><input id="elderToggle" type="checkbox" checked> Elder</label>
       </div>
-    </div>
+    </details>
 
-    <div class="card">
-      <div class="progress-summary"><span><b id="homeXpText">0 / 200m XP</b><small id="homeXpSub" class="muted">Set current XP in Progress.</small></span><button id="openProgressBtn" class="button small">Progress</button></div>
-      <div class="progressbar" style="margin-top:8px"><span id="homeXpBar" style="width:0%"></span></div>
-    </div>
+    <details class="config-section progress-section">
+      <summary><span><b id="homeXpText">0 / 200m XP</b><small id="homeXpSub">Progress settings</small></span><span class="chevron">›</span></summary>
+      <div class="config-body">
+        <div class="progressbar"><span id="homeXpBar" style="width:0%"></span></div>
+        <button id="openProgressBtn" class="button small full-width">Open progress</button>
+      </div>
+    </details>
 
-    <div class="home-actions">
+    <div class="home-actions compact-actions">
       <button id="startRunBtn" class="button primary">Start run</button>
       <button id="homeDashboardBtn" class="button">Timers</button>
     </div>
@@ -253,7 +288,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 
 <script>
 'use strict';
-const BUILD='10.0';
+const BUILD='10.1';
 const STATE_KEY='farmtracker-v10-state';
 const MAX_XP=200000000;
 const $=id=>document.getElementById(id);
@@ -398,6 +433,12 @@ function timerIsReady(timer,now=Date.now()){
   return timer.status==='ready'||timer.readyAt<=now;
 }
 function allPlotTimers(){return Object.values(state.timers);}
+function plotTimerLabel(timer){
+  const step=[...FARM_STEPS,...TREE_STEPS].find(item=>item.id===timer.stepId);
+  const location=timer.location||step?.location||'Farm plot';
+  const crop=timer.crop||timer.patch||step?.patch||cap(timer.kind||'timer');
+  return `${location} — ${crop}`;
+}
 function allPofStages(){
   const list=[];
   for(const [penId,timer] of Object.entries(state.pofTimers))for(const stage of timer.stages||[])list.push({...stage,penId});
@@ -408,7 +449,7 @@ function alarmItems(now=Date.now()){
   const items=[];
   for(const timer of allPlotTimers()){
     if(!timerIsReady(timer,now)||timer.ack||allSnoozed||Number(timer.snoozeUntil||0)>now)continue;
-    items.push({kind:'plot',id:timer.id,label:`${timer.location} — ${timer.crop||timer.patch}`,due:timer.readyAt,stepId:timer.stepId,timerId:timer.id});
+    items.push({kind:'plot',id:timer.id,label:plotTimerLabel(timer),due:timer.readyAt,stepId:timer.stepId,timerId:timer.id});
   }
   for(const stage of allPofStages()){
     if(stage.due>now||stage.ack||allSnoozed||Number(stage.snoozeUntil||0)>now)continue;
@@ -419,7 +460,7 @@ function alarmItems(now=Date.now()){
 }
 function nextUpcoming(now=Date.now()){
   const items=[];
-  for(const timer of allPlotTimers())if(!['diseased','dead','paused'].includes(timer.status)&&timer.readyAt>now)items.push({label:`${timer.location} — ${timer.crop||timer.patch}`,due:timer.readyAt});
+  for(const timer of allPlotTimers())if(!['diseased','dead','paused'].includes(timer.status)&&timer.readyAt>now)items.push({label:plotTimerLabel(timer),due:timer.readyAt});
   for(const stage of allPofStages())if(stage.due>now&&!stage.ack)items.push({label:`${PENS.find(p=>p.id===stage.penId)?.name} — ${cap(stage.name)}`,due:stage.due});
   return items.sort((a,b)=>a.due-b.due)[0]||null;
 }
@@ -549,6 +590,10 @@ function renderHome(){
   $('homeXpText').textContent=`${compact(current)} / 200m XP`;
   $('homeXpSub').textContent=average?`${Math.ceil(remainingXp/average).toLocaleString()} estimated runs remaining`:'Set current XP and XP per run in Progress.';
   $('homeXpBar').style.width=`${Math.min(100,current/MAX_XP*100)}%`;
+  const cropNames=['allotment','herb','flower'].map(kind=>cropFrom(kind,state.crops[kind]).label.replace(' seed','').replace('Empty — no timer','Empty'));
+  if($('farmConfigSummary'))$('farmConfigSummary').textContent=cropNames.join(' · ');
+  const treeNames=[];if(state.treeTypes.fruit)treeNames.push('Fruit');if(state.treeTypes.magic)treeNames.push('Magic');if(state.treeTypes.elder)treeNames.push('Elder');
+  if($('treeConfigSummary'))$('treeConfigSummary').textContent=treeNames.join(' · ')||'No tree types selected';
   const ready=readyRoute();$('readyRunBtn').hidden=!ready.length;$('readyRunBtn').textContent=`Run ${ready.length} ready location${ready.length===1?'':'s'}`;
   updateHomeVisibility();
 }
@@ -708,7 +753,7 @@ function buildInventory(){
 }
 function itemUrl(name){if(ITEM_IDS[name])return`https://secure.runescape.com/m=itemdb_rs/obj_sprite.gif?id=${ITEM_IDS[name]}`;return`https://runescape.wiki/w/Special:Redirect/file/${encodeURIComponent(name.replaceAll(' ','_'))}.png`;}
 function copyTeleport(){const step=currentStep();if(!step)return;const text=`${step.teleport} — ${step.directions}`;navigator.clipboard?.writeText(text).then(()=>toast('Teleport copied.')).catch(()=>toast(text));}
-function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='FarmTracker-v10-backup.json';link.click();URL.revokeObjectURL(link.href);}
+function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='FarmTracker-v10.1-backup.json';link.click();URL.revokeObjectURL(link.href);}
 function importBackup(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{state=merge(defaults,JSON.parse(reader.result));save();location.reload()}catch{toast('Backup could not be read.')}};reader.readAsText(file);}
 function resetAllTimers(){
   const now=Date.now();if(now>resetArmedUntil){resetArmedUntil=now+5000;document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Confirm reset');toast('Press reset again to confirm.');setTimeout(()=>{if(Date.now()>resetArmedUntil){document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Reset all timers');}},5200);return;}
@@ -731,6 +776,7 @@ function bind(){
   $('topStatus').onclick=()=>openDashboard('alarms');$('alarmOpen').onclick=()=>openDashboard('alarms');$('alarmSnooze').onclick=()=>snoozeAll(60);
   $('startRunBtn').onclick=()=>startRun(selectedRunType());$('readyRunBtn').onclick=()=>startRun('ready','ready');$('resumeRunBtn').onclick=()=>{showRun();renderRun();};$('homeDashboardBtn').onclick=()=>openDashboard('timers');$('openProgressBtn').onclick=()=>openDashboard('progress');$('openOverridesBtn').onclick=()=>openDashboard('settings');
   document.querySelectorAll('input[name="runType"]').forEach(input=>input.onchange=updateHomeVisibility);
+  document.querySelectorAll('.compact-home .config-section').forEach(section=>section.addEventListener('toggle',()=>{if(section.open)document.querySelectorAll('.compact-home .config-section').forEach(other=>{if(other!==section)other.open=false;});}));
   ['allotmentSelect','herbSelect','flowerSelect','plantPowerInput','timerModeSelect','fruitToggle','magicToggle','elderToggle'].forEach(id=>$(id).onchange=saveHomeSettings);
   $('previousBtn').onclick=previousStep;$('skipBtn').onclick=skipCurrentStep;$('completeBtn').onclick=completeCurrentStep;$('copyTeleportBtn').onclick=copyTeleport;
   document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>button.closest('dialog').close());document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>switchTab(button.dataset.tab));

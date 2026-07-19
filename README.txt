@@ -1,21 +1,13 @@
-RS3 FARM TRACKER — BUILD 10.0 PRODUCTION
+Farm Tracker v10.1 — Compact Sections
 
-GITHUB UPDATE
-1. Copy index.html, appconfig.json, and the assets folder into the root of your FarmTracker repository.
-2. Replace the existing files.
-3. Commit and push origin in GitHub Desktop.
-4. Wait for GitHub Pages to deploy.
-5. Fully close and reopen the Alt1 app.
+GitHub upload:
+1. Copy index.html, appconfig.json, and assets/ into the repository root.
+2. Replace existing files.
+3. Commit and push.
+4. Reopen Alt1 after GitHub Pages deploys.
 
-LIVE APP
-https://mamododarky.github.io/FarmTracker/
-
-ALT1 INSTALL LINK
-alt1://addapp/https://mamododarky.github.io/FarmTracker/appconfig.json?build=10.0
-
-NOTES
-- Timers are saved in localStorage and catch up when the app is reopened.
-- A fully closed Alt1 app cannot actively chime until reopened.
-- Skip never starts or resets a patch timer.
-- Start Run acknowledges current alarms. Ready locations skipped during a ready route are re-armed.
-- Cycle-aligned timing is optional and requires calibration; Safe full time is the default.
+Home screen changes:
+- Three compact run buttons.
+- Farm crops, tree types, and 200m progress are collapsed sections.
+- Start Run and Timers remain immediately accessible.
+- All v10 timer, alarm, Manor Farm, ready-route, override, inventory, backup, and diagnostics features remain.
