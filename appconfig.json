@@ -1,7 +1,7 @@
 {
   "appName": "RS3 Farm Tracker",
-  "description": "Compact RS3 farm and tree run timer overlay with Manor Farm timer tracking.",
-  "appUrl": "./index.html?build=9.1.1",
+  "description": "Compact RS3 farm and tree run timer overlay with seed-aware herb and flower timers and Manor Farm tracking.",
+  "appUrl": "./index.html?build=9.2",
   "configUrl": "./appconfig.json",
   "iconUrl": "./assets/icon.png",
   "defaultWidth": 390,

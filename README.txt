@@ -1,13 +1,12 @@
-Farm Tracker v9.1 — Three Run Choices
+Farm Tracker v9.2 — Seed-aware farm timers
 
-Startup choices:
-- All Farm/Tree Run
-- Farm Run
-- Tree Run — Fruit, Magic & Elder
+New:
+- Herb and flower seed selectors on the start screen
+- Exact seed names shown during each farm step
+- Timers use the selected crop growth time
+- Timer cards retain the exact seed planted
+- Farm inventory includes the selected herb and flower seeds
 
-The Tree Run intentionally includes only fruit trees, magic trees, and the elder tree. Manor Farm timers remain available in the Timers panel.
+Defaults: Fellstalk seed (80m) and Starbloom flower seed (20m). White lily uses 160m.
 
 Replace index.html, appconfig.json, and assets/ in the GitHub repository root, then commit and push.
-
-
-Build 9.1.1: Replaced native confirm() with an Alt1-safe two-click Reset all timers confirmation.
