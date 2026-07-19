@@ -1,7 +1,7 @@
 {
   "appName": "RS3 Farm Run Tracker",
   "description": "Compact manual RS3 farm run overlay with plot alarms and Manor Farm growth-stage timers.",
-  "appUrl": "./index.html?alt1=1",
+  "appUrl": "./index.html?alt1=1&build=8.1.1",
   "configUrl": "./appconfig.json",
   "iconUrl": "./assets/icon.png",
   "defaultWidth": 390,
