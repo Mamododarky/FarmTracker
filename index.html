@@ -1,153 +1,758 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1510">
-<title>RS3 Farm Tracker</title><link rel="icon" href="assets/icon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d1510">
+<title>RS3 Farm Tracker</title>
+<link rel="icon" href="assets/icon.png">
 <style>
-:root{--bg:#0a110c;--panel:#111b14;--panel2:#17251b;--line:#304536;--text:#f1f5ef;--muted:#aebcaf;--gold:#f1d36f;--green:#93d37c;--orange:#efb56d;--red:#ef8174}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:14px/1.35 "Segoe UI",Arial,sans-serif}button,select,input{font:inherit;color:inherit}[hidden]{display:none!important}
-.topbar{height:50px;display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:8px;padding:7px 9px;background:#0d1710;border-bottom:1px solid var(--line)}
-h1{margin:0;font-size:16px}.icon-button{width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);font-size:20px;cursor:pointer}.run-clock{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-weight:800;font-variant-numeric:tabular-nums;font-size:13px}
-main{padding:8px}.button{border:1px solid var(--line);border-radius:8px;background:#1a2920;padding:9px 11px;font-weight:800;font-size:13px;cursor:pointer}.button.primary{background:linear-gradient(#f6de83,#dfb94f);border-color:#f0d06e;color:#251b07}.button.warning{background:#49391e;border-color:#80632f;color:#ffd58e}.button.danger{color:#ffaaa1}.button.small{padding:7px 9px;font-size:12px}.text-button{border:0;background:none;color:var(--gold);font-weight:900;cursor:pointer;padding:3px;font-size:12px}
-.alarm-bar{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:7px;align-items:center;padding:8px 9px;margin-bottom:8px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.alarm-bar.has-alarm{border-color:var(--red)}.alarm-bar.snoozed{border-color:var(--orange)}.alarm-copy{min-width:0}.alarm-copy b,.alarm-copy small{display:block}.alarm-copy b{font-size:13px}.alarm-copy small{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alarm-actions{display:flex;gap:5px}
-.card{border:1px solid var(--line);border-radius:11px;background:linear-gradient(#142118,#101a13);padding:12px}.home{display:grid;gap:11px}.home h2{margin:0;font-size:22px}.label{display:grid;gap:5px;text-align:left}.label span{font-weight:800;font-size:12px;color:var(--muted)}select,input[type=number]{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--panel2)}.home-actions{display:flex;gap:7px}.home-actions .primary{flex:1}.resume-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
-.seed-config{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:9px;border:1px solid var(--line);border-radius:9px;background:#0e1811}.seed-config .label span{font-size:11px}.seed-config select{padding:8px;font-size:13px}.seed-summary{grid-column:1/-1;margin:0;color:var(--muted);font-size:11px}.seed-summary b{color:var(--gold)}
-.run-meta{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;color:var(--muted);font-size:12px}.step-head{display:flex;justify-content:space-between;gap:10px}.step-head h2{margin:2px 0;font-size:24px;line-height:1.05}.step-head p{margin:0;color:var(--muted);font-size:13px}.badge{display:inline-block;padding:3px 7px;border:1px solid var(--line);border-radius:99px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.step-number{min-width:68px;text-align:right;color:var(--gold);font-weight:900;font-size:12px}
-.info{display:grid;gap:6px;margin-top:10px}.info-row{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#101a13}.info-row.accent{border-color:#6f612c;background:#1d2113}.info-row small{display:block;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}.info-row b{display:block;margin-top:2px;font-size:14px}.info-row p{margin:3px 0 0;color:var(--muted);font-size:12px}.row-head{display:flex;justify-content:space-between;gap:8px}
-.controls{position:sticky;bottom:0;display:grid;grid-template-columns:.72fr .72fr 1.45fr;gap:6px;padding-top:8px;background:linear-gradient(transparent,#101a13 28%)}.controls .button{padding:10px 5px}
-.pof-box{margin-top:7px;padding:8px;border:1px solid var(--line);border-radius:8px}.pof-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.pof-title b{font-size:14px}.pof-list{display:grid;gap:5px}.pof-row{display:grid;grid-template-columns:minmax(0,1fr) 104px;gap:6px;align-items:center;padding:7px;border:1px solid #293b2e;border-radius:7px}.pof-main{display:flex;gap:6px;align-items:center;min-width:0}.pof-main strong{display:block;font-size:13px}.pof-main small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pof-row select{padding:5px;font-size:12px}
-.side-menu{position:fixed;left:0;top:0;bottom:0;z-index:50;width:min(290px,92vw);padding:14px;background:#0f1912;border-right:1px solid var(--line);transform:translateX(-103%);transition:.15s;overflow:auto}.side-menu.open{transform:none}.menu-head{display:flex;justify-content:space-between;align-items:center}.menu-head h2{margin:0;font-size:18px}.menu-section{display:grid;gap:7px;padding:13px 0;border-bottom:1px solid var(--line)}.menu-section h3{margin:0;font-size:13px}.timer-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.timer-inputs label{display:grid;gap:3px;font-size:10px;color:var(--muted)}.timer-inputs input{padding:7px}.scrim{position:fixed;inset:0;z-index:40;background:#000a}
-.modal{width:min(410px,calc(100vw - 10px));border:0;padding:0;background:transparent;color:var(--text)}.modal::backdrop{background:#000b}.modal-card{max-height:calc(100vh - 10px);overflow:auto;padding:11px;border:1px solid var(--line);border-radius:10px;background:#0f1912}.modal-card>header{position:sticky;top:-11px;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:9px 0;background:#0f1912;border-bottom:1px solid var(--line)}.modal-card h2{margin:0;font-size:18px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:8px 0}.tab{padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-weight:800}.tab.active{color:var(--gold);border-color:#79692f}.timer-grid{display:grid;gap:5px}.timer-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--panel)}.timer-card b{display:block;font-size:13px}.timer-card small{display:block;color:var(--muted);font-size:11px}.timer-card strong{text-align:right;font-size:13px}.status-alarm{border-color:var(--red)}.status-growing{border-color:#477052}.status-ready{border-color:#68756b}.dialog-actions{display:flex;gap:6px;margin:8px 0}.jump-list{display:grid;gap:5px;margin-top:8px}.jump-item{display:grid;grid-template-columns:28px minmax(0,1fr);gap:7px;text-align:left;padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--text)}.jump-item b{font-size:13px}.jump-item small{display:block;color:var(--muted);font-size:11px}.jump-num{display:grid;place-items:center;width:27px;height:27px;border-radius:6px;background:#1b2a20;color:var(--gold);font-weight:900}
-.inventory-layout{display:grid;justify-items:center;gap:8px}.rs3-inventory{position:relative;width:257px;height:281px;background:url("assets/rs3-inventory-frame.png") center/257px 281px no-repeat}.slot{position:absolute;width:36px;height:36px}.slot img{position:absolute;left:50%;top:50%;max-width:32px;max-height:32px;transform:translate(-50%,-50%);filter:drop-shadow(1px 2px 1px #000)}.qty{position:absolute;right:1px;bottom:0;color:#ff0;font:700 11px Arial;text-shadow:-1px -1px #000,1px -1px #000,-1px 1px #000,1px 1px #000}.inventory-note{color:var(--muted);font-size:12px}.toast{position:fixed;left:50%;bottom:12px;z-index:100;transform:translate(-50%,14px);opacity:0;padding:8px 11px;border-radius:99px;background:#eef3ea;color:#142017;font-weight:800;transition:.15s}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:350px){html,body{font-size:13px}.alarm-actions .sound-label{display:none}.pof-row{grid-template-columns:1fr}.step-head h2{font-size:21px}}
+:root{
+  --bg:#09100b;--panel:#111c15;--panel2:#17261c;--line:#314838;
+  --text:#f4f7f2;--muted:#aebbad;--gold:#f0d06b;--green:#8fd27a;
+  --orange:#efb46b;--red:#f07f75;--blue:#83bce9;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:15px/1.4 "Segoe UI",Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+body{min-width:350px}
+.app{width:min(460px,100%);min-height:100vh;margin:auto;background:linear-gradient(#0d1710,#09100b)}
+.topbar{position:sticky;top:0;z-index:20;height:54px;display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:8px;padding:8px 10px;background:#0c160f;border-bottom:1px solid var(--line)}
+.topbar h1{margin:0;font-size:18px;line-height:1.1}.topbar small{display:block;color:var(--muted);font-size:10px}
+.icon-button{width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);font-size:19px}
+.status-pill{padding:6px 9px;border:1px solid var(--line);border-radius:99px;background:var(--panel);font-size:12px;font-weight:900;white-space:nowrap}
+.status-pill.alarm{border-color:var(--red);color:#ffc2bc}.status-pill.snoozed{border-color:var(--orange);color:#ffd59b}
+main{padding:10px}.screen{display:grid;gap:10px}
+.card{border:1px solid var(--line);border-radius:12px;background:linear-gradient(#142218,#101a13);padding:12px}
+.card h2,.card h3{margin:0}.muted{color:var(--muted)}.tiny{font-size:11px}
+.button{border:1px solid var(--line);border-radius:9px;background:#1a2b20;padding:10px 12px;font-weight:850}
+.button.primary{background:linear-gradient(#f5df87,#dcb94f);border-color:#edce6a;color:#261c07}
+.button.warning{background:#4c391f;border-color:#81612e;color:#ffd38a}.button.danger{color:#ffaaa2}.button.ghost{background:transparent}.button.small{padding:7px 9px;font-size:12px}.button:disabled{opacity:.45;cursor:not-allowed}
+.text-button{border:0;background:none;color:var(--gold);padding:4px;font-weight:900}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.field{display:grid;gap:5px}.field>span{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.field select,.field input{width:100%;min-width:0;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--panel2)}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.section-head h2{font-size:24px}.section-head h3{font-size:16px}
+.run-options{display:grid;gap:7px}.run-option{display:grid;grid-template-columns:22px 1fr;gap:9px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:9px;background:#101a13}.run-option:has(input:checked){border-color:#8a7630;background:#202115}.run-option input{accent-color:var(--gold)}
+.crop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.crop-grid .field select{font-size:13px;padding:8px 5px}.crop-grid .field>span{font-size:10px}
+.tree-filter{display:flex;flex-wrap:wrap;gap:9px}.tree-filter label{display:flex;gap:6px;align-items:center;font-weight:750}.tree-filter input{accent-color:var(--gold)}
+.home-actions{display:grid;grid-template-columns:1fr auto;gap:7px}.home-actions .primary{min-height:44px}.ready-button{width:100%;margin-top:7px}
+.progress-summary{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.progressbar{height:11px;border:1px solid var(--line);border-radius:99px;background:#0c140f;overflow:hidden}.progressbar span{display:block;height:100%;background:linear-gradient(90deg,#77bd68,#e6ca68)}
+.alarm-strip{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.alarm-strip.alarm{border-color:var(--red)}.alarm-strip.snoozed{border-color:var(--orange)}.alarm-strip b,.alarm-strip small{display:block}.alarm-strip small{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alarm-actions{display:flex;gap:5px}
+.runner-head{display:flex;justify-content:space-between;gap:10px}.runner-head h2{font-size:26px;line-height:1.05;margin:4px 0}.badge{display:inline-block;padding:3px 7px;border:1px solid var(--line);border-radius:99px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.stepcount{font-weight:900;color:var(--gold);font-size:12px;text-align:right}
+.detail-list{display:grid;gap:7px}.detail{padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#101a13}.detail.accent{border-color:#756329;background:#1d2114}.detail small{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.detail b{display:block;margin-top:2px;font-size:15px}.detail p{margin:3px 0 0;color:var(--muted);font-size:12px}.detail .inline-actions{display:flex;gap:5px;margin-top:6px}
+.runner-controls{position:sticky;bottom:0;display:grid;grid-template-columns:.75fr .75fr 1.5fr;gap:7px;padding:10px 0 2px;background:linear-gradient(transparent,#0c140f 28%)}
+.mini .runner-extra{display:none}.mini .runner-head h2{font-size:22px}.mini .detail{padding:7px 9px}.mini .detail p{display:none}.mini .detail-list{gap:5px}
+.side-menu{position:fixed;left:0;top:0;bottom:0;z-index:50;width:min(310px,92vw);padding:14px;background:#0f1912;border-right:1px solid var(--line);transform:translateX(-103%);transition:.15s;overflow:auto}.side-menu.open{transform:none}.menu-head{display:flex;justify-content:space-between;align-items:center}.menu-head h2{margin:0;font-size:19px}.menu-section{display:grid;gap:7px;padding:13px 0;border-bottom:1px solid var(--line)}.menu-section h3{margin:0;font-size:14px}.scrim{position:fixed;inset:0;z-index:40;background:#000a}
+.modal{width:min(450px,calc(100vw - 12px));border:0;padding:0;background:transparent;color:var(--text)}.modal::backdrop{background:#000b}.modal-card{max-height:calc(100vh - 12px);overflow:auto;padding:11px;border:1px solid var(--line);border-radius:12px;background:#0e1811}.modal-head{position:sticky;top:-11px;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:9px 0;background:#0e1811;border-bottom:1px solid var(--line)}.modal-head h2{margin:0;font-size:20px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}.tab{padding:8px 3px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:11px;font-weight:850}.tab.active{color:var(--gold);border-color:#7f6d2d}
+.tab-panel{display:grid;gap:9px}.timer-list,.alarm-list,.pof-list,.history-list,.override-list{display:grid;gap:6px}.timer-row,.alarm-row,.pof-row,.history-row,.override-row{padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.timer-row.alarm,.alarm-row{border-color:var(--red)}.timer-row.growing{border-color:#4b7457}.timer-row.paused{border-color:var(--orange)}.timer-summary{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}.timer-summary small,.alarm-row small,.pof-row small,.history-row small{display:block;color:var(--muted);font-size:11px}.timer-time{text-align:right;font-weight:900}.timer-actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.timer-actions .button{padding:6px 7px;font-size:11px}
+details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.metric{padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.metric small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;font-weight:900}.metric strong{display:block;font-size:18px;margin-top:2px}.override-row{display:grid;gap:7px}.override-head{display:flex;justify-content:space-between;gap:8px}.override-selects{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.override-selects select{width:100%;min-width:0;padding:7px 4px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:11px}
+.pof-row{display:grid;gap:7px}.pof-top{display:grid;grid-template-columns:1fr auto;gap:8px}.pof-config{display:grid;grid-template-columns:22px 1fr 1fr;gap:6px;align-items:center}.pof-config input{accent-color:var(--gold)}.pof-config select{width:100%;padding:7px 4px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);font-size:12px}
+.diagnostic{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}.diagnostic:last-child{border:0}.ok{color:var(--green)}
+.rs3-inventory{position:relative;width:257px;height:281px;margin:auto;background:url("assets/rs3-inventory-frame.png") center/257px 281px no-repeat}.slot{position:absolute;width:36px;height:36px}.slot img{position:absolute;left:50%;top:50%;max-width:32px;max-height:32px;transform:translate(-50%,-50%);filter:drop-shadow(1px 2px 1px #000)}.qty{position:absolute;right:1px;bottom:0;color:#ff0;font:700 11px Arial;text-shadow:-1px -1px #000,1px -1px #000,-1px 1px #000,1px 1px #000}.inventory-note{color:var(--muted);font-size:12px;text-align:center;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:12px;z-index:100;transform:translate(-50%,14px);opacity:0;padding:8px 11px;border-radius:99px;background:#eef3ea;color:#142017;font-weight:850;transition:.15s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:390px){html,body{font-size:14px}.crop-grid{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(3,1fr)}.tabs .tab:nth-child(n+4){margin-top:1px}.alarm-actions .long{display:none}}
 </style>
 </head>
 <body>
-<header class="topbar"><button id="menuBtn" class="icon-button">☰</button><h1>Farm Tracker</h1><span id="runClock" class="run-clock" hidden>00:00</span></header>
-<aside id="menu" class="side-menu"><div class="menu-head"><h2>Tracker</h2><button id="closeMenu" class="icon-button">×</button></div>
-<section class="menu-section"><button id="menuTimers" class="button">View timers</button><button id="menuInventory" class="button">Inventory</button><button id="menuJump" class="button">Jump to step</button></section>
-<section class="menu-section"><h3>Farm seeds</h3><small id="menuSeedSummary" style="color:var(--muted)">Set on the start screen.</small></section>
-<section class="menu-section"><button id="enableSound" class="button">Enable sound</button><button id="resetTimers" class="button danger">Reset all timers</button></section>
-<small style="color:var(--muted)">Build 9.3</small></aside><div id="scrim" class="scrim" hidden></div>
+<div class="app">
+<header class="topbar">
+  <button id="menuBtn" class="icon-button" aria-label="Open menu">☰</button>
+  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.0</small></div>
+  <button id="topStatus" class="status-pill">0 ready</button>
+</header>
+<aside id="sideMenu" class="side-menu" aria-hidden="true">
+  <div class="menu-head"><h2>Farm Tracker</h2><button id="closeMenuBtn" class="icon-button">×</button></div>
+  <section class="menu-section">
+    <button id="menuDashboard" class="button">Dashboard</button>
+    <button id="menuInventory" class="button">Inventory</button>
+    <button id="menuHome" class="button">Choose run</button>
+  </section>
+  <section class="menu-section">
+    <button id="menuMini" class="button">Toggle mini mode</button>
+    <button id="menuSound" class="button">Enable / test sound</button>
+  </section>
+  <section class="menu-section">
+    <button id="menuReset" class="button danger">Reset all timers</button>
+  </section>
+  <small class="muted">Build 10.0 Production</small>
+</aside>
+<div id="scrim" class="scrim" hidden></div>
 <main>
-<div id="alarmBar" class="alarm-bar"><span>🔔</span><span class="alarm-copy"><b id="alarmCount">0 active alarms</b><small id="nextReady">No timers set</small></span><span class="alarm-actions"><button id="viewTimers" class="button small">Timers</button><button id="snooze" class="button small warning">Snooze 1h</button></span></div>
-<section id="home" class="card home"><h2>Choose a run</h2><label class="label"><span>Run type</span><select id="routeSelect">
-<option value="" selected disabled>Select a run…</option>
-<option value="all">All Farm/Tree Run</option>
-<option value="farm">Farm Run</option>
-<option value="tree">Tree Run — Fruit, Magic &amp; Elder</option></select></label><section id="seedConfig" class="seed-config"><label class="label"><span>Allotment seed</span><select id="allotmentSeed"></select></label><label class="label"><span>Herb seed</span><select id="herbSeed"></select></label><label class="label"><span>Flower seed</span><select id="flowerSeed"></select></label><p id="seedSummary" class="seed-summary"></p></section><div class="home-actions"><button id="startRun" class="button primary">Start Run</button><button id="homeTimers" class="button">Timers</button></div><div id="resumeRow" class="resume-row" hidden><span>Unfinished run saved</span><button id="resumeRun" class="text-button">Resume</button></div></section>
-<section id="runner" class="card" hidden><div class="run-meta"><b id="routeName">Run</b><span id="progress">1 / 1</span></div><div class="step-head"><div><span id="group" class="badge">Patch</span><h2 id="location">Location</h2><p id="patchType">Patch type</p></div><span id="stepNumber" class="step-number">STEP 1</span></div><div class="info"><div class="info-row accent"><div class="row-head"><small>Teleport</small><button id="copyTeleport" class="text-button">Copy</button></div><b id="teleport"></b><p id="directions"></p></div><div class="info-row"><small>Do</small><b id="plant"></b><p id="timerText"></p></div></div><section id="pofBox" class="pof-box" hidden><div class="pof-title"><b>Replaced pens</b><button id="selectAllPens" class="text-button">All</button></div><div id="pofList" class="pof-list"></div></section><div class="controls"><button id="prev" class="button">Previous</button><button id="skip" class="button warning">Skip</button><button id="complete" class="button primary">Complete + Next</button></div></section>
+  <div id="alarmStrip" class="alarm-strip">
+    <span>🔔</span>
+    <span><b id="alarmTitle">No active alarms</b><small id="alarmSubtitle">No timers set</small></span>
+    <span class="alarm-actions"><button id="alarmOpen" class="button small">Open</button><button id="alarmSnooze" class="button small warning long">1h</button></span>
+  </div>
+
+  <section id="homeScreen" class="screen">
+    <div class="card">
+      <div class="section-head"><h2>Choose a run</h2><button id="resumeRunBtn" class="text-button" hidden>Resume</button></div>
+      <div class="run-options" id="runOptions">
+        <label class="run-option"><input type="radio" name="runType" value="all" checked><span><b>All Farm/Tree Run</b><small class="muted">Farm plots, fruit trees, magic trees, and elder tree.</small></span></label>
+        <label class="run-option"><input type="radio" name="runType" value="farm"><span><b>Farm Run</b><small class="muted">Allotment, flower, and herb patches only.</small></span></label>
+        <label class="run-option"><input type="radio" name="runType" value="tree"><span><b>Tree Run</b><small class="muted">Fruit, magic, and elder trees.</small></span></label>
+      </div>
+    </div>
+
+    <div id="farmConfigCard" class="card">
+      <div class="section-head"><h3>Farm crops</h3><button id="openOverridesBtn" class="text-button">Per-patch</button></div>
+      <div class="crop-grid">
+        <label class="field"><span>Allotment</span><select id="allotmentSelect"></select></label>
+        <label class="field"><span>Herb</span><select id="herbSelect"></select></label>
+        <label class="field"><span>Flower</span><select id="flowerSelect"></select></label>
+      </div>
+      <div class="grid2" style="margin-top:8px">
+        <label class="field"><span>Herb seeds / patch</span><input id="plantPowerInput" type="number" min="1" max="10" value="1"></label>
+        <label class="field"><span>Timer mode</span><select id="timerModeSelect"><option value="safe">Safe full time</option><option value="aligned">Cycle-aligned</option></select></label>
+      </div>
+    </div>
+
+    <div id="treeConfigCard" class="card">
+      <div class="section-head"><h3>Tree types</h3></div>
+      <div class="tree-filter">
+        <label><input id="fruitToggle" type="checkbox" checked> Fruit</label>
+        <label><input id="magicToggle" type="checkbox" checked> Magic</label>
+        <label><input id="elderToggle" type="checkbox" checked> Elder</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="progress-summary"><span><b id="homeXpText">0 / 200m XP</b><small id="homeXpSub" class="muted">Set current XP in Progress.</small></span><button id="openProgressBtn" class="button small">Progress</button></div>
+      <div class="progressbar" style="margin-top:8px"><span id="homeXpBar" style="width:0%"></span></div>
+    </div>
+
+    <div class="home-actions">
+      <button id="startRunBtn" class="button primary">Start run</button>
+      <button id="homeDashboardBtn" class="button">Timers</button>
+    </div>
+    <button id="readyRunBtn" class="button ready-button warning" hidden>Run ready locations</button>
+  </section>
+
+  <section id="runScreen" class="screen" hidden>
+    <div id="runnerCard" class="card">
+      <div class="runner-head">
+        <span><span id="stepBadge" class="badge">Farm</span><h2 id="stepLocation">Location</h2><small id="stepPatch" class="muted">Patch</small></span>
+        <span class="stepcount"><span id="stepCount">1 / 1</span><br><span id="runClock">0:00</span></span>
+      </div>
+      <div class="detail-list" style="margin-top:10px">
+        <div class="detail accent"><small>Teleport</small><b id="stepTeleport">—</b><p id="stepDirections">—</p><div class="inline-actions"><button id="copyTeleportBtn" class="button small">Copy</button></div></div>
+        <div class="detail"><small>Plant</small><b id="stepPlant">—</b><p id="stepPlantNote">—</p></div>
+        <div class="detail runner-extra"><small>Protection / status</small><b id="stepProtection">—</b><p id="stepTimerStatus">No timer set</p></div>
+      </div>
+      <div class="runner-controls">
+        <button id="previousBtn" class="button">Previous</button>
+        <button id="skipBtn" class="button warning">Skip</button>
+        <button id="completeBtn" class="button primary">Complete + Next</button>
+      </div>
+    </div>
+  </section>
 </main>
-<dialog id="timersDialog" class="modal"><div class="modal-card"><header><h2>Timers</h2><button class="icon-button" data-close>×</button></header><div class="tabs"><button id="plotTab" class="tab active">Plots & Trees</button><button id="pofTab" class="tab">Manor Farm</button></div><div class="dialog-actions"><button id="dialogReset" class="button danger small">Reset all timers</button></div><section id="plotPanel"><div id="plotTimers" class="timer-grid"></div></section><section id="pofPanel" hidden><div id="pofTimers" class="timer-grid"></div></section></div></dialog>
-<dialog id="jumpDialog" class="modal"><div class="modal-card"><header><h2>Jump</h2><button class="icon-button" data-close>×</button></header><div id="jumpList" class="jump-list"></div></div></dialog>
-<dialog id="inventoryDialog" class="modal"><div class="modal-card"><header><h2>Inventory</h2><button class="icon-button" data-close>×</button></header><div class="inventory-layout"><div id="inventory" class="rs3-inventory"></div><p id="inventoryNote" class="inventory-note"></p></div></div></dialog>
+</div>
+
+<dialog id="dashboardDialog" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Dashboard</h2><button class="icon-button" data-close>×</button></div>
+    <div class="tabs">
+      <button class="tab active" data-tab="timers">Timers</button>
+      <button class="tab" data-tab="alarms">Alarms</button>
+      <button class="tab" data-tab="pof">Manor</button>
+      <button class="tab" data-tab="progress">Progress</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </div>
+
+    <section id="tab-timers" class="tab-panel">
+      <div class="section-head"><h3>Plot and tree status</h3><button id="runReadyFromTimersBtn" class="button small warning">Run ready</button></div>
+      <div id="timerList" class="timer-list"></div>
+    </section>
+
+    <section id="tab-alarms" class="tab-panel" hidden>
+      <div class="section-head"><h3>Alarm center</h3><span class="toolbar"><button id="snoozeAll15Btn" class="button small warning">All 15m</button><button id="snoozeAll60Btn" class="button small warning">All 1h</button></span></div>
+      <div id="alarmList" class="alarm-list"></div>
+    </section>
+
+    <section id="tab-pof" class="tab-panel" hidden>
+      <div class="section-head"><h3>Manor Farm</h3><button id="selectAllPensBtn" class="button small">Select all</button></div>
+      <div id="pofList" class="pof-list"></div>
+      <button id="startPofBtn" class="button primary">Start selected pen timers</button>
+    </section>
+
+    <section id="tab-progress" class="tab-panel" hidden>
+      <div class="card">
+        <div class="grid2">
+          <label class="field"><span>Current Farming XP</span><input id="currentXpInput" type="number" min="0" max="200000000"></label>
+          <label class="field"><span>Manual XP / run</span><input id="manualAvgInput" type="number" min="1"></label>
+        </div>
+        <button id="saveProgressBtn" class="button primary" style="margin-top:8px">Save progress</button>
+      </div>
+      <div class="progressbar"><span id="progressBar" style="width:0%"></span></div>
+      <div class="metric-grid">
+        <div class="metric"><small>Remaining</small><strong id="remainingXpMetric">200m</strong></div>
+        <div class="metric"><small>Estimated runs</small><strong id="estimatedRunsMetric">—</strong></div>
+        <div class="metric"><small>Runs completed</small><strong id="runsCompletedMetric">0</strong></div>
+        <div class="metric"><small>Average time</small><strong id="averageTimeMetric">—</strong></div>
+      </div>
+      <div class="section-head"><h3>Recent runs</h3></div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+
+    <section id="tab-settings" class="tab-panel" hidden>
+      <div class="card">
+        <h3>Growth-cycle timing</h3>
+        <p class="muted tiny">Safe mode uses the full listed growth time. Cycle-aligned mode uses your calibrated herb/flower growth boundary.</p>
+        <div class="grid2"><button id="calibrateTickBtn" class="button">Calibrate tick now</button><button id="clearCalibrationBtn" class="button">Clear calibration</button></div>
+        <small id="calibrationText" class="muted">Not calibrated.</small>
+      </div>
+      <div class="card">
+        <h3>Alarm settings</h3>
+        <div class="grid2">
+          <label class="field"><span>Sound</span><select id="soundSelect"><option value="chime">Chime</option><option value="soft">Soft</option><option value="urgent">Urgent</option></select></label>
+          <label class="field"><span>Repeat</span><select id="repeatSelect"><option value="0">Do not repeat</option><option value="5">Every 5m</option><option value="10">Every 10m</option><option value="15">Every 15m</option></select></label>
+        </div>
+        <label class="field" style="margin-top:8px"><span>Volume</span><input id="volumeInput" type="range" min="0" max="100"></label>
+        <label style="display:flex;gap:7px;align-items:center;margin-top:8px"><input id="notificationToggle" type="checkbox"> Desktop notifications</label>
+        <button id="testAlarmBtn" class="button" style="margin-top:8px">Test alarm</button>
+      </div>
+      <div class="card">
+        <div class="section-head"><h3>Per-patch crop overrides</h3><button id="clearOverridesBtn" class="button small">Clear</button></div>
+        <div id="overrideList" class="override-list"></div>
+      </div>
+      <div class="card">
+        <h3>Backup and diagnostics</h3>
+        <div class="toolbar"><button id="exportBackupBtn" class="button small">Export backup</button><label class="button small">Import backup<input id="importBackupInput" type="file" accept="application/json" hidden></label></div>
+        <div class="diagnostic"><span>Build</span><b>10.0 Production</b></div>
+        <div class="diagnostic"><span>Storage</span><b id="storageDiag" class="ok">Working</b></div>
+        <div class="diagnostic"><span>Alt1</span><b id="alt1Diag">Browser mode</b></div>
+      </div>
+      <button id="resetAllBtn" class="button danger">Reset all timers</button>
+    </section>
+  </div>
+</dialog>
+
+<dialog id="inventoryDialog" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Inventory</h2><button class="icon-button" data-close>×</button></div>
+    <div id="inventoryFrame" class="rs3-inventory"></div>
+    <p id="inventoryNote" class="inventory-note"></p>
+  </div>
+</dialog>
+
+<dialog id="runCompleteDialog" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Run complete</h2><button class="icon-button" data-close>×</button></div>
+    <p id="runCompleteText" class="muted"></p>
+    <label class="field"><span>Current Farming XP (optional)</span><input id="finishXpInput" type="number" min="0" max="200000000"></label>
+    <button id="saveCompletedRunBtn" class="button primary" style="margin-top:9px">Save run</button>
+  </div>
+</dialog>
+
 <div id="toast" class="toast"></div>
+
 <script>
-const TREE_STEPS=[{"id":"manor-money","order":1,"group":"Special Tree","location":"Manor Farm","patchType":"Money-tree patch","plant":"Money tree seed, only when ready and available","teleport":"Master farmer outfit \u2192 Manor Farm","directions":"The money-tree patch is beside the Manor Farm activity area and bank.","paymentItem":"None","paymentQty":0,"growthMinutes":2560,"growthLabel":"1d 18h 40m","xp":60000,"inventoryItem":"Money tree seed","inventoryType":"optional","kind":"tree"},{"id":"brimhaven-fruit","order":2,"group":"Fruit Tree","location":"Brimhaven","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Spirit tree \u2192 8. Brimhaven","directions":"Run west from the spirit tree to the fruit-tree patch.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"gnome-stronghold-fruit","order":3,"group":"Fruit Tree","location":"Tree Gnome Stronghold","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Spirit tree \u2192 2. Tree Gnome Stronghold","directions":"Run east from the spirit tree to the fruit-tree patch.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"gnome-stronghold-regular","order":4,"group":"Regular Tree","location":"Tree Gnome Stronghold","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"Stay in Tree Gnome Stronghold","directions":"Run southwest from the spirit-tree area to the regular-tree patch.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"gnome-village-fruit","order":5,"group":"Fruit Tree","location":"Tree Gnome Village","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Spirit tree \u2192 1. Tree Gnome Village","directions":"Use the loose railing, ask Elkoy to guide you out, then run southwest.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"catherby-fruit","order":6,"group":"Fruit Tree","location":"Catherby","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Catherby Teleport or Catherby lodestone","directions":"Run east/southeast from the lodestone to the fruit-tree patch.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"habitat-fruit","order":7,"group":"Fruit Tree","location":"Herblore Habitat","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Master farmer outfit \u2192 Herblore Habitat","directions":"Run to the fruit-tree patch inside the habitat farming area.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"lletya-fruit","order":8,"group":"Fruit Tree","location":"Lletya","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Tirannwn quiver 4 \u2192 1. Lletya","directions":"Run southeast through Lletya to the fruit-tree patch.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"meilyr-fruit","order":9,"group":"Fruit Tree","location":"Prifddinas \u2014 Meilyr","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"POH Seren Teleport Stone \u2192 8. Meilyr (Prifddinas)","directions":"Run north/northwest toward the fruit-tree patch.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"trahaearn-regular","order":10,"group":"Regular Tree","location":"Prifddinas \u2014 Trahaearn","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"POH Seren Teleport Stone \u2192 9. Trahaearn (Prifddinas)","directions":"Run to the regular-tree patch on the outer side of the district.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"crwys-elder","order":11,"group":"Special Tree","location":"Prifddinas \u2014 Crwys","patchType":"Elder-tree patch","plant":"Elder sapling","teleport":"POH Seren Teleport Stone \u2192 4. Crwys (Prifddinas)","directions":"Run to the elder-tree patch on the outer section of Crwys.","paymentItem":"Noted morchella mushrooms","paymentQty":23,"growthMinutes":4200,"growthLabel":"70h","xp":23463,"inventoryItem":"Elder sapling","inventoryType":"individual","kind":"tree"},{"id":"prif-crystal","order":12,"group":"Special Tree","location":"Prifddinas \u2014 Tower of Voices","patchType":"Crystal-tree patch","plant":"Harvest crystal blossom","teleport":"Prifddinas lodestone","directions":"Run to the southeast side of the Tower of Voices.","paymentItem":"None","paymentQty":0,"growthMinutes":1440,"growthLabel":"Daily","xp":15000,"inventoryItem":"Crystal acorn","inventoryType":"optional","kind":"tree"},{"id":"havenhythe-regular","order":13,"group":"Regular Tree","location":"Havenhythe \u2014 Dalia's Tree Nursery","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"Wendlewick Teleport \u2192 Marigold Farm","directions":"Use the right-click farm destination, then enter Dalia's nursery.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"havenhythe-fruit","order":14,"group":"Fruit Tree","location":"Havenhythe \u2014 Dalia's Tree Nursery","patchType":"Carambola fruit-tree patch","plant":"Carambola sapling","teleport":"Stay at Dalia's Tree Nursery","directions":"Move to the fruit-tree patch in the nursery.","paymentItem":"Noted dragonfruit","paymentQty":7,"growthMinutes":800,"growthLabel":"13h 20m","xp":41254.1,"inventoryItem":"Carambola sapling","inventoryType":"individual","kind":"tree"},{"id":"havenhythe-calquat","order":15,"group":"Calquat","location":"Havenhythe \u2014 Dalia's Tree Nursery","patchType":"Calquat-tree patch","plant":"Calquat sapling","teleport":"Stay at Dalia's Tree Nursery","directions":"Move to the calquat patch before leaving the nursery.","paymentItem":"Noted poison ivy berries","paymentQty":6,"growthMinutes":1280,"growthLabel":"21h 20m","xp":12516.6,"inventoryItem":"Calquat sapling","inventoryType":"individual","kind":"tree"},{"id":"lumbridge-regular","order":16,"group":"Regular Tree","location":"Lumbridge","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"Lumbridge Teleport or lodestone","directions":"Run toward the regular-tree patch near the general-store side of town.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"varrock-regular","order":17,"group":"Regular Tree","location":"Varrock","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"Varrock Teleport","directions":"Enter the Varrock Castle courtyard and use the regular-tree patch.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"falador-regular","order":18,"group":"Regular Tree","location":"Falador","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"Falador Teleport","directions":"Run into Falador Park to the regular-tree patch.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"taverley-regular","order":19,"group":"Regular Tree","location":"Taverley","patchType":"Magic-tree patch","plant":"Magic sapling","teleport":"Taverley lodestone","directions":"Run north from the lodestone to the regular-tree patch.","paymentItem":"Noted coconuts","paymentQty":23,"growthMinutes":480,"growthLabel":"8h","xp":13913.8,"inventoryItem":"Magic sapling","inventoryType":"individual","kind":"tree"},{"id":"anachronia-cactus","order":20,"group":"Cactus","location":"Anachronia","patchType":"Golden-dragonfruit cactus patch","plant":"Golden dragonfruit seed","teleport":"Anachronia Teleport \u2192 Totem of the Abyss","directions":"The cactus patch is close to the active Totem of the Abyss location.","paymentItem":"Noted guarana fruit","paymentQty":1,"growthMinutes":560,"growthLabel":"9h 20m","xp":28480,"inventoryItem":"Golden dragonfruit seed","inventoryType":"stack","kind":"tree"},{"id":"menaphos-cactus","order":21,"group":"Cactus","location":"Menaphos \u2014 Imperial District","patchType":"Golden-dragonfruit cactus patch","plant":"Golden dragonfruit seed","teleport":"Menaphos Imperial district teleport","directions":"Run northwest toward Zahra and the constructed cactus patch.","paymentItem":"Noted guarana fruit","paymentQty":1,"growthMinutes":560,"growthLabel":"9h 20m","xp":28480,"inventoryItem":"Golden dragonfruit seed","inventoryType":"stack","kind":"tree"},{"id":"hets-oasis-cactus","order":22,"group":"Cactus","location":"Het's Oasis","patchType":"Golden-dragonfruit cactus patch","plant":"Golden dragonfruit seed","teleport":"Ring of duelling \u2192 Het's Oasis","directions":"Run north toward the Archaeology table; the cactus patch is nearby.","paymentItem":"Noted guarana fruit","paymentQty":1,"growthMinutes":560,"growthLabel":"9h 20m","xp":28480,"inventoryItem":"Golden dragonfruit seed","inventoryType":"stack","kind":"tree"},{"id":"alkharid-cactus","order":23,"group":"Cactus","location":"Al Kharid","patchType":"Golden-dragonfruit cactus patch","plant":"Golden dragonfruit seed","teleport":"Al Kharid lodestone","directions":"Run northeast/east from the lodestone to the cactus patch.","paymentItem":"Noted guarana fruit","paymentQty":1,"growthMinutes":560,"growthLabel":"9h 20m","xp":28480,"inventoryItem":"Golden dragonfruit seed","inventoryType":"stack","kind":"tree"},{"id":"tai-bwo-calquat","order":24,"group":"Calquat","location":"Tai Bwo Wannai","patchType":"Calquat-tree patch","plant":"Calquat sapling","teleport":"Tai Bwo Wannai teleport scroll","directions":"Run north to the calquat-tree patch.","paymentItem":"Noted poison ivy berries","paymentQty":6,"growthMinutes":1280,"growthLabel":"21h 20m","xp":12516.6,"inventoryItem":"Calquat sapling","inventoryType":"individual","kind":"tree"}];
-const FARM_STEPS=[{"id":"garden-kharid-herb","order":1,"group":"Herb Patch","location":"Garden of Kharid \u2014 Crux Eqal","patchType":"Herb patch","plant":"Herb seed","teleport":"Mystical sand seed","directions":"Use the herb patch beside Polletix.","patchKinds":["herb"],"kind":"farm","xp":0},{"id":"trollheim-herb","order":2,"group":"Herb Patch","location":"Troll Stronghold Roof","patchType":"Disease-free herb patch","plant":"Herb seed","teleport":"Trollheim farm teleport tablet","directions":"The teleport places you by the roof herb patch.","patchKinds":["herb"],"kind":"farm","xp":0},{"id":"catherby-plots","order":3,"group":"Farm Plots","location":"Catherby","patchType":"2 allotments \u00b7 flower \u00b7 herb","plant":"Allotment, flower, and herb seeds","teleport":"Catherby teleport tablet","directions":"Run to the farming plots north of Catherby.","patchKinds":["allotment","flower","herb"],"kind":"farm","xp":0},{"id":"falador-plots","order":4,"group":"Farm Plots","location":"South Falador","patchType":"2 allotments \u00b7 flower \u00b7 herb","plant":"Allotment, flower, and herb seeds","teleport":"Explorer's ring 4 \u2192 Cabbage-port","directions":"Run north-west to the plots. Equip the Falador shield.","patchKinds":["allotment","flower","herb"],"kind":"farm","xp":0},{"id":"manor-plots","order":5,"group":"Farm Plots","location":"Manor Farm \u2014 Ardougne","patchType":"2 allotments \u00b7 flower \u00b7 herb","plant":"Allotment, flower, and herb seeds","teleport":"Master farmer outfit \u2192 Manor Farm","directions":"Use the farming plots beside Manor Farm.","patchKinds":["allotment","flower","herb"],"kind":"farm","xp":0},{"id":"ectophial-plots","order":6,"group":"Farm Plots","location":"Port Phasmatys","patchType":"2 allotments \u00b7 flower \u00b7 herb","plant":"Allotment, flower, and herb seeds","teleport":"Ectophial","directions":"Run west from the Ectofuntus to the plots.","patchKinds":["allotment","flower","herb"],"kind":"farm","xp":0},{"id":"havenhythe-plots","order":7,"group":"Farm Plots","location":"Havenhythe \u2014 Marigold Farm","patchType":"2 allotments \u00b7 flower \u00b7 herb","plant":"Allotment, flower, and herb seeds","teleport":"Wendlewick Teleport \u2192 Marigold Farm","directions":"Use the farming plots at Marigold Farm.","patchKinds":["allotment","flower","herb"],"kind":"farm","xp":0}];
-const POF_STEP={"id":"manor-pof","order":1,"group":"Manor Farm","location":"Manor Farm \u2014 Animal Pens","patchType":"Chinchompas \u00b7 Zygomites \u00b7 Dragons","plant":"Collect, replace, and feed selected pens","teleport":"Master farmer outfit \u2192 Manor Farm","directions":"Select only the pens you replaced.","kind":"pof","isPof":true,"xp":0};
-const ITEM_SPRITES={"Magic sapling":{"id":5374},"Carambola sapling":{"id":48707},"Calquat sapling":{"id":5503},"Elder sapling":{"id":32294},"Golden dragonfruit seed":{"id":48764},"Noted coconuts":{"id":5975},"Noted dragonfruit":{"id":48772},"Noted poison ivy berries":{"id":6019},"Noted morchella mushrooms":{"id":21623},"Noted guarana fruit":{"id":48589},"Grasping rune pouch":{"id":52215},"Urn enhancer":{"id":36837},"Exquisite farming urn":{"id":59146},"Money tree seed":{"id":48770},"Fellstalk seed":{"id":21621},"Starbloom flower seed":{"id":58976},"White lily seed":{"id":14589}};
-const POF_PENS=[
-{id:'small-1',name:'Small Pen 1',animal:'Chinchompas ×6',food:'Woad leaves',start:'baby',stages:{baby:0,adolescent:504,adult:1386,elder:2520}},
-{id:'small-2',name:'Small Pen 2',animal:'Chinchompas ×6',food:'Woad leaves',start:'baby',stages:{baby:0,adolescent:504,adult:1386,elder:2520}},
-{id:'medium-1',name:'Medium Pen 1',animal:'Zygomites ×4',food:'Gorajian mushrooms',start:'baby',stages:{baby:0,adolescent:1008,adult:2772,elder:5040}},
-{id:'medium-2',name:'Medium Pen 2',animal:'Zygomites ×4',food:'Gorajian mushrooms',start:'baby',stages:{baby:0,adolescent:1008,adult:2772,elder:5040}},
-{id:'large-1',name:'Large Pen 1',animal:'Dragons ×3',food:'Raw tuna',start:'egg',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}},
-{id:'large-2',name:'Large Pen 2',animal:'Dragons ×3',food:'Raw tuna',start:'egg',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}},
-{id:'breeding',name:'Breeding Pen',animal:'Dragons ×4',food:'Raw tuna',start:'egg',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}}
+'use strict';
+const BUILD='10.0';
+const STATE_KEY='farmtracker-v10-state';
+const MAX_XP=200000000;
+const $=id=>document.getElementById(id);
+
+const ALLOTMENTS=[
+  {key:'',label:'Empty — no timer',minutes:0},
+  {key:'potato',label:'Potato seed',minutes:40},{key:'onion',label:'Onion seed',minutes:40},
+  {key:'cabbage',label:'Cabbage seed',minutes:40},{key:'tomato',label:'Tomato seed',minutes:40},
+  {key:'sweetcorn',label:'Sweetcorn seed',minutes:50},{key:'strawberry',label:'Strawberry seed',minutes:60},
+  {key:'watermelon',label:'Watermelon seed',minutes:70},{key:'snape-grass',label:'Snape grass seed',minutes:200},
+  {key:'sunchoke',label:'Sunchoke seed',minutes:200},{key:'fly-trap',label:'Fly trap seed',minutes:200}
 ];
-const ALLOTMENT_SEEDS=[
-{key:'potato',label:'Potato seed',minutes:40},{key:'onion',label:'Onion seed',minutes:40},{key:'cabbage',label:'Cabbage seed',minutes:40},{key:'tomato',label:'Tomato seed',minutes:40},{key:'sweetcorn',label:'Sweetcorn seed',minutes:50},{key:'strawberry',label:'Strawberry seed',minutes:60},{key:'watermelon',label:'Watermelon seed',minutes:70},{key:'snape-grass',label:'Snape grass seed',minutes:200},{key:'sunchoke',label:'Sunchoke seed',minutes:200},{key:'fly-trap',label:'Fly trap seed',minutes:200}
+const HERBS=[
+  {key:'',label:'Empty — no timer',minutes:0,cycle:20,stages:4},
+  ...['Guam','Marrentill','Tarromin','Harralander','Ranarr','Spirit weed','Toadflax','Irit','Wergali','Avantoe','Kwuarm','Snapdragon','Cadantine','Lantadyme','Arbuck','Dwarf weed','Torstol','Fellstalk']
+    .map(name=>({key:name.toLowerCase().replaceAll(' ','-'),label:`${name} seed`,minutes:80,cycle:20,stages:4}))
 ];
-const HERB_SEEDS=[
-{key:'guam',label:'Guam seed',minutes:80},{key:'marrentill',label:'Marrentill seed',minutes:80},{key:'tarromin',label:'Tarromin seed',minutes:80},{key:'harralander',label:'Harralander seed',minutes:80},{key:'ranarr',label:'Ranarr seed',minutes:80},{key:'spirit-weed',label:'Spirit weed seed',minutes:80},{key:'toadflax',label:'Toadflax seed',minutes:80},{key:'irit',label:'Irit seed',minutes:80},{key:'wergali',label:'Wergali seed',minutes:80},{key:'avantoe',label:'Avantoe seed',minutes:80},{key:'kwuarm',label:'Kwuarm seed',minutes:80},{key:'snapdragon',label:'Snapdragon seed',minutes:80},{key:'cadantine',label:'Cadantine seed',minutes:80},{key:'lantadyme',label:'Lantadyme seed',minutes:80},{key:'arbuck',label:'Arbuck seed',minutes:80},{key:'dwarf-weed',label:'Dwarf weed seed',minutes:80},{key:'torstol',label:'Torstol seed',minutes:80},{key:'fellstalk',label:'Fellstalk seed',minutes:80}
+const FLOWERS=[
+  {key:'',label:'Empty — no timer',minutes:0,cycle:5,stages:4},
+  ...['Marigold','Rosemary','Nasturtium','Woad','Limpwurt','Butterfly flower','Starbloom flower']
+    .map(name=>({key:name.toLowerCase().replaceAll(' ','-'),label:`${name} seed`,minutes:20,cycle:5,stages:4})),
+  {key:'white-lily',label:'White lily seed',minutes:160,cycle:40,stages:4}
 ];
-const FLOWER_SEEDS=[
-{key:'marigold',label:'Marigold seed',minutes:20},{key:'rosemary',label:'Rosemary seed',minutes:20},{key:'nasturtium',label:'Nasturtium seed',minutes:20},{key:'woad',label:'Woad seed',minutes:20},{key:'limpwurt',label:'Limpwurt seed',minutes:20},{key:'white-lily',label:'White lily seed',minutes:160},{key:'butterfly-flower',label:'Butterfly flower seed',minutes:20},{key:'starbloom',label:'Starbloom flower seed',minutes:20}
+const CROP_LISTS={allotment:ALLOTMENTS,herb:HERBS,flower:FLOWERS};
+
+const FARM_STEPS=[
+  {id:'garden-kharid-herb',location:'Garden of Kharid — Crux Eqal',patch:'Herb patch',teleport:'Mystical sand seed',directions:'Use the herb patch beside Polletix.',kinds:['herb']},
+  {id:'trollheim-herb',location:'Troll Stronghold Roof',patch:'Disease-free herb patch',teleport:'Trollheim farm teleport tablet',directions:'The teleport places you beside the roof herb patch.',kinds:['herb']},
+  {id:'catherby-plots',location:'Catherby',patch:'2 allotments · flower · herb',teleport:'Catherby teleport tablet',directions:'Run to the farming plots north of Catherby.',kinds:['allotment','flower','herb']},
+  {id:'falador-plots',location:'South Falador',patch:'2 allotments · flower · herb',teleport:"Explorer's ring 4 → Cabbage-port",directions:'Run north-west to the plots.',kinds:['allotment','flower','herb']},
+  {id:'manor-plots',location:'Manor Farm — Ardougne',patch:'2 allotments · flower · herb',teleport:'Master farmer outfit → Manor Farm',directions:'Use the farming plots beside Manor Farm.',kinds:['allotment','flower','herb']},
+  {id:'ectophial-plots',location:'Port Phasmatys',patch:'2 allotments · flower · herb',teleport:'Ectophial',directions:'Run west from the Ectofuntus to the plots.',kinds:['allotment','flower','herb']},
+  {id:'havenhythe-plots',location:'Havenhythe — Marigold Farm',patch:'2 allotments · flower · herb',teleport:'Wendlewick Teleport → Marigold Farm',directions:'Use the farming plots at Marigold Farm.',kinds:['allotment','flower','herb']}
 ];
-const DEFAULT_SEEDS={allotmentSeed:'watermelon',herbSeed:'fellstalk',flowerSeed:'starbloom'};
-const STORE={timers:'rs3-farm-timers-v1',pof:'rs3-farm-pof-timers-v2',active:'rs3-farm-active-run-v3',snooze:'rs3-farm-snooze-until-v1',settings:'rs3-farm-crop-timers-v1',preset:'rs3-farm-preset-v2'};
-const $=id=>document.getElementById(id);const rawGet=k=>{try{return localStorage.getItem(k)}catch{return null}},rawSet=(k,v)=>{try{localStorage.setItem(k,v)}catch{}},rawRemove=k=>{try{localStorage.removeItem(k)}catch{}};let timers=load(STORE.timers,{}),pofTimers=load(STORE.pof,{}),active=load(STORE.active,null),snoozeUntil=Number(rawGet(STORE.snooze)||0),audioCtx=null,lastAlarmSignature='',tick=null,resetArmedUntil=0,resetArmTimer=null;
-const els={menu:$('menu'),scrim:$('scrim'),home:$('home'),runner:$('runner'),routeSelect:$('routeSelect'),runClock:$('runClock'),alarmBar:$('alarmBar'),alarmCount:$('alarmCount'),nextReady:$('nextReady'),timersDialog:$('timersDialog'),jumpDialog:$('jumpDialog'),inventoryDialog:$('inventoryDialog')};
-function load(k,f){try{return JSON.parse(rawGet(k))??f}catch{return f}}function save(k,v){rawSet(k,JSON.stringify(v))}function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function routeFor(key){const treeRun=TREE_STEPS.filter(x=>x.group==='Fruit Tree'||x.group==='Regular Tree'||x.id==='crwys-elder');let r=[];if(key==='all')r=[...FARM_STEPS,...treeRun];if(key==='farm')r=FARM_STEPS;if(key==='tree')r=treeRun;return [...r].sort((a,b)=>a.order-b.order)}
-function routeLabel(k){return {all:'All Farm/Tree Run',farm:'Farm Run',tree:'Tree Run — Fruit, Magic & Elder'}[k]||'Run'}
-function init(){populateSeedSelectors();const settings=load(STORE.settings,DEFAULT_SEEDS);$('allotmentSeed').value=ALLOTMENT_SEEDS.some(x=>x.key===settings.allotmentSeed)?settings.allotmentSeed:(settings.allotmentSeed===''?'':DEFAULT_SEEDS.allotmentSeed);$('herbSeed').value=HERB_SEEDS.some(x=>x.key===settings.herbSeed)?settings.herbSeed:(settings.herbSeed===''?'':DEFAULT_SEEDS.herbSeed);$('flowerSeed').value=FLOWER_SEEDS.some(x=>x.key===settings.flowerSeed)?settings.flowerSeed:(settings.flowerSeed===''?'':DEFAULT_SEEDS.flowerSeed);els.routeSelect.value='';renderPofRows();bind();updateSeedUi();showHome();update();tick=setInterval(update,1000);if(window.alt1?.identifyAppUrl)try{window.alt1.identifyAppUrl(new URL('appconfig.json',location.href).href)}catch{}}
-function bind(){$('menuBtn').onclick=openMenu;$('closeMenu').onclick=closeMenu;els.scrim.onclick=closeMenu;$('startRun').onclick=()=>startRun(els.routeSelect.value);$('resumeRun').onclick=resumeRun;$('prev').onclick=previous;$('skip').onclick=skip;$('complete').onclick=complete;$('copyTeleport').onclick=copyTeleport;[$('viewTimers'),$('homeTimers'),$('menuTimers')].forEach(b=>b.onclick=openTimers);$('menuInventory').onclick=openInventory;$('menuJump').onclick=openJump;$('enableSound').onclick=enableSound;$('snooze').onclick=snooze;$('resetTimers').onclick=resetAll;$('dialogReset').onclick=resetAll;$('selectAllPens').onclick=selectAllPens;$('plotTab').onclick=()=>tabs(true);$('pofTab').onclick=()=>tabs(false);document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());els.routeSelect.onchange=()=>{rawSet(STORE.preset,els.routeSelect.value);updateSeedUi()};['allotmentSeed','herbSeed','flowerSeed'].forEach(id=>$(id).onchange=saveSeedSettings);document.addEventListener('pointerdown',armAudio,{once:true});window.addEventListener('focus',update);document.addEventListener('visibilitychange',update)}
-function populateSeedSelectors(){const fill=(id,list)=>{$(id).innerHTML=`<option value="">Empty — no timer</option>`+list.map(x=>`<option value="${x.key}">${esc(x.label)}</option>`).join('')};fill('allotmentSeed',ALLOTMENT_SEEDS);fill('herbSeed',HERB_SEEDS);fill('flowerSeed',FLOWER_SEEDS)}
-function selectedSeed(kind){const map={allotment:[ALLOTMENT_SEEDS,'allotmentSeed'],herb:[HERB_SEEDS,'herbSeed'],flower:[FLOWER_SEEDS,'flowerSeed']},entry=map[kind];if(!entry)return null;const [list,id]=entry,key=$(id)?.value;if(key==='')return null;return list.find(x=>x.key===key)||null}
-function seedSettings(){return{allotmentSeed:selectedSeed('allotment')?.key||'',herbSeed:selectedSeed('herb')?.key||'',flowerSeed:selectedSeed('flower')?.key||''}}
-function saveSeedSettings(){save(STORE.settings,seedSettings());updateSeedUi();if(active)renderStep()}
-function cropSummary(crop){return crop?`${crop.label.replace(' seed','')} ${crop.minutes}m`:'Empty'}
-function updateSeedUi(){const allotment=selectedSeed('allotment'),herb=selectedSeed('herb'),flower=selectedSeed('flower'),route=els.routeSelect.value;$('seedConfig').hidden=route==='tree';$('seedSummary').innerHTML=`<b>${esc(cropSummary(allotment))}</b> · <b>${esc(cropSummary(herb))}</b> · <b>${esc(cropSummary(flower))}</b>`;$('menuSeedSummary').textContent=`Allotment: ${cropSummary(allotment)} · Herb: ${cropSummary(herb)} · Flower: ${cropSummary(flower)}`}
-function farmPlantDescription(step){const parts=[];if((step.patchKinds||[]).includes('allotment')){const c=selectedSeed('allotment');parts.push(c?`${c.label} ×6`:'Allotments empty')}if((step.patchKinds||[]).includes('flower')){const c=selectedSeed('flower');parts.push(c?c.label:'Flower empty')}if((step.patchKinds||[]).includes('herb')){const c=selectedSeed('herb');parts.push(c?c.label:'Herb empty')}return parts.join(' · ')||'No crops selected'}
-function openMenu(){els.menu.classList.add('open');els.scrim.hidden=false}function closeMenu(){els.menu.classList.remove('open');els.scrim.hidden=true}
-function showHome(){els.home.hidden=false;els.runner.hidden=true;els.runClock.hidden=true;$('resumeRow').hidden=!(active&&active.ids?.length&&active.index<active.ids.length);closeMenu()}
-function startRun(key){if(!key){toast('Choose a run first.');return}armAudio();acknowledgeDue();const route=routeFor(key);if(!route.length){toast('No steps in this run.');return}active={key,label:routeLabel(key),ids:route.map(x=>x.id),index:0,startedAt:Date.now(),records:route.map(x=>({id:x.id,status:'pending'}))};save(STORE.active,active);showRunner();update()}
-function resumeRun(){if(!active)return;showRunner();update()}
-function showRunner(){els.home.hidden=true;els.runner.hidden=false;els.runClock.hidden=false;renderStep();closeMenu()}
-function activeRoute(){if(!active)return[];const all=[POF_STEP,...FARM_STEPS,...TREE_STEPS];return active.ids.map(id=>all.find(x=>x.id===id)).filter(Boolean)}function current(){return activeRoute()[active?.index||0]}
-function renderStep(){const step=current();if(!step){finish();return}$('routeName').textContent=active.label;$('progress').textContent=`${active.index+1} / ${active.ids.length}`;$('group').textContent=step.group;$('location').textContent=step.location;$('patchType').textContent=step.patchType;$('stepNumber').textContent=`STEP ${active.index+1}`;$('teleport').textContent=step.teleport;$('directions').textContent=step.directions;$('plant').textContent=step.kind==='farm'?farmPlantDescription(step):step.plant;$('pofBox').hidden=!step.isPof;$('timerText').textContent=timerDescription(step);$('prev').disabled=active.index===0;renderPofRows()}
-function timerDescription(step){if(step.kind==='farm'){const parts=[];for(const kind of step.patchKinds||[]){const crop=selectedSeed(kind);parts.push(crop?`${crop.label.replace(' seed','')} ${crop.minutes}m`:`${cap(kind)} empty`)}return parts.join(' · ')||'No crop timers selected.'}if(step.isPof)return'Stage alarms start for selected pens.';return`Ready in ${step.growthLabel}.` }
-function complete(){const step=current();if(!step)return;if(step.kind==='farm')startFarmTimers(step);else if(step.isPof)startPofTimers();else startTreeTimer(step);active.records[active.index]={id:step.id,status:'completed',at:Date.now()};next()}
-function skip(){const step=current();if(!step)return;active.records[active.index]={id:step.id,status:'skipped',at:Date.now()};next()}
-function next(){active.index++;save(STORE.active,active);if(active.index>=active.ids.length)finish();else{renderStep();update()}}
-function previous(){if(!active||active.index<=0)return;active.index--;save(STORE.active,active);renderStep()}
-function finish(){active=null;rawRemove(STORE.active);toast('Run complete.');showHome();update()}
-function startTreeTimer(step){timers[step.id]={id:step.id,label:step.location,type:step.patchType,readyAt:Date.now()+Number(step.growthMinutes)*60000,ack:false};save(STORE.timers,timers)}
-function startFarmTimers(step){const now=Date.now();for(const kind of step.patchKinds||[]){const id=`${step.id}:${kind}`,crop=selectedSeed(kind);if(!crop){delete timers[id];continue}timers[id]={id,label:step.location,type:crop.label,readyAt:now+crop.minutes*60000,ack:false,crop:crop.key}}save(STORE.timers,timers)}
-function renderPofRows(){$('pofList').innerHTML='';for(const pen of POF_PENS){const row=document.createElement('div');row.className='pof-row';const stages=Object.keys(pen.stages);row.innerHTML=`<label class="pof-main"><input type="checkbox" data-pen="${pen.id}"><span><strong>${esc(pen.name)}</strong><small>${esc(pen.animal)} · ${esc(pen.food)}</small></span></label><select data-stage="${pen.id}">${stages.map(s=>`<option value="${s}"${s===pen.start?' selected':''}>${cap(s)}</option>`).join('')}</select>`;$('pofList').appendChild(row)}}
-function selectAllPens(){document.querySelectorAll('[data-pen]').forEach(x=>x.checked=true)}
-function startPofTimers(){const now=Date.now();for(const pen of POF_PENS){const check=document.querySelector(`[data-pen="${pen.id}"]`);if(!check?.checked)continue;const start=document.querySelector(`[data-stage="${pen.id}"]`)?.value||pen.start;const base=pen.stages[start];const stages=[];for(const [name,min] of Object.entries(pen.stages)){if(min>base)stages.push({name,due:now+(min-base)*60000,ack:false})}pofTimers[pen.id]={penId:pen.id,startedAt:now,startStage:start,stages}}save(STORE.pof,pofTimers)}
-function getAlarmItems(){const now=Date.now(),a=[];for(const t of Object.values(timers))if(t.readyAt<=now&&!t.ack)a.push({kind:'plot',id:t.id,label:`${t.label} — ${t.type}`,due:t.readyAt});for(const [id,t] of Object.entries(pofTimers))for(const s of t.stages||[])if(s.due<=now&&!s.ack){const p=POF_PENS.find(x=>x.id===id);a.push({kind:'pof',id:`${id}:${s.name}`,label:`${p?.name||id} — ${cap(s.name)}`,due:s.due})}return a}
-function acknowledgeDue(){const now=Date.now();for(const t of Object.values(timers))if(t.readyAt<=now)t.ack=true;for(const t of Object.values(pofTimers))for(const s of t.stages||[])if(s.due<=now)s.ack=true;save(STORE.timers,timers);save(STORE.pof,pofTimers);snoozeUntil=0;rawRemove(STORE.snooze)}
-function snooze(){if(!getAlarmItems().length){toast('No active alarms.');return}snoozeUntil=Date.now()+3600000;rawSet(STORE.snooze,String(snoozeUntil));update();toast('Alarms snoozed 1 hour.')}
-function resetAll(){
+
+const TREE_STEPS=[
+  {id:'brimhaven-fruit',type:'fruit',location:'Brimhaven',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'Spirit tree → 8. Brimhaven',directions:'Run west to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'gnome-stronghold-fruit',type:'fruit',location:'Tree Gnome Stronghold',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'Spirit tree → 2. Tree Gnome Stronghold',directions:'Run east to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'gnome-stronghold-magic',type:'magic',location:'Tree Gnome Stronghold',patch:'Magic tree',plant:'Magic sapling',teleport:'Stay in Tree Gnome Stronghold',directions:'Run south-west to the regular-tree patch.',payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8},
+  {id:'gnome-village-fruit',type:'fruit',location:'Tree Gnome Village',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'Spirit tree → 1. Tree Gnome Village',directions:'Use the loose railing, ask Elkoy to guide you out, then run south-west.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'catherby-fruit',type:'fruit',location:'Catherby',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'Catherby teleport or lodestone',directions:'Run east/south-east to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'habitat-fruit',type:'fruit',location:'Herblore Habitat',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'Master farmer outfit → Herblore Habitat',directions:'Run to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'lletya-fruit',type:'fruit',location:'Lletya',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'Tirannwn quiver 4 → 1. Lletya',directions:'Run south-east through Lletya to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'meilyr-fruit',type:'fruit',location:'Prifddinas — Meilyr',patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:'POH Seren Teleport Stone → 8. Meilyr',directions:'Run north/north-west to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'trahaearn-magic',type:'magic',location:'Prifddinas — Trahaearn',patch:'Magic tree',plant:'Magic sapling',teleport:'POH Seren Teleport Stone → 9. Trahaearn',directions:'Run to the regular-tree patch on the outer side.',payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8},
+  {id:'crwys-elder',type:'elder',location:'Prifddinas — Crwys',patch:'Elder tree',plant:'Elder sapling',teleport:'POH Seren Teleport Stone → 4. Crwys',directions:'Run to the elder-tree patch on the outer section.',payment:'23 noted morchella mushrooms',paymentItem:'Noted morchella mushrooms',paymentQty:23,minutes:4200,xp:23463},
+  {id:'havenhythe-magic',type:'magic',location:"Havenhythe — Dalia's Tree Nursery",patch:'Magic tree',plant:'Magic sapling',teleport:'Wendlewick Teleport → Marigold Farm',directions:"Enter Dalia's Tree Nursery.",payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8},
+  {id:'havenhythe-fruit',type:'fruit',location:"Havenhythe — Dalia's Tree Nursery",patch:'Carambola fruit tree',plant:'Carambola sapling',teleport:"Stay at Dalia's Tree Nursery",directions:'Move to the fruit-tree patch.',payment:'7 noted dragonfruit',paymentItem:'Noted dragonfruit',paymentQty:7,minutes:800,xp:41254.1},
+  {id:'lumbridge-magic',type:'magic',location:'Lumbridge',patch:'Magic tree',plant:'Magic sapling',teleport:'Lumbridge teleport or lodestone',directions:'Run to the regular-tree patch near the general-store side.',payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8},
+  {id:'varrock-magic',type:'magic',location:'Varrock',patch:'Magic tree',plant:'Magic sapling',teleport:'Varrock teleport',directions:'Use the regular-tree patch in the castle courtyard.',payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8},
+  {id:'falador-magic',type:'magic',location:'Falador',patch:'Magic tree',plant:'Magic sapling',teleport:'Falador teleport',directions:'Run into Falador Park.',payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8},
+  {id:'taverley-magic',type:'magic',location:'Taverley',patch:'Magic tree',plant:'Magic sapling',teleport:'Taverley lodestone',directions:'Run north to the regular-tree patch.',payment:'23 noted coconuts',paymentItem:'Noted coconuts',paymentQty:23,minutes:480,xp:13913.8}
+];
+
+const PENS=[
+  {id:'small-1',name:'Small Pen 1',animal:'6 Chinchompas',food:'Woad leaves',stages:{baby:0,adolescent:504,adult:1386,elder:2520}},
+  {id:'small-2',name:'Small Pen 2',animal:'6 Chinchompas',food:'Woad leaves',stages:{baby:0,adolescent:504,adult:1386,elder:2520}},
+  {id:'medium-1',name:'Medium Pen 1',animal:'4 Zygomites',food:'Gorajian mushrooms',stages:{baby:0,adolescent:1008,adult:2772,elder:5040}},
+  {id:'medium-2',name:'Medium Pen 2',animal:'4 Zygomites',food:'Gorajian mushrooms',stages:{baby:0,adolescent:1008,adult:2772,elder:5040}},
+  {id:'large-1',name:'Large Pen 1',animal:'3 Dragons',food:'Raw tuna',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}},
+  {id:'large-2',name:'Large Pen 2',animal:'3 Dragons',food:'Raw tuna',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}},
+  {id:'breeding',name:'Breeding Pen',animal:'4 Dragons',food:'Raw tuna',stages:{egg:0,baby:1008,adolescent:2520,adult:5544,elder:10080}}
+];
+
+const ITEM_IDS={
+  'Magic sapling':5374,'Carambola sapling':48707,'Elder sapling':32294,
+  'Noted coconuts':5975,'Noted dragonfruit':48772,'Noted morchella mushrooms':21623,
+  'Grasping rune pouch':52215,'Urn enhancer':36837,'Exquisite farming urn':59146,
+  'Fellstalk seed':21621,'White lily seed':14589,'Starbloom flower seed':58976
+};
+
+const defaults={
+  version:BUILD,
+  crops:{allotment:'watermelon',herb:'fellstalk',flower:'starbloom-flower',plantPower:1},
+  overrides:{},treeTypes:{fruit:true,magic:true,elder:true},timerMode:'safe',tickAnchor:0,
+  timers:{},pofTimers:{},activeRun:null,history:[],progress:{currentXp:0,manualAverage:0},
+  settings:{mini:true,sound:'chime',volume:65,repeatMinutes:10,notifications:false},
+  snoozeAllUntil:0,lastAlarmAt:0,lastAlarmSignature:''
+};
+let state=loadState();
+let audioCtx=null;
+let audioUnlocked=false;
+let resetArmedUntil=0;
+let timerInterval=null;
+
+function clone(value){return JSON.parse(JSON.stringify(value));}
+function merge(base,extra){
+  if(Array.isArray(base))return Array.isArray(extra)?extra:clone(base);
+  if(base&&typeof base==='object'){
+    const out={...base};
+    if(extra&&typeof extra==='object')for(const key of Object.keys(extra))out[key]=key in base?merge(base[key],extra[key]):extra[key];
+    return out;
+  }
+  return extra===undefined?base:extra;
+}
+function loadState(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STATE_KEY)||'null');
+    if(saved)return merge(defaults,saved);
+  }catch{}
+  const migrated=clone(defaults);
+  try{
+    const oldTimers=JSON.parse(localStorage.getItem('rs3-farm-timers-v1')||'{}');
+    for(const [id,t] of Object.entries(oldTimers))migrated.timers[id]={...t,status:t.readyAt<=Date.now()?'ready':'growing',ack:!!t.ack,snoozeUntil:0};
+    migrated.pofTimers=JSON.parse(localStorage.getItem('rs3-farm-pof-timers-v2')||'{}');
+    const oldCrops=JSON.parse(localStorage.getItem('rs3-farm-crop-timers-v1')||'{}');
+    if(oldCrops.allotmentSeed!==undefined)migrated.crops.allotment=oldCrops.allotmentSeed;
+    if(oldCrops.herbSeed!==undefined)migrated.crops.herb=oldCrops.herbSeed;
+    if(oldCrops.flowerSeed!==undefined)migrated.crops.flower=oldCrops.flowerSeed==='starbloom'?'starbloom-flower':oldCrops.flowerSeed;
+  }catch{}
+  return migrated;
+}
+function save(){try{localStorage.setItem(STATE_KEY,JSON.stringify(state));$('storageDiag')?.classList.add('ok')}catch{$('storageDiag')?.classList.remove('ok')}}
+function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function cap(value){return String(value).charAt(0).toUpperCase()+String(value).slice(1);}
+function compact(number){return Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(number);}
+function duration(ms){const total=Math.max(0,Math.floor(ms/1000)),h=Math.floor(total/3600),m=Math.floor(total%3600/60),s=total%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`;}
+function remaining(ms){if(ms<=0)return'now';const m=Math.ceil(ms/60000),d=Math.floor(m/1440),h=Math.floor((m%1440)/60),min=m%60;return d?`${d}d ${h}h`:h?`${h}h ${min}m`:`${min}m`;}
+function runLabel(type){return type==='all'?'All Farm/Tree Run':type==='farm'?'Farm Run':type==='tree'?'Tree Run':'Ready Locations';}
+function selectedRunType(){return document.querySelector('input[name="runType"]:checked')?.value||'all';}
+function cropByKey(kind,key){return CROP_LISTS[kind].find(item=>item.key===key)||CROP_LISTS[kind][0];}
+function effectiveCrop(step,kind){
+  const override=state.overrides[step.id];
+  const key=override&&Object.prototype.hasOwnProperty.call(override,kind)?override[kind]:state.crops[kind];
+  return cropByKey(kind,key);
+}
+function treeEnabled(step){return !!state.treeTypes[step.type];}
+function normalRoute(type){
+  const farm=FARM_STEPS.filter(step=>step.kinds.some(kind=>effectiveCrop(step,kind).minutes>0));
+  const trees=TREE_STEPS.filter(treeEnabled);
+  if(type==='farm')return farm.map(step=>({...step,kind:'farm'}));
+  if(type==='tree')return trees.map(step=>({...step,kind:'tree'}));
+  return [...farm.map(step=>({...step,kind:'farm'})),...trees.map(step=>({...step,kind:'tree'}))];
+}
+function timerKey(stepId,kind){return kind?`${stepId}:${kind}`:stepId;}
+function treeStepById(id){return TREE_STEPS.find(step=>step.id===id);}
+function farmStepById(id){return FARM_STEPS.find(step=>step.id===id);}
+function stepById(id){return farmStepById(id)||treeStepById(id);}
+function timerIsReady(timer,now=Date.now()){
+  if(!timer)return false;
+  if(['diseased','dead','paused'].includes(timer.status))return false;
+  return timer.status==='ready'||timer.readyAt<=now;
+}
+function allPlotTimers(){return Object.values(state.timers);}
+function allPofStages(){
+  const list=[];
+  for(const [penId,timer] of Object.entries(state.pofTimers))for(const stage of timer.stages||[])list.push({...stage,penId});
+  return list;
+}
+function alarmItems(now=Date.now()){
+  const allSnoozed=state.snoozeAllUntil>now;
+  const items=[];
+  for(const timer of allPlotTimers()){
+    if(!timerIsReady(timer,now)||timer.ack||allSnoozed||Number(timer.snoozeUntil||0)>now)continue;
+    items.push({kind:'plot',id:timer.id,label:`${timer.location} — ${timer.crop||timer.patch}`,due:timer.readyAt,stepId:timer.stepId,timerId:timer.id});
+  }
+  for(const stage of allPofStages()){
+    if(stage.due>now||stage.ack||allSnoozed||Number(stage.snoozeUntil||0)>now)continue;
+    const pen=PENS.find(item=>item.id===stage.penId);
+    items.push({kind:'pof',id:`${stage.penId}:${stage.name}`,label:`${pen?.name||stage.penId} — ${cap(stage.name)}`,due:stage.due,penId:stage.penId,stageName:stage.name});
+  }
+  return items.sort((a,b)=>a.due-b.due);
+}
+function nextUpcoming(now=Date.now()){
+  const items=[];
+  for(const timer of allPlotTimers())if(!['diseased','dead','paused'].includes(timer.status)&&timer.readyAt>now)items.push({label:`${timer.location} — ${timer.crop||timer.patch}`,due:timer.readyAt});
+  for(const stage of allPofStages())if(stage.due>now&&!stage.ack)items.push({label:`${PENS.find(p=>p.id===stage.penId)?.name} — ${cap(stage.name)}`,due:stage.due});
+  return items.sort((a,b)=>a.due-b.due)[0]||null;
+}
+function readyRoute(){
+  const grouped=new Map();
+  for(const timer of allPlotTimers().filter(timer=>timerIsReady(timer))){
+    const step=stepById(timer.stepId);
+    if(!step)continue;
+    if(!grouped.has(step.id))grouped.set(step.id,{...step,kind:step.kinds?'farm':'tree',readyTimerIds:[]});
+    grouped.get(step.id).readyTimerIds.push(timer.id);
+  }
+  return [...grouped.values()].sort((a,b)=>{
+    const ai=FARM_STEPS.findIndex(x=>x.id===a.id),bi=FARM_STEPS.findIndex(x=>x.id===b.id);
+    if(ai>=0&&bi>=0)return ai-bi;
+    if(ai>=0)return-1;if(bi>=0)return 1;
+    return TREE_STEPS.findIndex(x=>x.id===a.id)-TREE_STEPS.findIndex(x=>x.id===b.id);
+  });
+}
+function dueTimeForCrop(crop,plantedAt){
+  if(!crop.minutes)return 0;
+  if(state.timerMode!=='aligned'||!state.tickAnchor||!crop.cycle||!crop.stages)return plantedAt+crop.minutes*60000;
+  const cycle=crop.cycle*60000;
+  const elapsed=plantedAt-state.tickAnchor;
+  const cycles=Math.floor(elapsed/cycle)+1;
+  const nextBoundary=state.tickAnchor+cycles*cycle;
+  return nextBoundary+(crop.stages-1)*cycle;
+}
+function createFarmTimer(step,kind,onlyIfReadyIds=null){
+  const id=timerKey(step.id,kind);
+  if(onlyIfReadyIds&&!onlyIfReadyIds.includes(id))return;
+  const crop=effectiveCrop(step,kind);
+  if(!crop.minutes){delete state.timers[id];return;}
   const now=Date.now();
-  if(now>resetArmedUntil){
-    resetArmedUntil=now+5000;
-    setResetButtons(true);
-    toast('Press Reset all timers again to confirm.');
-    clearTimeout(resetArmTimer);
-    resetArmTimer=setTimeout(()=>{resetArmedUntil=0;setResetButtons(false)},5000);
-    return;
-  }
-  clearTimeout(resetArmTimer);
-  resetArmedUntil=0;
-  timers={};
-  pofTimers={};
-  snoozeUntil=0;
-  lastAlarmSignature='';
-  rawRemove(STORE.timers);
-  rawRemove(STORE.pof);
-  rawRemove(STORE.snooze);
-  setResetButtons(false);
-  update();
-  renderTimers();
-  toast('All plot, tree, and Manor Farm timers reset.');
+  state.timers[id]={id,stepId:step.id,kind,location:step.location,patch:step.patch,crop:crop.label,plantedAt:now,readyAt:dueTimeForCrop(crop,now),status:'growing',ack:false,snoozeUntil:0,pausedRemaining:0};
 }
-function setResetButtons(armed){
-  for(const id of ['resetTimers','dialogReset']){
-    const button=$(id);
-    if(!button)continue;
-    button.textContent=armed?'Confirm reset':'Reset all timers';
-    button.classList.toggle('warning',armed);
-    button.classList.toggle('danger',!armed);
+function createTreeTimer(step,onlyIfReadyIds=null){
+  const id=step.id;
+  if(onlyIfReadyIds&&!onlyIfReadyIds.includes(id))return;
+  const now=Date.now();
+  state.timers[id]={id,stepId:step.id,kind:'tree',location:step.location,patch:step.patch,crop:step.plant,plantedAt:now,readyAt:now+step.minutes*60000,status:'growing',ack:false,snoozeUntil:0,pausedRemaining:0};
+}
+function completeCurrentStep(){
+  if(!state.activeRun)return;
+  const step=currentStep();
+  if(!step)return;
+  const readyIds=state.activeRun.mode==='ready'?step.readyTimerIds:null;
+  if(step.kind==='farm')for(const kind of step.kinds)createFarmTimer(step,kind,readyIds);
+  else createTreeTimer(step,readyIds);
+  state.activeRun.completed.push(step.id);
+  advanceRun();
+}
+function skipCurrentStep(){
+  if(!state.activeRun)return;
+  const step=currentStep();
+  if(state.activeRun.mode==='ready')for(const id of step.readyTimerIds||[]){if(state.timers[id])state.timers[id].ack=false;}
+  state.activeRun.skipped.push(step.id);
+  advanceRun();
+}
+function advanceRun(){
+  state.activeRun.index++;
+  if(state.activeRun.index>=state.activeRun.route.length){finishRun();return;}
+  save();renderRun();renderAll();
+}
+function acknowledgeDueAlarms(){
+  const now=Date.now();
+  for(const timer of allPlotTimers())if(timerIsReady(timer,now))timer.ack=true;
+  for(const timer of Object.values(state.pofTimers))for(const stage of timer.stages||[])if(stage.due<=now)stage.ack=true;
+  state.snoozeAllUntil=0;
+}
+function startRun(type,mode='normal'){
+  const route=mode==='ready'?readyRoute():normalRoute(type);
+  if(!route.length){toast(mode==='ready'?'No ready locations.':'No enabled patches for this run.');return;}
+  acknowledgeDueAlarms();
+  state.activeRun={type,mode,route,index:0,startedAt:Date.now(),completed:[],skipped:[]};
+  save();showRun();renderRun();renderAll();armAudio();
+}
+function currentStep(){return state.activeRun?.route?.[state.activeRun.index]||null;}
+function previousStep(){if(!state.activeRun||state.activeRun.index===0)return;state.activeRun.index--;save();renderRun();}
+function finishRun(){
+  const run=state.activeRun;
+  state.activeRun=null;
+  save();showHome();
+  $('runCompleteText').textContent=`${runLabel(run.type)} finished: ${run.completed.length} completed, ${run.skipped.length} skipped, ${duration(Date.now()-run.startedAt)}.`;
+  $('finishXpInput').value=state.progress.currentXp||'';
+  $('runCompleteDialog').showModal();
+  $('runCompleteDialog').dataset.pending=JSON.stringify(run);
+  renderAll();
+}
+function saveCompletedRun(){
+  const dialog=$('runCompleteDialog');
+  let run;try{run=JSON.parse(dialog.dataset.pending||'{}')}catch{run={}}
+  const entered=Math.max(0,Math.min(MAX_XP,Number($('finishXpInput').value)||0));
+  const prior=Number(state.progress.currentXp)||0;
+  const gain=entered>=prior?entered-prior:0;
+  if(entered)state.progress.currentXp=entered;
+  state.history.unshift({date:Date.now(),type:run.type||'all',duration:Date.now()-(run.startedAt||Date.now()),completed:(run.completed||[]).length,skipped:(run.skipped||[]).length,xpGain:gain});
+  state.history=state.history.slice(0,100);
+  save();dialog.close();renderAll();toast('Run saved.');
+}
+function showHome(){$('homeScreen').hidden=false;$('runScreen').hidden=true;$('resumeRunBtn').hidden=!state.activeRun;updateHomeVisibility();}
+function showRun(){$('homeScreen').hidden=true;$('runScreen').hidden=false;$('runnerCard').classList.toggle('mini',!!state.settings.mini);}
+function updateHomeVisibility(){const type=selectedRunType();$('farmConfigCard').hidden=type==='tree';$('treeConfigCard').hidden=type==='farm';}
+function renderRun(){
+  const step=currentStep();if(!step){showHome();return;}
+  $('runnerCard').classList.toggle('mini',!!state.settings.mini);
+  $('stepBadge').textContent=step.kind==='farm'?'Farm':step.type==='fruit'?'Fruit tree':step.type==='magic'?'Magic tree':'Elder tree';
+  $('stepLocation').textContent=step.location;$('stepPatch').textContent=step.patch;
+  $('stepCount').textContent=`${state.activeRun.index+1} / ${state.activeRun.route.length}`;
+  $('stepTeleport').textContent=step.teleport;$('stepDirections').textContent=step.directions;
+  if(step.kind==='farm'){
+    const readyOnly=state.activeRun.mode==='ready'?new Set(step.readyTimerIds||[]):null;
+    const crops=[];
+    for(const kind of step.kinds){const crop=effectiveCrop(step,kind),id=timerKey(step.id,kind);if(crop.minutes&&(!readyOnly||readyOnly.has(id)))crops.push(`${cap(kind)}: ${crop.label}${kind==='herb'?` ×${state.crops.plantPower}`:''}`);}
+    $('stepPlant').textContent=crops.join(' · ')||'No configured crops';
+    $('stepPlantNote').textContent=state.activeRun.mode==='ready'?'Only currently ready crops will be restarted.':'Empty crop selections create no timer.';
+    $('stepProtection').textContent='Use your preferred compost and harvesting setup.';
+  }else{
+    $('stepPlant').textContent=step.plant;$('stepPlantNote').textContent=`Growth time: ${remaining(step.minutes*60000)}`;$('stepProtection').textContent=step.payment;
+  }
+  const ids=step.kind==='farm'?step.kinds.map(kind=>timerKey(step.id,kind)): [step.id];
+  const statuses=ids.map(id=>state.timers[id]).filter(Boolean).map(timer=>timerIsReady(timer)?`${timer.crop}: ready`:`${timer.crop}: ${remaining(timer.readyAt-Date.now())}`);
+  $('stepTimerStatus').textContent=statuses.join(' · ')||'No timer set';
+}
+function renderHome(){
+  $('resumeRunBtn').hidden=!state.activeRun;
+  const current=Math.max(0,Number(state.progress.currentXp)||0),remainingXp=Math.max(0,MAX_XP-current),average=averageXpPerRun();
+  $('homeXpText').textContent=`${compact(current)} / 200m XP`;
+  $('homeXpSub').textContent=average?`${Math.ceil(remainingXp/average).toLocaleString()} estimated runs remaining`:'Set current XP and XP per run in Progress.';
+  $('homeXpBar').style.width=`${Math.min(100,current/MAX_XP*100)}%`;
+  const ready=readyRoute();$('readyRunBtn').hidden=!ready.length;$('readyRunBtn').textContent=`Run ${ready.length} ready location${ready.length===1?'':'s'}`;
+  updateHomeVisibility();
+}
+function averageXpPerRun(){const gains=state.history.map(item=>Number(item.xpGain)||0).filter(Boolean);return gains.length?gains.reduce((a,b)=>a+b,0)/gains.length:Number(state.progress.manualAverage)||0;}
+function renderProgress(){
+  const current=Math.max(0,Number(state.progress.currentXp)||0),remainingXp=Math.max(0,MAX_XP-current),average=averageXpPerRun();
+  $('currentXpInput').value=current||'';$('manualAvgInput').value=state.progress.manualAverage||'';
+  $('progressBar').style.width=`${Math.min(100,current/MAX_XP*100)}%`;
+  $('remainingXpMetric').textContent=compact(remainingXp);$('estimatedRunsMetric').textContent=average?Math.ceil(remainingXp/average).toLocaleString():'—';
+  $('runsCompletedMetric').textContent=state.history.length;
+  const avgTime=state.history.length?state.history.reduce((sum,item)=>sum+item.duration,0)/state.history.length:0;$('averageTimeMetric').textContent=avgTime?duration(avgTime):'—';
+  $('historyList').innerHTML=state.history.length?'':'<p class="muted tiny">No completed runs yet.</p>';
+  for(const item of state.history.slice(0,10)){
+    const row=document.createElement('div');row.className='history-row';row.innerHTML=`<b>${esc(runLabel(item.type))}</b><small>${new Date(item.date).toLocaleString()} · ${item.completed} completed · ${item.skipped} skipped · ${duration(item.duration)}${item.xpGain?` · +${compact(item.xpGain)} XP`:''}</small>`;$('historyList').appendChild(row);
   }
 }
-function update(){const now=Date.now();if(active){els.runClock.textContent=formatDuration(now-active.startedAt);renderStepTiming()}const alarms=getAlarmItems(),snoozed=snoozeUntil>now;els.alarmCount.textContent=`${alarms.length} active alarm${alarms.length===1?'':'s'}`;els.alarmBar.classList.toggle('has-alarm',alarms.length>0&&!snoozed);els.alarmBar.classList.toggle('snoozed',alarms.length>0&&snoozed);const next=nextEvent();els.nextReady.textContent=snoozed?`Snoozed ${formatRemaining(snoozeUntil-now)}`:alarms[0]?.label||(next?`${next.label} · ${formatRemaining(next.due-now)}`:'No timers set');const sig=alarms.map(x=>x.id).sort().join('|');if(alarms.length&&!snoozed&&sig!==lastAlarmSignature){lastAlarmSignature=sig;playAlarm()}if(!alarms.length)lastAlarmSignature='';if(els.timersDialog.open)renderTimers()}
-function renderStepTiming(){const step=current();if(!step)return;if(step.kind==='tree'){const t=timers[step.id];if(t)$('timerText').textContent=t.readyAt>Date.now()?`Growing · ${formatRemaining(t.readyAt-Date.now())}`:'Ready now'} }
-function nextEvent(){const now=Date.now(),events=[];for(const t of Object.values(timers))if(t.readyAt>now)events.push({label:`${t.label} — ${t.type}`,due:t.readyAt});for(const [id,t] of Object.entries(pofTimers))for(const s of t.stages||[])if(s.due>now){const p=POF_PENS.find(x=>x.id===id);events.push({label:`${p?.name} — ${cap(s.name)}`,due:s.due})}return events.sort((a,b)=>a.due-b.due)[0]}
-function openTimers(){renderTimers();els.timersDialog.showModal();closeMenu()}function tabs(plot){$('plotPanel').hidden=!plot;$('pofPanel').hidden=plot;$('plotTab').classList.toggle('active',plot);$('pofTab').classList.toggle('active',!plot)}
-function renderTimers(){const now=Date.now();$('plotTimers').innerHTML='';const vals=Object.values(timers).sort((a,b)=>a.readyAt-b.readyAt);if(!vals.length)$('plotTimers').innerHTML='<p class="inventory-note">No plot or tree timers.</p>';for(const t of vals){const ready=t.readyAt<=now;const alarm=ready&&!t.ack;const card=document.createElement('div');card.className=`timer-card status-${alarm?'alarm':ready?'ready':'growing'}`;card.innerHTML=`<span><b>${esc(t.label)}</b><small>${esc(t.type)}</small></span><strong>${ready?'READY':formatRemaining(t.readyAt-now)}</strong>`;$('plotTimers').appendChild(card)}$('pofTimers').innerHTML='';for(const pen of POF_PENS){const t=pofTimers[pen.id];const card=document.createElement('div');card.className='timer-card';if(!t){card.innerHTML=`<span><b>${esc(pen.name)}</b><small>${esc(pen.animal)}</small></span><strong>Not set</strong>`}else{const next=(t.stages||[]).find(s=>s.due>now)||[...(t.stages||[])].reverse().find(s=>!s.ack);if(next){const ready=next.due<=now;card.classList.add(ready?'status-alarm':'status-growing');card.innerHTML=`<span><b>${esc(pen.name)}</b><small>${esc(pen.animal)} · ${cap(next.name)}</small></span><strong>${ready?'READY':formatRemaining(next.due-now)}</strong>`}else card.innerHTML=`<span><b>${esc(pen.name)}</b><small>${esc(pen.animal)}</small></span><strong>Elder</strong>`}$('pofTimers').appendChild(card)}}
-function openJump(){if(!active){toast('Start a run first.');return}$('jumpList').innerHTML='';activeRoute().forEach((s,i)=>{const b=document.createElement('button');b.className='jump-item';b.innerHTML=`<span class="jump-num">${i+1}</span><span><b>${esc(s.location)}</b><small>${esc(s.patchType)}</small></span>`;b.onclick=()=>{active.index=i;save(STORE.active,active);renderStep();els.jumpDialog.close()};$('jumpList').appendChild(b)});els.jumpDialog.showModal();closeMenu()}
-function openInventory(){const route=active?activeRoute():routeFor(els.routeSelect.value);const slots=buildInventory(route);$('inventory').innerHTML='';slots.slice(0,28).forEach((s,i)=>{const p=inventoryPos(i),d=document.createElement('div');d.className='slot';d.style.left=p.left+'px';d.style.top=p.top+'px';const img=document.createElement('img');img.src=itemUrl(s.item);img.alt=s.item;d.appendChild(img);if(s.qty>1){const q=document.createElement('span');q.className='qty';q.textContent=s.qty;d.appendChild(q)}$('inventory').appendChild(d)});if(route.some(x=>x.kind==='farm')){const crops=['allotment','herb','flower'].map(selectedSeed).filter(Boolean).map(x=>x.label);$('inventoryNote').textContent=crops.length?`${crops.join(', ')} included for selected farm patches.`:'No farm seeds selected.'}else $('inventoryNote').textContent='Tree saplings and noted protection items for the selected route.';els.inventoryDialog.showModal();closeMenu()}
-function buildInventory(route){const c=new Map(),add=(i,q=1)=>{if(i)c.set(i,(c.get(i)||0)+q)};for(const s of route){if(s.inventoryType==='individual'||s.inventoryType==='stack')add(s.inventoryItem,1);if(Number(s.paymentQty)>0)add(s.paymentItem,Number(s.paymentQty))}if(route.some(x=>x.kind==='farm')){const farm=route.filter(x=>x.kind==='farm'),allotment=selectedSeed('allotment'),herb=selectedSeed('herb'),flower=selectedSeed('flower');if(allotment)add(allotment.label,farm.filter(x=>(x.patchKinds||[]).includes('allotment')).length*6);if(herb)add(herb.label,farm.filter(x=>(x.patchKinds||[]).includes('herb')).length);if(flower)add(flower.label,farm.filter(x=>(x.patchKinds||[]).includes('flower')).length)}if(route.some(x=>x.kind==='tree')){add('Grasping rune pouch');add('Urn enhancer');add('Exquisite farming urn')}const selected=['allotment','herb','flower'].map(selectedSeed).filter(Boolean).map(x=>x.label),order=[...selected,'Magic sapling','Carambola sapling','Calquat sapling','Elder sapling','Golden dragonfruit seed','Noted coconuts','Noted dragonfruit','Noted poison ivy berries','Noted morchella mushrooms','Noted guarana fruit','Grasping rune pouch','Urn enhancer','Exquisite farming urn'];const out=[];for(const item of [...new Set(order)]){const qty=c.get(item)||0;if(!qty)continue;if(['Magic sapling','Carambola sapling','Calquat sapling','Elder sapling'].includes(item)){for(let i=0;i<qty;i++)out.push({item,qty:1})}else out.push({item,qty})}return out}
-function inventoryPos(i){const left=[35,74,114,153,193],row=i<25?Math.floor(i/5):5,col=i<25?i%5:i-25;return{left:left[col],top:18+row*36}}function itemUrl(i){if(ITEM_SPRITES[i])return`https://secure.runescape.com/m=itemdb_rs/obj_sprite.gif?id=${ITEM_SPRITES[i].id}`;return`https://runescape.wiki/w/Special:Redirect/file/${encodeURIComponent(String(i).replaceAll(' ','_'))}.png`}
-function copyTeleport(){const s=current();if(!s)return;navigator.clipboard?.writeText(`${s.teleport} — ${s.directions}`).then(()=>toast('Copied.')).catch(()=>toast('Copy failed.'))}
-function armAudio(){if(!audioCtx)try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch{}if(audioCtx?.state==='suspended')audioCtx.resume()}function enableSound(){armAudio();playTone();toast('Sound enabled.')}
-function playTone(){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=740;g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.18,audioCtx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.35);o.start();o.stop(audioCtx.currentTime+.36)}function playAlarm(){armAudio();if(!audioCtx)return;playTone();setTimeout(playTone,430)}
-function formatRemaining(ms){if(ms<=0)return'now';const m=Math.ceil(ms/60000),d=Math.floor(m/1440),h=Math.floor((m%1440)/60),min=m%60;if(d)return`${d}d ${h}h`;if(h)return`${h}h ${min}m`;return`${min}m`}function formatDuration(ms){const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`:`${m}:${String(sec).padStart(2,'0')}`}function cap(s){return String(s).charAt(0).toUpperCase()+String(s).slice(1)}
-let toastTimer;function toast(t){clearTimeout(toastTimer);$('toast').textContent=t;$('toast').classList.add('show');toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2000)}
-setTimeout(init,0);
-</script></body></html>
+function saveProgress(){state.progress.currentXp=Math.max(0,Math.min(MAX_XP,Number($('currentXpInput').value)||0));state.progress.manualAverage=Math.max(0,Number($('manualAvgInput').value)||0);save();renderAll();toast('Progress saved.');}
+function renderAlarmStrip(){
+  const alarms=alarmItems(),now=Date.now(),snoozed=state.snoozeAllUntil>now;
+  $('topStatus').textContent=`${alarms.length} ready`;$('topStatus').classList.toggle('alarm',alarms.length>0&&!snoozed);$('topStatus').classList.toggle('snoozed',alarms.length>0&&snoozed);
+  $('alarmStrip').classList.toggle('alarm',alarms.length>0&&!snoozed);$('alarmStrip').classList.toggle('snoozed',alarms.length>0&&snoozed);
+  $('alarmTitle').textContent=alarms.length?`${alarms.length} active alarm${alarms.length===1?'':'s'}`:'No active alarms';
+  if(snoozed)$('alarmSubtitle').textContent=`Snoozed ${remaining(state.snoozeAllUntil-now)}`;
+  else if(alarms.length)$('alarmSubtitle').textContent=alarms[0].label;
+  else{const next=nextUpcoming(now);$('alarmSubtitle').textContent=next?`${next.label} · ${remaining(next.due-now)}`:'No timers set';}
+}
+function renderAlarms(){
+  const list=$('alarmList'),alarms=alarmItems();list.innerHTML=alarms.length?'':'<p class="muted tiny">No active alarms.</p>';
+  for(const alarm of alarms){
+    const row=document.createElement('div');row.className='alarm-row';row.innerHTML=`<b>${esc(alarm.label)}</b><small>Ready ${new Date(alarm.due).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}</small><div class="timer-actions"><button class="button small" data-go>Go</button><button class="button small warning" data-15>15m</button><button class="button small warning" data-60>1h</button></div>`;
+    row.querySelector('[data-go]').onclick=()=>goToAlarm(alarm);row.querySelector('[data-15]').onclick=()=>snoozeAlarm(alarm,15);row.querySelector('[data-60]').onclick=()=>snoozeAlarm(alarm,60);list.appendChild(row);
+  }
+}
+function snoozeAll(minutes){if(!alarmItems().length){toast('No active alarms.');return;}state.snoozeAllUntil=Date.now()+minutes*60000;save();renderAll();toast(`All alarms snoozed ${minutes} minutes.`);}
+function snoozeAlarm(alarm,minutes){
+  const until=Date.now()+minutes*60000;
+  if(alarm.kind==='plot'&&state.timers[alarm.timerId])state.timers[alarm.timerId].snoozeUntil=until;
+  if(alarm.kind==='pof'){const timer=state.pofTimers[alarm.penId],stage=timer?.stages?.find(item=>item.name===alarm.stageName);if(stage)stage.snoozeUntil=until;}
+  save();renderAll();toast(`Alarm snoozed ${minutes} minutes.`);
+}
+function goToAlarm(alarm){
+  if(alarm.kind==='pof'){openDashboard('pof');return;}
+  const route=readyRoute(),index=route.findIndex(step=>step.id===alarm.stepId);if(index<0)return;
+  acknowledgeDueAlarms();state.activeRun={type:'ready',mode:'ready',route,index,startedAt:Date.now(),completed:[],skipped:[]};save();$('dashboardDialog').close();showRun();renderRun();renderAll();
+}
+function markAlarmPlayback(){
+  const alarms=alarmItems(),now=Date.now();
+  if(!alarms.length){if(state.lastAlarmSignature){state.lastAlarmSignature='';save();}return;}
+  if(state.snoozeAllUntil>now||!audioUnlocked)return;
+  const repeat=Number(state.settings.repeatMinutes)||0;
+  const signature=alarms.map(item=>item.id).sort().join('|');
+  const isNew=signature!==state.lastAlarmSignature;
+  const repeatDue=repeat>0&&now-state.lastAlarmAt>=repeat*60000;
+  if(!isNew&&!repeatDue)return;
+  state.lastAlarmAt=now;state.lastAlarmSignature=signature;save();playAlarm();notify(`${alarms.length} farming timer${alarms.length===1?' is':'s are'} ready.`);
+}
+function renderTimers(){
+  const list=$('timerList');list.innerHTML='';
+  for(const step of FARM_STEPS){
+    for(const kind of step.kinds){const crop=effectiveCrop(step,kind),id=timerKey(step.id,kind),timer=state.timers[id];list.appendChild(timerRow(step,kind,crop,timer));}
+  }
+  for(const step of TREE_STEPS)list.appendChild(timerRow(step,'tree',null,state.timers[step.id]));
+}
+function timerRow(step,kind,crop,timer){
+  const row=document.createElement('details');
+  const disabled=kind!=='tree'&&!crop.minutes;
+  const ready=timer&&timerIsReady(timer),paused=timer?.status==='paused';
+  row.className=`timer-row ${ready?'alarm':paused?'paused':timer?'growing':''}`;
+  const label=kind==='tree'?step.patch:`${cap(kind)} — ${crop.label}`;
+  let status='Not planted';
+  if(disabled)status='Disabled';
+  else if(timer){if(timer.status==='diseased')status='Diseased';else if(timer.status==='dead')status='Dead';else if(timer.status==='paused')status=`Paused · ${remaining(timer.pausedRemaining)}`;else status=ready?'READY':remaining(timer.readyAt-Date.now());}
+  row.innerHTML=`<summary class="timer-summary"><span><b>${esc(step.location)}</b><small>${esc(label)}</small></span><strong class="timer-time">${esc(status)}</strong></summary><div class="timer-actions"></div>`;
+  const actions=row.querySelector('.timer-actions');
+  if(!disabled){
+    addAction(actions,timer?'Restart':'Start now',()=>startTimerManually(step,kind));
+    if(timer){addAction(actions,'Ready',()=>setTimerReady(timer.id));addAction(actions,'+5m',()=>adjustTimer(timer.id,5));addAction(actions,'+20m',()=>adjustTimer(timer.id,20));addAction(actions,paused?'Resume':'Pause',()=>togglePause(timer.id));addAction(actions,'Diseased',()=>setTimerStatus(timer.id,'diseased'));addAction(actions,'Dead',()=>setTimerStatus(timer.id,'dead'));addAction(actions,'Clear',()=>clearTimer(timer.id),'danger');}
+  }
+  return row;
+}
+function addAction(parent,label,handler,className=''){const button=document.createElement('button');button.className=`button small ${className}`;button.textContent=label;button.onclick=event=>{event.preventDefault();handler();};parent.appendChild(button);}
+function startTimerManually(step,kind){if(kind==='tree')createTreeTimer(step);else createFarmTimer(step,kind);save();renderAll();}
+function setTimerReady(id){const timer=state.timers[id];if(!timer)return;timer.readyAt=Date.now();timer.status='ready';timer.ack=false;timer.snoozeUntil=0;save();renderAll();}
+function adjustTimer(id,minutes){const timer=state.timers[id];if(!timer)return;if(timer.status==='paused')timer.pausedRemaining=Math.max(0,timer.pausedRemaining+minutes*60000);else timer.readyAt+=minutes*60000;timer.ack=false;save();renderAll();}
+function togglePause(id){const timer=state.timers[id];if(!timer)return;if(timer.status==='paused'){timer.readyAt=Date.now()+Math.max(0,timer.pausedRemaining||0);timer.pausedRemaining=0;timer.status='growing';}else{timer.pausedRemaining=Math.max(0,timer.readyAt-Date.now());timer.status='paused';}timer.ack=false;save();renderAll();}
+function setTimerStatus(id,status){const timer=state.timers[id];if(!timer)return;timer.status=status;timer.ack=true;save();renderAll();}
+function clearTimer(id){delete state.timers[id];save();renderAll();}
+function renderPof(){
+  const list=$('pofList');list.innerHTML='';const now=Date.now();
+  for(const pen of PENS){
+    const existing=state.pofTimers[pen.id],next=existing?.stages?.find(stage=>stage.due<=now&&!stage.ack)||existing?.stages?.find(stage=>stage.due>now&&!stage.ack);
+    const stages=Object.keys(pen.stages),defaultStart=stages[0];
+    const row=document.createElement('div');row.className='pof-row';row.innerHTML=`<div class="pof-top"><span><b>${esc(pen.name)}</b><small>${esc(pen.animal)} · ${esc(pen.food)}</small></span><strong>${next?(next.due<=now?'READY':remaining(next.due-now)):'Not set'}</strong></div><div class="pof-config"><input type="checkbox" data-pen-check="${pen.id}"><select data-pen-start="${pen.id}">${stages.map(stage=>`<option value="${stage}">${cap(stage)}</option>`).join('')}</select><select data-pen-target="${pen.id}">${stages.slice(1).map(stage=>`<option value="${stage}" ${stage==='elder'?'selected':''}>${cap(stage)}</option>`).join('')}</select></div><div class="timer-actions"><button class="button small danger" data-clear-pen="${pen.id}">Clear</button></div>`;
+    row.querySelector(`[data-clear-pen="${pen.id}"]`).onclick=()=>{delete state.pofTimers[pen.id];save();renderAll();};list.appendChild(row);
+    row.querySelector(`[data-pen-start="${pen.id}"]`).value=defaultStart;
+  }
+}
+function selectAllPens(){document.querySelectorAll('[data-pen-check]').forEach(input=>input.checked=true);}
+function startSelectedPens(){
+  const now=Date.now();let count=0;
+  for(const pen of PENS){
+    if(!document.querySelector(`[data-pen-check="${pen.id}"]`)?.checked)continue;
+    const start=document.querySelector(`[data-pen-start="${pen.id}"]`).value,target=document.querySelector(`[data-pen-target="${pen.id}"]`).value;
+    const startMinutes=pen.stages[start],targetMinutes=pen.stages[target];if(targetMinutes<=startMinutes)continue;
+    const stages=[];for(const [name,minutes] of Object.entries(pen.stages))if(minutes>startMinutes&&minutes<=targetMinutes)stages.push({name,due:now+(minutes-startMinutes)*60000,ack:false,snoozeUntil:0});
+    state.pofTimers[pen.id]={penId:pen.id,startedAt:now,start,target,stages};count++;
+  }
+  save();renderAll();toast(`${count} pen timer${count===1?'':'s'} started.`);
+}
+function renderOverrides(){
+  const list=$('overrideList');list.innerHTML='';
+  for(const step of FARM_STEPS){
+    const row=document.createElement('div');row.className='override-row';row.innerHTML=`<div class="override-head"><span><b>${esc(step.location)}</b><small class="muted">Only available patch types are shown.</small></span><button class="button small" data-clear>Clear</button></div><div class="override-selects"></div>`;
+    const selects=row.querySelector('.override-selects');
+    for(const kind of ['allotment','herb','flower']){
+      if(!step.kinds.includes(kind)){const spacer=document.createElement('span');selects.appendChild(spacer);continue;}
+      const select=document.createElement('select');select.dataset.kind=kind;select.innerHTML=`<option value="__global">${cap(kind)}: Global</option>`+CROP_LISTS[kind].map(item=>`<option value="${item.key}">${item.label}</option>`).join('');
+      const override=state.overrides[step.id];select.value=override&&Object.prototype.hasOwnProperty.call(override,kind)?override[kind]:'__global';
+      select.onchange=()=>{state.overrides[step.id]??={};if(select.value==='__global')delete state.overrides[step.id][kind];else state.overrides[step.id][kind]=select.value;if(!Object.keys(state.overrides[step.id]).length)delete state.overrides[step.id];save();renderAll();};selects.appendChild(select);
+    }
+    row.querySelector('[data-clear]').onclick=()=>{delete state.overrides[step.id];save();renderAll();};list.appendChild(row);
+  }
+}
+function clearOverrides(){state.overrides={};save();renderAll();toast('Per-patch overrides cleared.');}
+function openDashboard(tab='timers'){$('dashboardDialog').showModal();switchTab(tab);renderAll();closeMenu();}
+function switchTab(name){document.querySelectorAll('[data-tab]').forEach(button=>button.classList.toggle('active',button.dataset.tab===name));document.querySelectorAll('[id^="tab-"]').forEach(panel=>panel.hidden=panel.id!==`tab-${name}`);}
+function renderSettings(){
+  $('soundSelect').value=state.settings.sound;$('repeatSelect').value=String(state.settings.repeatMinutes);$('volumeInput').value=state.settings.volume;$('notificationToggle').checked=!!state.settings.notifications;
+  $('timerModeSelect').value=state.timerMode;$('calibrationText').textContent=state.tickAnchor?`Calibrated ${new Date(state.tickAnchor).toLocaleString()}.`:'Not calibrated.';
+  $('alt1Diag').textContent=window.alt1?'Connected':'Browser mode';$('alt1Diag').className=window.alt1?'ok':'';
+}
+function calibrateTick(){state.tickAnchor=Date.now();save();renderSettings();toast('Growth boundary calibrated.');}
+function clearCalibration(){state.tickAnchor=0;save();renderSettings();toast('Calibration cleared.');}
+function saveAlarmSettings(){state.settings.sound=$('soundSelect').value;state.settings.repeatMinutes=Number($('repeatSelect').value)||0;state.settings.volume=Number($('volumeInput').value)||0;save();}
+async function toggleNotifications(){state.settings.notifications=$('notificationToggle').checked;if(state.settings.notifications&&'Notification'in window&&Notification.permission==='default')await Notification.requestPermission();save();}
+function notify(text){if(state.settings.notifications&&'Notification'in window&&Notification.permission==='granted')new Notification('Farm Tracker',{body:text});}
+function armAudio(){try{audioCtx??=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();audioUnlocked=true}catch{}}
+function tone(freq,volume,durationSeconds=.3){if(!audioCtx)return;const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);osc.frequency.value=freq;gain.gain.setValueAtTime(.0001,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(Math.max(.01,.22*volume),audioCtx.currentTime+.02);gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+durationSeconds);osc.start();osc.stop(audioCtx.currentTime+durationSeconds+.02);}
+function playAlarm(){armAudio();if(!audioCtx)return;const volume=state.settings.volume/100,pattern=state.settings.sound==='soft'?[520]:state.settings.sound==='urgent'?[760,760,940]:[660,880];pattern.forEach((frequency,index)=>setTimeout(()=>tone(frequency,volume),index*340));}
+function populateSelectors(){
+  const fill=(id,list)=>{$(id).innerHTML=list.map(item=>`<option value="${item.key}">${item.label}</option>`).join('');};fill('allotmentSelect',ALLOTMENTS);fill('herbSelect',HERBS);fill('flowerSelect',FLOWERS);
+  $('allotmentSelect').value=state.crops.allotment;$('herbSelect').value=state.crops.herb;$('flowerSelect').value=state.crops.flower;$('plantPowerInput').value=state.crops.plantPower;$('timerModeSelect').value=state.timerMode;
+  $('fruitToggle').checked=state.treeTypes.fruit;$('magicToggle').checked=state.treeTypes.magic;$('elderToggle').checked=state.treeTypes.elder;
+}
+function saveHomeSettings(){state.crops.allotment=$('allotmentSelect').value;state.crops.herb=$('herbSelect').value;state.crops.flower=$('flowerSelect').value;state.crops.plantPower=Math.max(1,Math.min(10,Number($('plantPowerInput').value)||1));state.timerMode=$('timerModeSelect').value;state.treeTypes.fruit=$('fruitToggle').checked;state.treeTypes.magic=$('magicToggle').checked;state.treeTypes.elder=$('elderToggle').checked;save();renderAll();}
+function openInventory(){
+  const frame=$('inventoryFrame');frame.innerHTML='';const items=buildInventory();const x=[35,74,114,153,193];items.slice(0,28).forEach((item,index)=>{const row=index<25?Math.floor(index/5):5,col=index<25?index%5:index-25,slot=document.createElement('div');slot.className='slot';slot.style.left=`${x[col]}px`;slot.style.top=`${18+row*36}px`;const img=document.createElement('img');img.src=itemUrl(item.item);img.alt=item.item;slot.appendChild(img);if(item.qty>1){const qty=document.createElement('span');qty.className='qty';qty.textContent=item.qty;slot.appendChild(qty)}frame.appendChild(slot);});$('inventoryNote').textContent=`${items.length} used slot${items.length===1?'':'s'} for the current ${runLabel(selectedRunType()).toLowerCase()} setup.`;$('inventoryDialog').showModal();closeMenu();
+}
+function buildInventory(){
+  const route=normalRoute(selectedRunType()),counts=new Map(),add=(item,qty=1)=>{if(item)counts.set(item,(counts.get(item)||0)+qty)};
+  for(const step of route){
+    if(step.kind==='farm')for(const kind of step.kinds){const crop=effectiveCrop(step,kind);if(!crop.minutes)continue;add(crop.label,kind==='allotment'?6:kind==='herb'?state.crops.plantPower:1);}
+    else{add(step.plant,1);add(step.paymentItem,step.paymentQty);}
+  }
+  if(route.some(step=>step.kind==='tree')){add('Grasping rune pouch');add('Urn enhancer');add('Exquisite farming urn');}
+  const output=[];for(const [item,qty] of counts){if(['Magic sapling','Carambola sapling','Elder sapling'].includes(item))for(let i=0;i<qty;i++)output.push({item,qty:1});else output.push({item,qty});}return output;
+}
+function itemUrl(name){if(ITEM_IDS[name])return`https://secure.runescape.com/m=itemdb_rs/obj_sprite.gif?id=${ITEM_IDS[name]}`;return`https://runescape.wiki/w/Special:Redirect/file/${encodeURIComponent(name.replaceAll(' ','_'))}.png`;}
+function copyTeleport(){const step=currentStep();if(!step)return;const text=`${step.teleport} — ${step.directions}`;navigator.clipboard?.writeText(text).then(()=>toast('Teleport copied.')).catch(()=>toast(text));}
+function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='FarmTracker-v10-backup.json';link.click();URL.revokeObjectURL(link.href);}
+function importBackup(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{state=merge(defaults,JSON.parse(reader.result));save();location.reload()}catch{toast('Backup could not be read.')}};reader.readAsText(file);}
+function resetAllTimers(){
+  const now=Date.now();if(now>resetArmedUntil){resetArmedUntil=now+5000;document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Confirm reset');toast('Press reset again to confirm.');setTimeout(()=>{if(Date.now()>resetArmedUntil){document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Reset all timers');}},5200);return;}
+  state.timers={};state.pofTimers={};state.snoozeAllUntil=0;state.lastAlarmAt=0;state.lastAlarmSignature='';resetArmedUntil=0;document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button=>button.textContent='Reset all timers');save();renderAll();toast('All timers reset.');
+}
+function openMenu(){$('sideMenu').classList.add('open');$('sideMenu').setAttribute('aria-hidden','false');$('scrim').hidden=false;}
+function closeMenu(){$('sideMenu').classList.remove('open');$('sideMenu').setAttribute('aria-hidden','true');$('scrim').hidden=true;}
+function toast(text){clearTimeout(toast.timer);$('toast').textContent=text;$('toast').classList.add('show');toast.timer=setTimeout(()=>$('toast').classList.remove('show'),2000);}
+function renderAll(){renderHome();renderAlarmStrip();renderTimers();renderAlarms();renderPof();renderProgress();renderOverrides();renderSettings();if(state.activeRun)renderRun();}
+function tick(){
+  const now=Date.now();
+  for(const timer of allPlotTimers())if(timer.status==='growing'&&timer.readyAt<=now){timer.status='ready';timer.ack=false;}
+  if(state.activeRun)$('runClock').textContent=duration(now-state.activeRun.startedAt);
+  renderAlarmStrip();if($('dashboardDialog').open){renderTimers();renderAlarms();renderPof();renderProgress();}
+  if(state.activeRun)renderRun();markAlarmPlayback();save();
+}
+function bind(){
+  $('menuBtn').onclick=openMenu;$('closeMenuBtn').onclick=closeMenu;$('scrim').onclick=closeMenu;
+  $('menuDashboard').onclick=()=>openDashboard('timers');$('menuInventory').onclick=openInventory;$('menuHome').onclick=()=>{showHome();closeMenu();};$('menuMini').onclick=()=>{state.settings.mini=!state.settings.mini;save();renderAll();closeMenu();};$('menuSound').onclick=()=>{armAudio();playAlarm();closeMenu();};$('menuReset').onclick=resetAllTimers;
+  $('topStatus').onclick=()=>openDashboard('alarms');$('alarmOpen').onclick=()=>openDashboard('alarms');$('alarmSnooze').onclick=()=>snoozeAll(60);
+  $('startRunBtn').onclick=()=>startRun(selectedRunType());$('readyRunBtn').onclick=()=>startRun('ready','ready');$('resumeRunBtn').onclick=()=>{showRun();renderRun();};$('homeDashboardBtn').onclick=()=>openDashboard('timers');$('openProgressBtn').onclick=()=>openDashboard('progress');$('openOverridesBtn').onclick=()=>openDashboard('settings');
+  document.querySelectorAll('input[name="runType"]').forEach(input=>input.onchange=updateHomeVisibility);
+  ['allotmentSelect','herbSelect','flowerSelect','plantPowerInput','timerModeSelect','fruitToggle','magicToggle','elderToggle'].forEach(id=>$(id).onchange=saveHomeSettings);
+  $('previousBtn').onclick=previousStep;$('skipBtn').onclick=skipCurrentStep;$('completeBtn').onclick=completeCurrentStep;$('copyTeleportBtn').onclick=copyTeleport;
+  document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>button.closest('dialog').close());document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>switchTab(button.dataset.tab));
+  $('runReadyFromTimersBtn').onclick=()=>{if(readyRoute().length){$('dashboardDialog').close();startRun('ready','ready')}else toast('No ready locations.');};
+  $('snoozeAll15Btn').onclick=()=>snoozeAll(15);$('snoozeAll60Btn').onclick=()=>snoozeAll(60);
+  $('selectAllPensBtn').onclick=selectAllPens;$('startPofBtn').onclick=startSelectedPens;
+  $('saveProgressBtn').onclick=saveProgress;$('saveCompletedRunBtn').onclick=saveCompletedRun;
+  $('calibrateTickBtn').onclick=calibrateTick;$('clearCalibrationBtn').onclick=clearCalibration;$('soundSelect').onchange=saveAlarmSettings;$('repeatSelect').onchange=saveAlarmSettings;$('volumeInput').oninput=saveAlarmSettings;$('notificationToggle').onchange=toggleNotifications;$('testAlarmBtn').onclick=()=>{armAudio();playAlarm();};$('clearOverridesBtn').onclick=clearOverrides;
+  $('exportBackupBtn').onclick=exportBackup;$('importBackupInput').onchange=importBackup;$('resetAllBtn').onclick=resetAllTimers;$('inventoryDialog').addEventListener('close',()=>{});
+  document.addEventListener('pointerdown',()=>{armAudio();markAlarmPlayback();},{once:true});window.addEventListener('focus',tick);document.addEventListener('visibilitychange',tick);
+}
+function selfTest(){
+  const required=['startRunBtn','dashboardDialog','timerList','alarmList','pofList','currentXpInput','inventoryFrame'];
+  const missing=required.filter(id=>!$(id));
+  const valid=normalRoute('farm').length>0&&normalRoute('tree').length>0&&TREE_STEPS.some(step=>step.teleport.includes('8. Brimhaven'))&&TREE_STEPS.some(step=>step.teleport.includes('1. Lletya'));
+  document.body.dataset.selftest=missing.length||!valid?'FAIL':'PASS';
+}
+function init(){
+  populateSelectors();bind();showHome();renderAll();timerInterval=setInterval(tick,1000);tick();selfTest();document.body.dataset.appReady='true';
+  if(window.alt1?.identifyAppUrl)try{window.alt1.identifyAppUrl(new URL('appconfig.json',location.href).href)}catch{}
+}
+init();
+</script>
+</body>
+</html>

@@ -1,11 +1,21 @@
-RS3 Farm Tracker — Build 9.3
+RS3 FARM TRACKER — BUILD 10.0 PRODUCTION
 
-Changes:
-- Added Allotment seed selector with crop-specific timers.
-- Added Empty — no timer to allotment, herb, and flower selectors.
-- Completing a location does not start a timer for any crop set to Empty.
-- Empty selections clear any stale timer for that crop at the completed location.
-- Added teleport shortcut numbers: Brimhaven 8, Tree Gnome Stronghold 2, Tree Gnome Village 1, Lletya quiver 1.
-- Inventory seed counts now include 6 allotment seeds per two-allotment location.
+GITHUB UPDATE
+1. Copy index.html, appconfig.json, and the assets folder into the root of your FarmTracker repository.
+2. Replace the existing files.
+3. Commit and push origin in GitHub Desktop.
+4. Wait for GitHub Pages to deploy.
+5. Fully close and reopen the Alt1 app.
 
-Upload index.html, appconfig.json, and assets/ to the repository root, commit, and push.
+LIVE APP
+https://mamododarky.github.io/FarmTracker/
+
+ALT1 INSTALL LINK
+alt1://addapp/https://mamododarky.github.io/FarmTracker/appconfig.json?build=10.0
+
+NOTES
+- Timers are saved in localStorage and catch up when the app is reopened.
+- A fully closed Alt1 app cannot actively chime until reopened.
+- Skip never starts or resets a patch timer.
+- Start Run acknowledges current alarms. Ready locations skipped during a ready route are re-armed.
+- Cycle-aligned timing is optional and requires calibration; Safe full time is the default.
