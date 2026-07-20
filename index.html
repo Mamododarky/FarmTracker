@@ -53,7 +53,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 .diagnostic{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}.diagnostic:last-child{border:0}.ok{color:var(--green)}
 .toast{position:fixed;left:50%;bottom:12px;z-index:100;transform:translate(-50%,14px);opacity:0;padding:8px 11px;border-radius:99px;background:#eef3ea;color:#142017;font-weight:850;transition:.15s}.toast.show{opacity:1;transform:translate(-50%,0)}
 
-/* Build 10.2 compact launcher */
+/* Build 10.2.1 compact launcher */
 .compact-home{gap:7px}
 .launcher-card{padding:10px}
 .compact-title h2{font-size:20px}
@@ -81,7 +81,7 @@ details>summary{cursor:pointer}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.met
 .alarm-strip{min-height:42px;padding:6px 8px}
 @media(max-width:390px){html,body{font-size:14px}.crop-grid{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(3,1fr)}.tabs .tab:nth-child(n+4){margin-top:1px}.alarm-actions .long{display:none}}
 
-/* Build 10.2 — RuneScape interface theme */
+/* Build 10.2.1 — RuneScape interface theme */
 :root{
   --bg:#171411;
   --panel:#211e1a;
@@ -248,7 +248,7 @@ main{padding:6px}
 <div class="app">
 <header class="topbar">
   <button id="menuBtn" class="icon-button" aria-label="Open menu">☰</button>
-  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.2</small></div>
+  <div><h1>Farm Tracker</h1><small id="buildText">Build 10.2.1</small></div>
   <button id="topStatus" class="status-pill">0 ready</button>
 </header>
 <aside id="sideMenu" class="side-menu" aria-hidden="true">
@@ -264,7 +264,7 @@ main{padding:6px}
   <section class="menu-section">
     <button id="menuReset" class="button danger">Reset all timers</button>
   </section>
-  <small class="muted">Build 10.2 RuneScape Theme</small>
+  <small class="muted">Build 10.2.1 Timer Hotfix</small>
 </aside>
 <div id="scrim" class="scrim" hidden></div>
 <main>
@@ -400,7 +400,7 @@ main{padding:6px}
 
 <script>
 'use strict';
-const BUILD='10.2';
+const BUILD='10.2.1';
 const STATE_KEY='farmtracker-v10-state';
 const $=id=>document.getElementById(id);
 
@@ -864,6 +864,303 @@ function init(){
   if(window.alt1?.identifyAppUrl)try{window.alt1.identifyAppUrl(new URL('appconfig.json',location.href).href)}catch{}
 }
 init();
+</script>
+
+<script id="farmtracker-v10-2-1-hotfix">
+/* RS3 Farm Tracker v10.2.1 timer hotfix
+   - Stops the 1-second refresh from rebuilding Manor Farm controls.
+   - Makes pen Clear and Start Selected update immediately.
+   - Replaces the confusing double-click timer reset with a normal confirmation.
+   - Avoids writing the entire state to localStorage every second.
+*/
+(() => {
+  'use strict';
+
+  const HOTFIX_BUILD = '10.2.1';
+  const legacyTick = tick;
+  let pofDraft = Object.create(null);
+
+  function penNextStage(pen, now = Date.now()) {
+    const timer = state.pofTimers[pen.id];
+    if (!timer || !Array.isArray(timer.stages)) return null;
+    return timer.stages.find(stage => stage.due <= now && !stage.ack)
+      || timer.stages.find(stage => stage.due > now && !stage.ack)
+      || null;
+  }
+
+  function penStatusText(pen, now = Date.now()) {
+    const next = penNextStage(pen, now);
+    if (!next) return 'Not set';
+    return next.due <= now ? 'READY' : remaining(next.due - now);
+  }
+
+  function capturePofDraft() {
+    const list = $('pofList');
+    if (!list) return;
+    for (const pen of PENS) {
+      const check = list.querySelector(`[data-pen-check="${pen.id}"]`);
+      const start = list.querySelector(`[data-pen-start="${pen.id}"]`);
+      const target = list.querySelector(`[data-pen-target="${pen.id}"]`);
+      if (!check && !start && !target) continue;
+      pofDraft[pen.id] = {
+        checked: !!check?.checked,
+        start: start?.value,
+        target: target?.value
+      };
+    }
+  }
+
+  function refreshTimerPanels({ rebuildPof = false } = {}) {
+    renderAlarmStrip();
+    renderTimers();
+    renderAlarms();
+    if (rebuildPof) renderPof();
+    if (state.activeRun) renderRun();
+  }
+
+  function clearPenTimerFast(penId) {
+    const pen = PENS.find(item => item.id === penId);
+    delete state.pofTimers[penId];
+    state.lastAlarmSignature = '';
+    save();
+    renderPof();
+    renderTimers();
+    renderAlarms();
+    renderAlarmStrip();
+    toast(`${pen?.name || 'Pen'} timer cleared.`);
+  }
+
+  function renderPofFast() {
+    const list = $('pofList');
+    if (!list) return;
+
+    capturePofDraft();
+    list.innerHTML = '';
+    const now = Date.now();
+
+    for (const pen of PENS) {
+      const stages = Object.keys(pen.stages);
+      const defaultStart = stages[0];
+      const draft = pofDraft[pen.id] || {};
+      const row = document.createElement('div');
+      row.className = 'pof-row';
+      row.dataset.penRow = pen.id;
+      row.innerHTML = `
+        <div class="pof-top">
+          <span>
+            <b>${esc(pen.name)}</b>
+            <small>${esc(pen.animal)} · ${esc(pen.food)}</small>
+          </span>
+          <strong data-pen-status="${pen.id}">${penStatusText(pen, now)}</strong>
+        </div>
+        <div class="pof-config">
+          <input type="checkbox" data-pen-check="${pen.id}" aria-label="Select ${esc(pen.name)}">
+          <select data-pen-start="${pen.id}" aria-label="${esc(pen.name)} starting stage">
+            ${stages.map(stage => `<option value="${stage}">${cap(stage)}</option>`).join('')}
+          </select>
+          <select data-pen-target="${pen.id}" aria-label="${esc(pen.name)} target stage">
+            ${stages.slice(1).map(stage => `<option value="${stage}" ${stage === 'elder' ? 'selected' : ''}>${cap(stage)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="timer-actions">
+          <button class="button small danger" type="button" data-clear-pen="${pen.id}">Clear</button>
+        </div>`;
+
+      const check = row.querySelector(`[data-pen-check="${pen.id}"]`);
+      const start = row.querySelector(`[data-pen-start="${pen.id}"]`);
+      const target = row.querySelector(`[data-pen-target="${pen.id}"]`);
+      check.checked = !!draft.checked;
+      start.value = stages.includes(draft.start) ? draft.start : defaultStart;
+      if (draft.target && stages.includes(draft.target) && pen.stages[draft.target] > pen.stages[start.value]) {
+        target.value = draft.target;
+      }
+
+      check.onchange = capturePofDraft;
+      start.onchange = () => {
+        const validTargets = stages.filter(stage => pen.stages[stage] > pen.stages[start.value]);
+        target.innerHTML = validTargets.map(stage => `<option value="${stage}" ${stage === 'elder' ? 'selected' : ''}>${cap(stage)}</option>`).join('');
+        if (draft.target && validTargets.includes(draft.target)) target.value = draft.target;
+        capturePofDraft();
+      };
+      target.onchange = capturePofDraft;
+      row.querySelector(`[data-clear-pen="${pen.id}"]`).onclick = () => clearPenTimerFast(pen.id);
+      list.appendChild(row);
+    }
+  }
+
+  function updatePofCountdownsFast() {
+    const now = Date.now();
+    for (const pen of PENS) {
+      const status = document.querySelector(`[data-pen-status="${pen.id}"]`);
+      if (status) status.textContent = penStatusText(pen, now);
+    }
+  }
+
+  function startSelectedPensFast() {
+    const list = $('pofList');
+    const selected = list ? [...list.querySelectorAll('[data-pen-check]:checked')] : [];
+    if (!selected.length) {
+      toast('Select at least one Manor Farm pen.');
+      return;
+    }
+
+    const now = Date.now();
+    let count = 0;
+    let invalid = 0;
+
+    for (const check of selected) {
+      const penId = check.dataset.penCheck;
+      const pen = PENS.find(item => item.id === penId);
+      const row = check.closest('.pof-row');
+      if (!pen || !row) continue;
+
+      const start = row.querySelector(`[data-pen-start="${penId}"]`)?.value;
+      const target = row.querySelector(`[data-pen-target="${penId}"]`)?.value;
+      const startMinutes = Number(pen.stages[start]);
+      const targetMinutes = Number(pen.stages[target]);
+
+      if (!Number.isFinite(startMinutes) || !Number.isFinite(targetMinutes) || targetMinutes <= startMinutes) {
+        invalid += 1;
+        continue;
+      }
+
+      const stages = Object.entries(pen.stages)
+        .filter(([, minutes]) => minutes > startMinutes && minutes <= targetMinutes)
+        .map(([name, minutes]) => ({
+          name,
+          due: now + (minutes - startMinutes) * 60000,
+          ack: false,
+          snoozeUntil: 0
+        }));
+
+      if (!stages.length) {
+        invalid += 1;
+        continue;
+      }
+
+      state.pofTimers[pen.id] = {
+        id: pen.id,
+        penId: pen.id,
+        label: pen.name,
+        startedAt: now,
+        start,
+        target,
+        stages
+      };
+      count += 1;
+    }
+
+    if (!count) {
+      toast(invalid ? 'The target stage must be later than the starting stage.' : 'No pen timers were started.');
+      return;
+    }
+
+    pofDraft = Object.create(null);
+    state.lastAlarmSignature = '';
+    save();
+    refreshTimerPanels({ rebuildPof: true });
+    toast(`${count} pen timer${count === 1 ? '' : 's'} started${invalid ? `; ${invalid} skipped` : ''}.`);
+  }
+
+  function resetAllTimersFast() {
+    const total = Object.keys(state.timers || {}).length + Object.keys(state.pofTimers || {}).length;
+    if (!total) {
+      toast('There are no timers to reset.');
+      return;
+    }
+
+    if (!window.confirm('Reset every plot, tree, and Manor Farm timer?')) return;
+
+    state.timers = {};
+    state.pofTimers = {};
+    state.snoozeAllUntil = 0;
+    state.lastAlarmAt = 0;
+    state.lastAlarmSignature = '';
+    resetArmedUntil = 0;
+    pofDraft = Object.create(null);
+
+    // Remove timer-only keys from older builds so stale data cannot reappear later.
+    [
+      'rs3-farm-timers-v1',
+      'rs3-farm-pof-timers-v1',
+      'rs3-farm-pof-timers-v2',
+      'rs3-farm-alarm-ack-v1',
+      'rs3-farm-snooze-until-v1'
+    ].forEach(key => localStorage.removeItem(key));
+
+    document.querySelectorAll('#menuReset,#resetAllBtn').forEach(button => {
+      button.textContent = 'Reset all timers';
+    });
+
+    save();
+    refreshTimerPanels({ rebuildPof: true });
+    closeMenu();
+    toast('All timers reset.');
+  }
+
+  function tickFast() {
+    const now = Date.now();
+    let stateChanged = false;
+
+    for (const timer of allPlotTimers()) {
+      if (timer.status === 'growing' && timer.readyAt <= now) {
+        timer.status = 'ready';
+        timer.ack = false;
+        stateChanged = true;
+      }
+    }
+
+    if (state.activeRun) $('runClock').textContent = duration(now - state.activeRun.startedAt);
+    renderAlarmStrip();
+
+    const dialog = $('dashboardDialog');
+    if (dialog?.open) {
+      const activeTab = document.querySelector('[data-tab].active')?.dataset.tab;
+      if (activeTab === 'timers') renderTimers();
+      else if (activeTab === 'alarms') renderAlarms();
+      else if (activeTab === 'pof') updatePofCountdownsFast();
+    }
+
+    if (state.activeRun) renderRun();
+    markAlarmPlayback();
+    if (stateChanged) save();
+  }
+
+  // Replace the affected functions and all handlers that captured the old functions.
+  renderPof = renderPofFast;
+  startSelectedPens = startSelectedPensFast;
+  resetAllTimers = resetAllTimersFast;
+  tick = tickFast;
+
+  $('startPofBtn').onclick = startSelectedPens;
+  $('selectAllPensBtn').onclick = () => {
+    document.querySelectorAll('#pofList [data-pen-check]').forEach(input => { input.checked = true; });
+    capturePofDraft();
+  };
+  $('resetAllBtn').onclick = resetAllTimers;
+  $('menuReset').onclick = resetAllTimers;
+
+  clearInterval(timerInterval);
+  window.removeEventListener('focus', legacyTick);
+  document.removeEventListener('visibilitychange', legacyTick);
+  window.addEventListener('focus', tick);
+  document.addEventListener('visibilitychange', tick);
+  timerInterval = setInterval(tick, 1000);
+
+  const buildText = $('buildText');
+  if (buildText) buildText.textContent = `Build ${HOTFIX_BUILD}`;
+  document.querySelectorAll('.diagnostic b').forEach(node => {
+    if (node.textContent.includes('10.2') && !node.textContent.includes(HOTFIX_BUILD)) node.textContent = node.textContent.replace('10.2', HOTFIX_BUILD);
+  });
+
+  renderPof();
+  renderTimers();
+  renderAlarms();
+  renderAlarmStrip();
+  tick();
+  document.body.dataset.timerHotfix = '10.2.1';
+})();
+
 </script>
 </body>
 </html>
